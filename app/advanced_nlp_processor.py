@@ -20,13 +20,14 @@ import spacy
 import os
 
 # Download NLTK data
+# Just check if they exist, don't download at runtime
+nltk.data.path.append('/opt/render/nltk_data')  # Add Render's NLTK path
 try:
     nltk.data.find('tokenizers/punkt')
     nltk.data.find('corpora/stopwords')
 except LookupError:
-    nltk.download('punkt')
-    nltk.download('stopwords')
-
+    # Log a warning but don't try to download
+    print("⚠ NLTK data not found - ensure build command downloads it")
 class AdvancedNLPProcessor:
     """Advanced NLP processor with TensorFlow ML models and multilingual support"""
     

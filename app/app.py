@@ -53,6 +53,14 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 
+# Ensure the app binds to the correct host and port for Render
+if __name__ != '__main__':
+    # When running under gunicorn, configure the app to use the PORT env var
+    port = int(os.environ.get('PORT', 10000))
+    # This doesn't actually run the server, but ensures socketio is configured
+    socketio.server_options['port'] = port
+    socketio.server_options['host'] = '0.0.0.0'
+
 # Register the feedback blueprint
 app.register_blueprint(feedback_bp, url_prefix='/api/feedback')
 
