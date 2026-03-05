@@ -1,0 +1,4569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UoEm Starlife Navigation - Real-Time Tracking</title>
+    
+    <!-- Mobile-specific meta tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#2c3e50">
+    <link rel="manifest" href="/static/manifest.json">
+    
+    <!-- Leaflet Core -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    
+    <!-- Leaflet Plugins -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.6.0/Control.FullScreen.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lightgallery-bundle.min.css"/>
+    
+    <!-- Socket.IO -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    
+    <style>
+        /* ============================================
+           RESET & BASE STYLES
+        ============================================ */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* ============================================
+           MAIN LAYOUT WITH TWO SIDEBARS
+        ============================================ */
+        #sidebar {
+            width: 350px; /* Reduced from 420px */
+            background: white;
+            box-shadow: 3px 0 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            transition: transform 0.3s ease;
+        }
+        
+        #ai-sidebar {
+            width: 350px; /* AI sidebar width */
+            background: linear-gradient(135deg, #2c3e50, #1a252f);
+            box-shadow: -3px 0 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            height: 100vh;
+            position: fixed;
+            right: 0;
+            top: 0;
+            transition: transform 0.3s ease;
+            transform: translateX(100%);
+        }
+        
+        #ai-sidebar.active {
+            transform: translateX(0);
+        }
+        
+        #map {
+            margin-left: 350px;
+            margin-right: 0;
+            height: 100vh;
+            width: calc(100% - 350px);
+            transition: all 0.3s ease;
+        }
+        
+        #map.with-ai-sidebar {
+            margin-right: 350px;
+            width: calc(100% - 700px);
+        }
+        
+        /* ============================================
+           TABLET LAYOUT
+        ============================================ */
+        @media (max-width: 1024px) {
+            #sidebar {
+                width: 300px;
+            }
+            
+            #ai-sidebar {
+                width: 300px;
+            }
+            
+            #map {
+                margin-left: 300px;
+                width: calc(100% - 300px);
+            }
+            
+            #map.with-ai-sidebar {
+                margin-right: 300px;
+                width: calc(100% - 600px);
+            }
+        }
+        
+        /* ============================================
+           MOBILE LAYOUT
+        ============================================ */
+        @media (max-width: 768px) {
+            /* Mobile Header */
+            .mobile-header {
+                display: flex;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 60px;
+                background: linear-gradient(135deg, #2c3e50, #3498db);
+                color: white;
+                z-index: 1001;
+                padding: 0 15px;
+                align-items: center;
+                justify-content: space-between;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            }
+            
+            .mobile-header h3 {
+                margin: 0;
+                font-size: 1.2rem;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .mobile-controls {
+                display: flex;
+                gap: 10px;
+            }
+            
+            .mobile-control-btn {
+                width: 40px;
+                height: 40px;
+                background: rgba(255,255,255,0.2);
+                border: none;
+                border-radius: 8px;
+                color: white;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+                transition: all 0.3s;
+            }
+            
+            .mobile-control-btn:hover {
+                background: rgba(255,255,255,0.3);
+            }
+            
+            /* Sidebars become overlay on mobile */
+            #sidebar {
+                width: 85%;
+                max-width: 400px;
+                transform: translateX(-100%);
+                box-shadow: 5px 0 30px rgba(0,0,0,0.3);
+            }
+            
+            #sidebar.active {
+                transform: translateX(0);
+            }
+            
+            #ai-sidebar {
+                width: 85%;
+                max-width: 400px;
+                transform: translateX(100%);
+                box-shadow: -5px 0 30px rgba(0,0,0,0.3);
+            }
+            
+            #ai-sidebar.active {
+                transform: translateX(0);
+            }
+            
+            #map {
+                margin-left: 0;
+                margin-right: 0;
+                width: 100%;
+                height: calc(100vh - 60px);
+                margin-top: 60px;
+            }
+            
+            #map.with-ai-sidebar {
+                margin-right: 0;
+                width: 100%;
+            }
+            
+            /* Mobile overlay backdrop */
+            .sidebar-backdrop {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 1500;
+                backdrop-filter: blur(3px);
+            }
+            
+            .sidebar-backdrop.active {
+                display: block;
+            }
+            
+            /* Adjust control panel for mobile */
+            .control-panel.desktop {
+                top: 80px;
+                right: 15px;
+                background: rgba(255,255,255,0.95);
+                backdrop-filter: blur(10px);
+                padding: 10px;
+                border-radius: 12px;
+            }
+            
+            .control-panel.mobile-bottom {
+                display: flex !important;
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: auto;
+                max-width: 90%;
+                padding: 10px;
+                border-radius: 20px;
+                background: rgba(255,255,255,0.95);
+                backdrop-filter: blur(10px);
+                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+                z-index: 1000;
+                gap: 8px;
+            }
+            
+            .map-control {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            
+            /* Details panel adjustments */
+            .details-panel {
+                left: 10px !important;
+                right: 10px !important;
+                width: auto !important;
+                top: 70px !important;
+                max-height: calc(100vh - 80px) !important;
+                border-radius: 12px !important;
+            }
+            
+            .details-content {
+                max-height: calc(100vh - 200px) !important;
+            }
+            
+            /* Tile layer selector */
+            .tile-layer-selector {
+                right: 10px !important;
+                top: 120px !important;
+                width: 250px !important;
+                max-height: 70vh;
+                overflow-y: auto;
+                border-radius: 12px !important;
+            }
+            
+            /* Building name labels */
+            .building-name-label {
+                font-size: 10px !important;
+                padding: 3px 8px !important;
+                max-width: 120px !important;
+            }
+            
+            /* Photo gallery for mobile */
+            .photo-thumb {
+                height: 200px !important;
+            }
+            
+            /* Tab navigation */
+            .tab-navigation {
+                padding: 3px;
+            }
+            
+            .tab-btn {
+                padding: 10px 5px;
+                font-size: 12px;
+            }
+            
+            /* Mode selector */
+            .mode-selector {
+                padding: 5px;
+            }
+            
+            .mode-btn {
+                padding: 10px 5px;
+                font-size: 12px;
+            }
+            
+            /* Building list */
+            .building-item {
+                padding: 8px;
+            }
+            
+            /* Buttons */
+            .btn-primary, .btn-secondary {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+        
+        /* ============================================
+           SMALL PHONES
+        ============================================ */
+        @media (max-width: 480px) {
+            #sidebar, #ai-sidebar {
+                width: 95%;
+            }
+            
+            .mobile-header {
+                height: 55px;
+                padding: 0 10px;
+            }
+            
+            .mobile-header h3 {
+                font-size: 1rem;
+            }
+            
+            .mobile-control-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+            
+            #map {
+                height: calc(100vh - 55px);
+                margin-top: 55px;
+            }
+            
+            .control-panel.mobile-bottom {
+                bottom: 15px;
+                padding: 8px;
+                gap: 6px;
+            }
+            
+            .map-control {
+                width: 38px;
+                height: 38px;
+                font-size: 15px;
+            }
+            
+            .tab-btn {
+                padding: 8px 4px;
+                font-size: 11px;
+            }
+            
+            .mode-btn {
+                padding: 8px 4px;
+                font-size: 11px;
+            }
+            
+            .building-item {
+                padding: 6px;
+            }
+            
+            .details-panel {
+                top: 60px !important;
+                max-height: calc(100vh - 70px) !important;
+            }
+            
+            .photo-gallery {
+                padding: 10px;
+            }
+            
+            .photo-thumb {
+                height: 180px !important;
+            }
+            
+            .sidebar-content {
+                padding: 15px;
+            }
+        }
+        
+        /* ============================================
+           AI SIDEBAR STYLES
+        ============================================ */
+        .ai-sidebar-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #1a252f, #2c3e50);
+            color: white;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .ai-sidebar-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .ai-sidebar-content {
+            padding: 0;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: #1a252f;
+            color: white;
+        }
+        
+        .ai-chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(100vh - 180px);
+        }
+        
+        .ai-message {
+            margin-bottom: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .ai-message.user {
+            text-align: right;
+        }
+        
+        .ai-message.bot {
+            text-align: left;
+        }
+        
+        .ai-message-content {
+            display: inline-block;
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+        
+        .user .ai-message-content {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .bot .ai-message-content {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-bottom-left-radius: 4px;
+        }
+        
+        .ai-message-time {
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 3px;
+        }
+        
+        .user .ai-message-time {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .ai-welcome-message {
+            text-align: center;
+            padding: 20px 10px;
+        }
+        
+        .ai-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+        }
+        
+        .ai-welcome-message h5 {
+            margin: 0 0 10px 0;
+            color: white;
+        }
+        
+        .ai-welcome-message p {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .ai-examples {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .ai-example {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+        
+        .ai-example:hover {
+            background: rgba(52, 152, 219, 0.3);
+            border-color: rgba(52, 152, 219, 0.5);
+            transform: translateX(5px);
+        }
+        
+        .ai-building-result {
+            background: rgba(52, 152, 219, 0.2);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .ai-building-result:hover {
+            background: rgba(52, 152, 219, 0.3);
+            transform: translateX(5px);
+        }
+        
+        .ai-building-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .ai-building-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .ai-building-name {
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: white;
+        }
+        
+        .ai-building-type {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .ai-navigate-btn {
+            padding: 6px 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .ai-navigate-btn:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+        
+        .ai-typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 0;
+        }
+        
+        .ai-typing-dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .ai-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .ai-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        
+        .ai-input-container {
+            padding: 15px;
+            background: rgba(26, 37, 47, 0.9);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .ai-input {
+            flex: 1;
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .ai-input:focus {
+            border-color: #3498db;
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .ai-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .ai-send-btn, .ai-voice-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .ai-send-btn:hover, .ai-voice-btn:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+        
+        .ai-voice-btn {
+            background: #2ecc71;
+        }
+        
+        .ai-voice-btn.listening {
+            animation: pulse 1.5s infinite;
+            background: #e74c3c;
+        }
+        
+        /* Confidence indicator */
+        .confidence-indicator {
+            font-size: 11px;
+            color: #2ecc71;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* ============================================
+           SHARED COMPONENT STYLES
+        ============================================ */
+        .sidebar-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+        }
+        
+        .sidebar-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sidebar-content {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        
+        /* Tab Navigation */
+        .tab-navigation {
+            display: flex;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 10px;
+            padding: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 12px 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #6c757d;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .tab-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            box-shadow: 0 3px 10px rgba(0,123,255,0.2);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Mode Selector */
+        .mode-selector {
+            display: flex;
+            gap: 8px;
+            margin: 20px 0;
+            background: white;
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .mode-btn {
+            flex: 1;
+            padding: 12px 8px;
+            background: white;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #495057;
+            transition: all 0.3s;
+        }
+        
+        .mode-btn:hover {
+            background: #f8f9fa;
+        }
+        
+        .mode-btn.active {
+            border-color: #007bff;
+            background: #e3f2fd;
+            color: #007bff;
+        }
+        
+        /* Input Groups */
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .input-with-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            color: #6c757d;
+            z-index: 2;
+        }
+        
+        .input-with-icon input,
+        .input-with-icon select {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+            box-sizing: border-box;
+            transition: all 0.3s;
+            color: #495057;
+        }
+        
+        .input-with-icon input:focus,
+        .input-with-icon select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,123,255,0.2);
+        }
+        
+        .btn-secondary {
+            width: 100%;
+            padding: 12px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+        
+        /* Building List */
+        .building-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .building-item:hover {
+            background: #f8f9fa;
+            transform: translateX(5px);
+        }
+        
+        .building-icon-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .building-info {
+            flex-grow: 1;
+            min-width: 0;
+        }
+        
+        .building-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .building-type {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .building-actions {
+            display: flex;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+        
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .start-btn {
+            background: #007bff;
+            color: white;
+        }
+        
+        .end-btn {
+            background: #28a745;
+            color: white;
+        }
+        
+        /* Control Panel */
+        .control-panel.desktop {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .control-panel.mobile-bottom {
+            display: none;
+        }
+        
+        .map-control {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #495057;
+            transition: all 0.3s;
+        }
+        
+        .map-control:hover {
+            background: #f8f9fa;
+        }
+        
+        .map-control.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        
+        /* Enhanced Details Panel */
+        .details-panel {
+            position: absolute;
+            top: 20px;
+            left: 370px;
+            width: 400px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+            overflow: hidden;
+            max-height: 85vh;
+        }
+        
+        .details-header {
+            padding: 25px;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            position: relative;
+        }
+        
+        .close-details {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .close-details:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+        
+        .details-icon-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+        
+        .details-content {
+            padding: 0;
+            max-height: calc(85vh - 150px);
+            overflow-y: auto;
+        }
+        
+        /* Photo Gallery */
+        .photo-gallery {
+            padding: 15px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+        
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .gallery-grid {
+            display: block;
+            margin-bottom: 15px;
+        }
+        
+        .photo-preview {
+            display: none;
+        }
+        
+        .photo-thumb {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .photo-thumb:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .photo-preview img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .photo-preview:hover img {
+            transform: scale(1.05);
+        }
+        
+        .upload-area {
+            display: none !important;
+        }
+        
+        .no-photos {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+            background: white;
+            border-radius: 10px;
+            border: 2px dashed #dee2e6;
+            margin-top: 10px;
+        }
+        
+        .no-photos i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+        
+        /* BUILDING NAME LABELS */
+        .building-name-label {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #2c3e50;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+            pointer-events: none;
+            z-index: 600;
+            white-space: nowrap;
+            transform: translate(-50%, -35px);
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+        }
+        
+        .building-name-label.show {
+            opacity: 1;
+            transform: translate(-50%, -40px);
+        }
+        
+        .building-name-label::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid rgba(255, 255, 255, 0.95);
+        }
+        
+        /* Label Color Variations */
+        .building-name-label.academic {
+            border-left: 3px solid #3498db;
+        }
+        
+        .building-name-label.administrative {
+            border-left: 3px solid #8e44ad;
+        }
+        
+        .building-name-label.residential {
+            border-left: 3px solid #27ae60;
+        }
+        
+        .building-name-label.dining {
+            border-left: 3px solid #e74c3c;
+        }
+        
+        .building-name-label.sports {
+            border-left: 3px solid #e67e22;
+        }
+        
+        .building-name-label.infrastructure {
+            border-left: 3px solid #95a5a6;
+        }
+        
+        .building-name-label.health {
+            border-left: 3px solid #c0392b;
+        }
+        
+        .building-name-label.technical {
+            border-left: 3px solid #34495e;
+        }
+        
+        .building-name-label.services {
+            border-left: 3px solid #dc7633;
+        }
+        
+        .building-name-label.default {
+            border-left: 3px solid #7d3c98;
+        }
+        
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Lightbox Styles */
+        .lg-backdrop {
+            background-color: rgba(0, 0, 0, 0.9) !important;
+        }
+        
+        .lg-container {
+            z-index: 10000 !important;
+        }
+        
+        /* Map Legend */
+        .map-legend {
+            background: white !important;
+            padding: 15px !important;
+            border-radius: 10px !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+            max-width: 250px !important;
+        }
+        
+        /* Tile Layer Selector */
+        .tile-layer-selector {
+            position: absolute;
+            top: 120px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
+            width: 250px;
+        }
+        
+        .tile-layer-btn {
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            text-align: left;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .tile-layer-btn:hover {
+            background: #f8f9fa;
+            transform: translateX(5px);
+        }
+        
+        .tile-layer-btn.active {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border-color: #0056b3;
+        }
+        
+        /* Zoom Level Indicator */
+        .zoom-level {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 1000;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+        
+        /* Real-time Tracking Panel */
+        .tracking-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tracking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .tracker-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tracker-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .tracker-item.online {
+            border-left-color: #28a745;
+        }
+        
+        .tracker-item.offline {
+            border-left-color: #6c757d;
+            opacity: 0.7;
+        }
+        
+        .tracker-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .tracker-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .tracker-status {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: #e9ecef;
+            color: #495057;
+        }
+        
+        .tracker-status.online {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .tracker-status.offline {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Tracker Controls */
+        .tracker-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .tracker-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .tracker-btn.start {
+            background: #007bff;
+            color: white;
+        }
+        
+        .tracker-btn.stop {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .tracker-btn.share {
+            background: #28a745;
+            color: white;
+        }
+        
+        /* Share Modal */
+        .share-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+        
+        .share-content {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .share-url {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 14px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            user-select: all;
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -30px); }
+            to { opacity: 1; transform: translate(-50%, -40px); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Transition for sidebar */
+        #sidebar, #ai-sidebar, #map, .mobile-header, .control-panel {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <!-- Mobile Header (visible only on mobile) -->
+    <div class="mobile-header" id="mobileHeader" style="display: none;">
+        <h3><i class="fas fa-map-marked-alt"></i> UoEm Navigation</h3>
+        <div class="mobile-controls">
+            <button class="mobile-control-btn" id="mobileMenuBtn" title="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <button class="mobile-control-btn" id="mobileSearchBtn" title="Search">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="mobile-control-btn" id="mobileLocateBtn" title="My Location">
+                <i class="fas fa-location-arrow"></i>
+            </button>
+            <button class="mobile-control-btn" id="mobileTrackingBtn" title="Tracking">
+                <i class="fas fa-satellite"></i>
+            </button>
+            <button class="mobile-control-btn" id="mobileAIBtn" title="Starlife AI">
+                <i class="fas fa-robot"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Sidebar Backdrop (mobile only) -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Zoom Level Indicator -->
+    <div class="zoom-level" id="zoomLevel">
+        Zoom: <span id="zoomValue">17</span> | Labels: <span id="labelStatus">On</span>
+    </div>
+    
+    <!-- Real-time Tracking Panel -->
+    <div class="tracking-panel" id="trackingPanel">
+        <div class="tracking-header">
+            <h4 style="margin: 0;"><i class="fas fa-satellite"></i> Live Trackers</h4>
+            <button class="close-details" id="closeTracking" style="position: static; width: 30px; height: 30px;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="trackersList">
+            <!-- Trackers will be listed here -->
+        </div>
+        <div id="myTracker" style="display: none;">
+            <h5 style="margin: 15px 0 10px 0;">My Tracker</h5>
+            <div class="tracker-item online" id="currentTracker">
+                <div class="tracker-info">
+                    <span class="tracker-color" id="myTrackerColor"></span>
+                    <span id="myTrackerName">My Location</span>
+                    <span class="tracker-status online" id="myTrackerStatus">Online</span>
+                </div>
+                <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                    <span id="myTrackerLocation">Updating...</span>
+                </div>
+                <div class="tracker-controls">
+                    <button class="tracker-btn stop" onclick="stopTracking()">
+                        <i class="fas fa-stop"></i> Stop
+                    </button>
+                    <button class="tracker-btn share" onclick="shareTracker()">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <button class="btn-secondary" onclick="startTracking()" style="width: 100%;">
+                <i class="fas fa-play"></i> Start Tracking
+            </button>
+        </div>
+    </div>
+    <!-- Share Tracker Modal -->
+    <div class="share-modal" id="shareModal">
+        <div class="share-content">
+            <h3 style="margin: 0 0 15px 0;"><i class="fas fa-share-alt"></i> Share Tracker</h3>
+            <p style="margin-bottom: 10px; color: #666;">Share this link to let others track your location:</p>
+            <input type="text" class="share-url" id="shareUrl" readonly value="Generating link...">
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn-primary" onclick="copyShareLink()" style="flex: 1;">
+                    <i class="fas fa-copy"></i> Copy Link
+                </button>
+                <button class="btn-secondary" onclick="closeShareModal()" style="flex: 1;">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
+            <div id="qrCode" style="margin-top: 20px; text-align: center;">
+                <!-- QR Code will be generated here -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Sidebar -->
+    <div id="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-map-marked-alt"></i> UoEm Starlife Navigation</h3>
+        </div>
+        
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="search">
+                <i class="fas fa-search"></i> <span class="tab-text">Search</span>
+            </button>
+            <button class="tab-btn" data-tab="route">
+                <i class="fas fa-route"></i> <span class="tab-text">Route</span>
+            </button>
+            <button class="tab-btn" data-tab="tracking">
+                <i class="fas fa-satellite"></i> <span class="tab-text">Tracking</span>
+            </button>
+            <button class="tab-btn" data-tab="info">
+                <i class="fas fa-info-circle"></i> <span class="tab-text">Info</span>
+            </button>
+        </div>
+        
+        <div class="sidebar-content">
+            <!-- SEARCH TAB -->
+            <div id="search-tab" class="tab-content active">
+                <div class="input-group">
+                    <label><i class="fas fa-search"></i> <span class="label-text">Search Building</span></label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-search"></i>
+                        <input id="search" type="text" placeholder="Type building name...">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-filter"></i> <span class="label-text">Filter by Type</span></label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-filter"></i>
+                        <select id="filter">
+                            <option value="">All Building Types</option>
+                            {% for t in UNIQUE_TYPES %}
+                                <option value="{{ t }}">{{ t.replace('_',' ').title() }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="buildingList">
+                    <!-- Building list will appear here -->
+                </div>
+            </div>
+            
+            <!-- ROUTE TAB -->
+            <div id="route-tab" class="tab-content">
+                <div class="input-group">
+                    <label><i class="fas fa-tachometer-alt"></i> <span class="label-text">Transport Mode</span></label>
+                    <div class="mode-selector">
+                        <button class="mode-btn active" data-mode="walking">
+                            <i class="fas fa-walking"></i> <span class="mode-text">Walk</span>
+                        </button>
+                        <button class="mode-btn" data-mode="cycling">
+                            <i class="fas fa-bicycle"></i> <span class="mode-text">Cycle</span>
+                        </button>
+                        <button class="mode-btn" data-mode="driving">
+                            <i class="fas fa-car"></i> <span class="mode-text">Drive</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-map-pin"></i> <span class="label-text">Start Point</span></label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-map-pin"></i>
+                        <select id="startSelect">
+                            <option value="">Select Start Point</option>
+                            {% for b in buildings %}
+                                <option value="{{ b.id }}">{{ b.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-flag"></i> <span class="label-text">Destination</span></label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-flag"></i>
+                        <select id="endSelect">
+                            <option value="">Select Destination</option>
+                            {% for b in buildings %}
+                                <option value="{{ b.id }}">{{ b.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <button id="routeBtn" class="btn-primary">
+                    <i class="fas fa-route"></i> <span class="button-text">Find Route</span>
+                </button>
+                
+                <button id="clearRouteBtn" class="btn-secondary">
+                    <i class="fas fa-times"></i> <span class="button-text">Clear Route</span>
+                </button>
+                
+                <div id="routeInfo" class="route-info" style="display: none; padding: 20px; background: white; border-radius: 10px; margin-top: 15px;">
+                    <!-- Route info will appear here -->
+                </div>
+            </div>
+            
+            <!-- TRACKING TAB -->
+            <div id="tracking-tab" class="tab-content">
+                <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px;">
+                    <h4><i class="fas fa-satellite"></i> Real-time Tracking</h4>
+                    <p style="color: #666; font-size: 14px; margin: 10px 0;">
+                        Share your location with others in real-time. Perfect for group navigation and meetups.
+                    </p>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> <span class="label-text">Your Name</span></label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input id="trackerName" type="text" placeholder="Enter your name" value="Anonymous">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-tachometer-alt"></i> <span class="label-text">Tracking Mode</span></label>
+                    <div class="mode-selector">
+                        <button class="mode-btn active" data-track-mode="walking">
+                            <i class="fas fa-walking"></i> <span class="mode-text">Walk</span>
+                        </button>
+                        <button class="mode-btn" data-track-mode="cycling">
+                            <i class="fas fa-bicycle"></i> <span class="mode-text">Cycle</span>
+                        </button>
+                        <button class="mode-btn" data-track-mode="driving">
+                            <i class="fas fa-car"></i> <span class="mode-text">Drive</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="tracker-controls" style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="tracker-btn start" onclick="startTracking()" style="flex: 1;">
+                        <i class="fas fa-play"></i> Start Tracking
+                    </button>
+                    <button class="tracker-btn share" onclick="showTrackingPanel()" style="flex: 1;">
+                        <i class="fas fa-eye"></i> View Trackers
+                    </button>
+                </div>
+                
+                <div id="trackingStatus" style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; display: none;">
+                    <h5><i class="fas fa-sync-alt"></i> Tracking Status</h5>
+                    <div id="trackingInfo" style="margin-top: 10px;">
+                        <!-- Tracking info will appear here -->
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #e3f2fd; border-radius: 10px; border-left: 4px solid #2196f3;">
+                    <h6 style="margin: 0 0 10px 0; color: #0d47a1;"><i class="fas fa-info-circle"></i> How it works:</h6>
+                    <ul style="margin: 0; padding-left: 20px; color: #1976d2; font-size: 13px;">
+                        <li>Start tracking to share your location</li>
+                        <li>Share the link with friends or colleagues</li>
+                        <li>View all active trackers on the map</li>
+                        <li>Automatic cleanup after 5 minutes of inactivity</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- INFO TAB -->
+            <div id="info-tab" class="tab-content">
+                <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px;">
+                    <h4><i class="fas fa-university"></i> Campus Statistics</h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 15px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: bold; color: #007bff;">{{ TOTAL_BUILDINGS }}</div>
+                            <div style="font-size: 12px; color: #6c757d;">Buildings</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: bold; color: #28a745;">{{ TOTAL_PATHS }}</div>
+                            <div style="font-size: 12px; color: #6c757d;">Paths</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: bold; color: #6f42c1;">{{ PATHFINDER_STATS.walking.segments }}</div>
+                            <div style="font-size: 12px; color: #6c757d;">Path Segments</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: bold; color: #e74c3c;">{{ PATHFINDER_STATS.walking.nodes }}</div>
+                            <div style="font-size: 12px; color: #6c757d;">Path Nodes</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="useMyLocation" class="btn-secondary">
+                    <i class="fas fa-location-arrow"></i> <span class="button-text">My Location</span>
+                </button>
+                
+                <button id="refreshData" class="btn-secondary">
+                    <i class="fas fa-sync-alt"></i> <span class="button-text">Refresh Data</span>
+                </button>
+                
+                <button id="testPathfinding" class="btn-secondary">
+                    <i class="fas fa-code-branch"></i> <span class="button-text">Test Pathfinding</span>
+                </button>
+                
+                <button id="toggleLabels" class="btn-secondary">
+                    <i class="fas fa-tag"></i> <span class="button-text">Show Labels</span>
+                </button>
+                
+                <button id="toggleZoomIndicator" class="btn-secondary">
+                    <i class="fas fa-search-plus"></i> <span class="button-text">Zoom Indicator</span>
+                </button>
+                
+                <button id="toggleTrackingPanel" class="btn-secondary">
+                    <i class="fas fa-satellite"></i> <span class="button-text">Tracking Panel</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Starlife AI Sidebar -->
+    <div id="ai-sidebar">
+        <div class="ai-sidebar-header">
+            <h3><i class="fas fa-robot"></i> Starlife AI</h3>
+        </div>
+        
+        <div class="ai-sidebar-content">
+            <div class="ai-chat-messages" id="aiChatMessages">
+                <div class="ai-welcome-message">
+                    <div class="ai-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h5>Starlife AI Assistant</h5>
+                    <p>Ask me anything about campus locations! I can help you find buildings, get directions, and answer questions.</p>
+                    <div class="ai-examples">
+                        <button class="ai-example" onclick="aiSendMessage('Where is the library?')">
+                            <i class="fas fa-book"></i> "Where is the library?"
+                        </button>
+                        <button class="ai-example" onclick="aiSendMessage('How do I get to administration?')">
+                            <i class="fas fa-building"></i> "How to reach administration?"
+                        </button>
+                        <button class="ai-example" onclick="aiSendMessage('Find the cafeteria')">
+                            <i class="fas fa-utensils"></i> "Find the cafeteria"
+                        </button>
+                        <button class="ai-example" onclick="aiSendMessage('Show me computer labs')">
+                            <i class="fas fa-desktop"></i> "Show computer labs"
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ai-input-container">
+                <input type="text" 
+                       class="ai-input" 
+                       id="aiInput" 
+                       placeholder="Ask Starlife AI about campus..."
+                       onkeypress="handleAIKeyPress(event)">
+                
+                <button class="ai-voice-btn" id="aiVoiceBtn" onclick="toggleAIVoiceInput()">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                
+                <button class="ai-send-btn" onclick="aiSendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Enhanced Details Panel -->
+    <div id="detailsPanel" class="details-panel">
+        <button class="close-details" id="closeDetails">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="details-header">
+            <div class="details-icon-large" id="detailsIcon">
+                <i class="fas fa-building"></i>
+            </div>
+            <div>
+                <h3 style="margin: 0 0 5px 0;" id="detailsName">Building Name</h3>
+                <div style="font-size: 16px; opacity: 0.9;" id="detailsType">Building Type</div>
+            </div>
+        </div>
+        <div class="details-content">
+            <!-- Photo Gallery Section -->
+            <div class="photo-gallery">
+                <div class="gallery-header">
+                    <h5 style="margin: 0;"><i class="fas fa-images"></i> Photo Gallery</h5>
+                    <span id="photoCount" style="font-size: 12px; color: #666;">0 photos</span>
+                </div>
+                
+                <div id="photoGallery" class="gallery-grid">
+                    <!-- Photos will be loaded here -->
+                </div>
+                
+                <div id="noPhotos" class="no-photos" style="display: none;">
+                    <i class="fas fa-camera"></i>
+                    <div>No photos available for this building</div>
+                </div>
+            </div>
+            
+            <!-- Building Info -->
+            <div style="padding: 25px;">
+                <h5><i class="fas fa-info-circle"></i> Description</h5>
+                <p id="detailsDescription" style="color: #666; line-height: 1.6; margin: 10px 0 20px 0;"></p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div>
+                        <h5><i class="fas fa-map-marker-alt"></i> Coordinates</h5>
+                        <div style="background: #f8f9fa; padding: 10px; border-radius: 5px;">
+                            <div style="font-size: 12px; color: #6c757d; margin-bottom: 3px;">Latitude</div>
+                            <div style="font-family: monospace; font-weight: 600;" id="detailsLat"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h5>&nbsp;</h5>
+                        <div style="background: #f8f9fa; padding: 10px; border-radius: 5px;">
+                            <div style="font-size: 12px; color: #6c757d; margin-bottom: 3px;">Longitude</div>
+                            <div style="font-family: monospace; font-weight: 600;" id="detailsLon"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="nearbySection">
+                    <h5><i class="fas fa-location-arrow"></i> Nearby Buildings</h5>
+                    <div id="nearbyBuildings" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Control Panel - Desktop -->
+    <div class="control-panel desktop" id="desktopControls">
+        <button class="map-control" id="locateMe" title="Locate Me">
+            <i class="fas fa-location-arrow"></i>
+        </button>
+        <button class="map-control" id="resetView" title="Reset View">
+            <i class="fas fa-globe"></i>
+        </button>
+        <button class="map-control active" id="togglePaths" title="Toggle Paths">
+            <i class="fas fa-road"></i>
+        </button>
+        <button class="map-control active" id="toggleBuildings" title="Toggle Buildings">
+            <i class="fas fa-building"></i>
+        </button>
+        <button class="map-control" id="toggleTiles" title="Change Map Style">
+            <i class="fas fa-palette"></i>
+        </button>
+        <button class="map-control" id="toggleTracking" title="Show Trackers">
+            <i class="fas fa-satellite"></i>
+        </button>
+        <button class="map-control active" id="toggleAI" title="Starlife AI">
+            <i class="fas fa-robot"></i>
+        </button>
+        <button class="map-control" id="toggleFullscreen" title="Fullscreen">
+            <i class="fas fa-expand"></i>
+        </button>
+    </div>
+    
+    <!-- Control Panel - Mobile Bottom -->
+    <div class="control-panel mobile-bottom" id="mobileBottomControls">
+        <button class="map-control" id="mobileLocate" title="My Location">
+            <i class="fas fa-location-arrow"></i>
+        </button>
+        <button class="map-control" id="mobileReset" title="Reset View">
+            <i class="fas fa-globe"></i>
+        </button>
+        <button class="map-control active" id="mobilePaths" title="Toggle Paths">
+            <i class="fas fa-road"></i>
+        </button>
+        <button class="map-control" id="mobileSearch" title="Search">
+            <i class="fas fa-search"></i>
+        </button>
+        <button class="map-control active" id="mobileAI" title="Starlife AI">
+            <i class="fas fa-robot"></i>
+        </button>
+        <button class="map-control" id="mobileTracking" title="Tracking">
+            <i class="fas fa-satellite"></i>
+        </button>
+    </div>
+    
+    <!-- Tile Layer Selector -->
+    <div class="tile-layer-selector" id="tileSelector">
+        <div style="font-weight: 600; margin-bottom: 15px; font-size: 14px; color: #495057;">
+            <i class="fas fa-layer-group"></i> Map Style
+        </div>
+        {% for key, tile in MAP_TILES.items() %}
+        <button class="tile-layer-btn {{ 'active' if tile.default else '' }}" data-tile="{{ key }}">
+            <i class="fas fa-map"></i>
+            {{ tile.name }}
+        </button>
+        {% endfor %}
+    </div>
+    
+    <!-- Map Container -->
+    <div id="map"></div>
+    
+    <!-- Responsive Test Button (development only) -->
+    <button id="responsiveTest" style="display: none;">Test Responsive</button>
+    
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.6.0/Control.FullScreen.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/dist/Control.MiniMap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/lightgallery.min.js"></script>
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    
+    <script>
+    // ============================================
+    // UOEM STARLIFE NAVIGATION SYSTEM - REAL-TIME TRACKING
+    // ============================================
+    
+    // Global Variables
+    let map, markers = [], pathLayers = [], routeLine = null;
+    let startMarker = null, endMarker = null, userLocation = null;
+    let selectedStart = null, selectedEnd = null, currentMode = 'walking';
+    let currentTileLayer = null, tileLayers = {}, buildingLabels = [];
+    let labelsVisible = true, clusterGroup = null;
+    let currentBuildingId = null;
+    let zoomIndicatorVisible = false;
+    let isMobile = false;
+    let sidebarOpen = false;
+    let aiSidebarOpen = false;
+    
+    // Real-time Tracking Variables
+    let socket = null;
+    let isTracking = false;
+    let currentTrackerId = null;
+    let trackMarkers = {}; // {tracker_id: marker}
+    let trackerLines = {}; // {tracker_id: polyline}
+    let watchPositionId = null;
+    let trackingInterval = null;
+    let trackMode = 'walking';
+    let trackerName = 'Anonymous';
+    
+    // AI Variables
+    let aiRecognition = null;
+    
+    // Data from Flask
+    const buildings = {{ buildings | tojson }};
+    const ICON_CONFIG = {{ ICON_CONFIG | tojson }};
+    const ROUTE_COLORS = {{ ROUTE_COLORS | tojson }};
+    const MAP_TILES = {{ MAP_TILES | tojson }};
+    const CAMPUS_CENTER = {{ CAMPUS_CENTER | tojson }};
+    
+    // Category to label class mapping
+    const categoryToLabelClass = {
+        'Academic': 'academic',
+        'Administrative': 'administrative',
+        'Residential': 'residential',
+        'Dining': 'dining',
+        'Sports & Recreation': 'sports',
+        'Infrastructure': 'infrastructure',
+        'Health & Wellness': 'health',
+        'Technical': 'technical',
+        'Services': 'services',
+        'Natural Areas': 'default',
+        'Cultural & Religious': 'default',
+        'Security': 'default',
+        'Arts & Music': 'default',
+        'Student Life': 'default',
+        'Other': 'default'
+    };
+    
+    // ============================================
+    // RESPONSIVE FUNCTIONS
+    // ============================================
+    
+    function checkResponsive() {
+        const width = window.innerWidth;
+        const mobileHeader = $('#mobileHeader');
+        const desktopControls = $('#desktopControls');
+        const mobileControls = $('#mobileBottomControls');
+        const sidebar = $('#sidebar');
+        const aiSidebar = $('#ai-sidebar');
+        
+        if (width <= 768) {
+            // Mobile mode
+            isMobile = true;
+            mobileHeader.show();
+            desktopControls.hide();
+            mobileControls.show();
+            sidebar.css('transform', 'translateX(-100%)');
+            aiSidebar.css('transform', 'translateX(100%)');
+            
+            // Adjust map
+            $('#map').css({
+                'margin-left': '0',
+                'margin-right': '0',
+                'width': '100%',
+                'height': 'calc(100vh - 60px)',
+                'margin-top': '60px'
+            }).removeClass('with-ai-sidebar');
+            
+            // Hide text on small buttons for very small screens
+            if (width <= 480) {
+                $('.tab-text, .mode-text, .button-text, .label-text').css('display', 'none');
+                $('.tab-btn, .mode-btn, .btn-primary, .btn-secondary').css('justify-content', 'center');
+            } else {
+                $('.tab-text, .mode-text, .button-text, .label-text').css('display', 'inline');
+            }
+            
+        } else {
+            // Desktop mode
+            isMobile = false;
+            mobileHeader.hide();
+            desktopControls.show();
+            mobileControls.hide();
+            sidebar.css('transform', 'translateX(0)');
+            $('#sidebarBackdrop').removeClass('active');
+            sidebarOpen = false;
+            
+            // Reset map
+            const sidebarWidth = width <= 1024 ? '300px' : '350px';
+            const aiSidebarWidth = width <= 1024 ? '300px' : '350px';
+            
+            if (aiSidebarOpen) {
+                $('#map').css({
+                    'margin-left': sidebarWidth,
+                    'margin-right': aiSidebarWidth,
+                    'width': `calc(100% - ${parseInt(sidebarWidth) + parseInt(aiSidebarWidth)}px)`,
+                    'height': '100vh',
+                    'margin-top': '0'
+                }).addClass('with-ai-sidebar');
+            } else {
+                $('#map').css({
+                    'margin-left': sidebarWidth,
+                    'margin-right': '0',
+                    'width': `calc(100% - ${sidebarWidth})`,
+                    'height': '100vh',
+                    'margin-top': '0'
+                }).removeClass('with-ai-sidebar');
+            }
+            
+            // Ensure all text is visible
+            $('.tab-text, .mode-text, .button-text, .label-text').css('display', 'inline');
+        }
+        
+        // Update labels based on new view
+        if (map) {
+            updateLabelsBasedOnZoom();
+        }
+        
+        console.log(`📱 ${isMobile ? 'Mobile' : 'Desktop'} mode (${width}px), AI Sidebar: ${aiSidebarOpen ? 'Open' : 'Closed'}`);
+    }
+    // Voice Processing Functions
+let voiceProcessor = null;
+let isVoiceListening = false;
+
+function initializeVoiceProcessing() {
+    console.log("🎤 Initializing voice processing...");
+    
+    // Check browser support
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        console.log('⚠ Voice recognition not supported in this browser');
+        return false;
+    }
+    
+    // Initialize speech recognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    voiceProcessor = new SpeechRecognition();
+    voiceProcessor.continuous = false;
+    voiceProcessor.interimResults = false;
+    voiceProcessor.lang = 'en-US';
+    
+    voiceProcessor.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        console.log('🗣 Voice recognized:', transcript);
+        
+        // Process the voice command
+        processVoiceCommand(transcript);
+        
+        // Update UI
+        $('#aiVoiceBtn').removeClass('listening');
+        isVoiceListening = false;
+    };
+    
+    voiceProcessor.onerror = function(event) {
+        console.error('Voice recognition error:', event.error);
+        showMessage('Voice recognition error: ' + event.error, 'warning');
+        $('#aiVoiceBtn').removeClass('listening');
+        isVoiceListening = false;
+    };
+    
+    voiceProcessor.onend = function() {
+        if (isVoiceListening) {
+            // Restart listening if still in listening mode
+            setTimeout(startVoiceListening, 100);
+        }
+    };
+    
+    return true;
+}
+
+function toggleVoiceInput() {
+    if (!voiceProcessor && !initializeVoiceProcessing()) {
+        showMessage('Voice input not supported in your browser', 'warning');
+        return;
+    }
+    
+    if (isVoiceListening) {
+        stopVoiceListening();
+    } else {
+        startVoiceListening();
+    }
+}
+
+function startVoiceListening() {
+    try {
+        voiceProcessor.start();
+        isVoiceListening = true;
+        $('#aiVoiceBtn').addClass('listening');
+        showMessage('Listening... Speak now', 'info');
+        
+        // Update AI input field
+        $('#aiInput').attr('placeholder', 'Listening... Speak now');
+    } catch (error) {
+        console.error('Error starting voice recognition:', error);
+        showMessage('Error starting voice recognition', 'error');
+    }
+}
+
+function stopVoiceListening() {
+    isVoiceListening = false;
+    $('#aiVoiceBtn').removeClass('listening');
+    $('#aiInput').attr('placeholder', 'Ask Starlife AI about campus...');
+    
+    if (voiceProcessor) {
+        try {
+            voiceProcessor.stop();
+        } catch (error) {
+            console.error('Error stopping voice recognition:', error);
+        }
+    }
+}
+
+async function processVoiceCommand(transcript) {
+    // Update AI input
+    $('#aiInput').val(transcript);
+    
+    // Show processing indicator
+    showMessage('Processing voice command...', 'info');
+    
+    try {
+        // Send to advanced AI endpoint
+        const response = await fetch('/api/ai/advanced_query', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                query: transcript,
+                is_voice: true,
+                language: 'auto'
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Add to chat
+            addAIMessage('user', transcript);
+            addAIMessage('bot', data.response, data);
+            
+            // If building found, show navigation option
+            if (data.building_details) {
+                setTimeout(() => {
+                    addAINavigationOption(data.building_details);
+                }, 300);
+            }
+            
+            // Handle context-specific actions
+            if (data.context) {
+                handleVoiceContext(data.context);
+            }
+        } else {
+            addAIMessage('bot', data.error || 'Sorry, I could not process your voice command.', data);
+        }
+    } catch (error) {
+        console.error('Error processing voice command:', error);
+        addAIMessage('bot', 'Error processing voice command. Please try again.', {});
+    }
+}
+
+function handleVoiceContext(context) {
+    // Handle accessibility requests
+    if (context.accessible || context.avoid_stairs) {
+        showMessage('Using accessible route (avoiding stairs)', 'info');
+        // You could update route calculation here
+    }
+    
+    // Handle urgency
+    if (context.urgency) {
+        showMessage('Finding fastest route (urgent)', 'info');
+    }
+    
+    // Handle mode preference
+    if (context.mode && context.mode !== currentMode) {
+        showMessage(`Switching to ${context.mode} mode`, 'info');
+        // Update mode in UI
+        $(`.mode-btn[data-mode="${context.mode}"]`).click();
+    }
+}
+
+// Multilingual support
+function setLanguage(language) {
+    console.log(`🌐 Setting language to: ${language}`);
+    
+    // Update voice recognition language
+    if (voiceProcessor) {
+        voiceProcessor.lang = language === 'sw' ? 'sw-KE' : 'en-US';
+    }
+    
+    // Update AI placeholder
+    const placeholder = language === 'sw' 
+        ? 'Uliza Starlife AI kuhusu chuo...' 
+        : 'Ask Starlife AI about campus...';
+    $('#aiInput').attr('placeholder', placeholder);
+    
+    // Show confirmation
+    const langName = language === 'sw' ? 'Swahili' : 'English';
+    showMessage(`Language set to ${langName}`, 'success');
+}
+
+// Initialize on page load
+$(document).ready(function() {
+    // Initialize voice processing
+    initializeVoiceProcessing();
+    
+    // Add language switcher to AI sidebar
+    $('#ai-sidebar .ai-sidebar-header').append(`
+        <div style="display: flex; gap: 5px; margin-top: 10px;">
+            <button onclick="setLanguage('en')" style="padding: 5px 10px; background: #3498db; color: white; border: none; border-radius: 3px; font-size: 12px; cursor: pointer;">
+                🇬🇧 English
+            </button>
+            <button onclick="setLanguage('sw')" style="padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 3px; font-size: 12px; cursor: pointer;">
+                🇹🇿 Swahili
+            </button>
+        </div>
+    `);
+    
+    // Add voice command examples
+    $('#aiChatMessages .ai-examples').append(`
+        <button class="ai-example" onclick="processVoiceCommand('Where is the library?')">
+            <i class="fas fa-microphone"></i> "Where is the library?" (Voice)
+        </button>
+        <button class="ai-example" onclick="processVoiceCommand('Iko wapi maktaba?')">
+            <i class="fas fa-microphone"></i> "Iko wapi maktaba?" (Sauti)
+        </button>
+    `);
+});
+    
+    function toggleSidebar() {
+        if (!isMobile) return;
+        
+        sidebarOpen = !sidebarOpen;
+        const sidebar = $('#sidebar');
+        const backdrop = $('#sidebarBackdrop');
+        
+        if (sidebarOpen) {
+            sidebar.css('transform', 'translateX(0)');
+            backdrop.addClass('active');
+            $('body').css('overflow', 'hidden');
+        } else {
+            sidebar.css('transform', 'translateX(-100%)');
+            backdrop.removeClass('active');
+            $('body').css('overflow', '');
+        }
+    }
+    
+    function toggleAISidebar() {
+        if (isMobile) {
+            // On mobile, toggle like regular sidebar
+            aiSidebarOpen = !aiSidebarOpen;
+            const aiSidebar = $('#ai-sidebar');
+            const backdrop = $('#sidebarBackdrop');
+            
+            if (aiSidebarOpen) {
+                aiSidebar.css('transform', 'translateX(0)');
+                backdrop.addClass('active');
+                $('body').css('overflow', 'hidden');
+            } else {
+                aiSidebar.css('transform', 'translateX(100%)');
+                backdrop.removeClass('active');
+                $('body').css('overflow', '');
+            }
+        } else {
+            // On desktop, toggle sidebar and adjust map
+            aiSidebarOpen = !aiSidebarOpen;
+            const aiSidebar = $('#ai-sidebar');
+            const map = $('#map');
+            
+            if (aiSidebarOpen) {
+                aiSidebar.css('transform', 'translateX(0)');
+                map.addClass('with-ai-sidebar');
+                // Focus on input
+                setTimeout(() => $('#aiInput').focus(), 300);
+            } else {
+                aiSidebar.css('transform', 'translateX(100%)');
+                map.removeClass('with-ai-sidebar');
+            }
+            
+            // Update toggle button
+            $('#toggleAI').toggleClass('active', aiSidebarOpen);
+            $('#mobileAI').toggleClass('active', aiSidebarOpen);
+        }
+        
+        console.log(`🤖 AI Sidebar ${aiSidebarOpen ? 'opened' : 'closed'}`);
+    }
+    
+    function closeSidebar() {
+        if (isMobile && sidebarOpen) {
+            sidebarOpen = false;
+            $('#sidebar').css('transform', 'translateX(-100%)');
+            $('#sidebarBackdrop').removeClass('active');
+            $('body').css('overflow', '');
+        }
+        
+        if (isMobile && aiSidebarOpen) {
+            aiSidebarOpen = false;
+            $('#ai-sidebar').css('transform', 'translateX(100%)');
+            $('#sidebarBackdrop').removeClass('active');
+            $('body').css('overflow', '');
+        }
+    }
+    
+    // ============================================
+    // STARLIFE AI FUNCTIONS
+    // ============================================
+    
+    function handleAIKeyPress(event) {
+        if (event.key === 'Enter') {
+            aiSendMessage();
+        }
+    }
+    
+    function aiSendMessage(predefinedMessage = null) {
+        const message = predefinedMessage || $('#aiInput').val().trim();
+        
+        if (!message) return;
+        
+        // Add user message
+        addAIMessage('user', message);
+        
+        // Clear input
+        if (!predefinedMessage) {
+            $('#aiInput').val('');
+        }
+        
+        // Show typing indicator
+        showAITyping();
+        
+        // Send to AI backend
+        fetch('/api/ai/query', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ query: message })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Remove typing indicator
+            removeAITyping();
+            
+            if (data.success) {
+                // Add bot response
+                addAIMessage('bot', data.response, data);
+                
+                // If building found, show navigation option
+                if (data.building_details) {
+                    setTimeout(() => {
+                        addAINavigationOption(data.building_details);
+                    }, 300);
+                }
+            } else {
+                addAIMessage('bot', data.error || 'Sorry, I encountered an error.', data);
+            }
+        })
+        .catch(error => {
+            removeAITyping();
+            addAIMessage('bot', 'Network error. Please try again.', {});
+            console.error('AI chat error:', error);
+        });
+    }
+    
+    function addAIMessage(sender, content, data = null) {
+        const container = $('#aiChatMessages');
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        const messageDiv = $(`
+            <div class="ai-message ${sender}">
+                <div class="ai-message-content">
+                    ${content}
+                    <div class="ai-message-time">${time}</div>
+        `);
+        
+        // Add confidence indicators
+        if (sender === 'bot' && data) {
+            if (data.intent_confidence && data.intent_confidence > 0) {
+                messageDiv.find('.ai-message-content').append(`
+                    <div class="confidence-indicator">
+                        <i class="fas fa-brain"></i> AI Confidence: ${Math.round(data.intent_confidence * 100)}%
+                    </div>
+                `);
+            }
+        }
+        
+        messageDiv.find('.ai-message-content').append('</div>');
+        
+        container.append(messageDiv);
+        
+        // Scroll to bottom
+        container.scrollTop(container[0].scrollHeight);
+    }
+    
+    function addAINavigationOption(buildingDetails) {
+        const container = $('#aiChatMessages');
+        
+        // Find building config
+        const building = buildings.find(b => b.id == buildingDetails.id);
+        const config = building ? ICON_CONFIG[building.type] : ICON_CONFIG.default;
+        
+        const navDiv = $(`
+            <div class="ai-message bot">
+                <div class="ai-building-result" onclick="navigateToAIBuilding(${buildingDetails.id})">
+                    <div class="ai-building-icon">
+                        <i class="fas fa-${config.icon}"></i>
+                    </div>
+                    <div class="ai-building-info">
+                        <div class="ai-building-name">${buildingDetails.name}</div>
+                        <div class="ai-building-type">${buildingDetails.type_name}</div>
+                    </div>
+                    <button class="ai-navigate-btn" onclick="event.stopPropagation(); navigateToAIBuilding(${buildingDetails.id})">
+                        <i class="fas fa-route"></i> Navigate
+                    </button>
+                </div>
+            </div>
+        `);
+        
+        container.append(navDiv);
+        container.scrollTop(container[0].scrollHeight);
+    }
+    
+    function navigateToAIBuilding(buildingId) {
+        // Find the building
+        const building = buildings.find(b => b.id == buildingId);
+        if (building) {
+            // Center map on building
+            map.setView([building.latitude, building.longitude], isMobile ? 18 : 19);
+            
+            // Open building popup
+            const marker = markers.find(m => m.buildingId === buildingId);
+            if (marker) {
+                marker.openPopup();
+            }
+            
+            // Auto-select as destination in route tab
+            selectAsEnd(buildingId);
+            
+            // Switch to route tab
+            switchTab('route');
+            
+            // Close AI sidebar on mobile
+            if (isMobile) {
+                closeSidebar();
+            }
+            
+            showMessage(`Starlife AI suggested: ${building.name}`, 'success');
+        }
+    }
+    
+    function showAITyping() {
+        const container = $('#aiChatMessages');
+        const typingDiv = $(`
+            <div class="ai-message bot" id="aiTypingIndicator">
+                <div class="ai-message-content">
+                    <div class="ai-typing-indicator">
+                        <div class="ai-typing-dot"></div>
+                        <div class="ai-typing-dot"></div>
+                        <div class="ai-typing-dot"></div>
+                    </div>
+                </div>
+            </div>
+        `);
+        
+        container.append(typingDiv);
+        container.scrollTop(container[0].scrollHeight);
+    }
+    
+    function removeAITyping() {
+        $('#aiTypingIndicator').remove();
+    }
+    
+    function toggleAIVoiceInput() {
+        if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+            showMessage('Voice input not supported in your browser', 'warning');
+            return;
+        }
+        
+        if (!aiRecognition) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            aiRecognition = new SpeechRecognition();
+            aiRecognition.continuous = false;
+            aiRecognition.interimResults = false;
+            aiRecognition.lang = 'en-US';
+            
+            aiRecognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                $('#aiInput').val(transcript);
+                aiSendMessage();
+            };
+            
+            aiRecognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+                showMessage('Voice recognition error', 'warning');
+                stopAIVoiceInput();
+            };
+        }
+        
+        if ($('#aiVoiceBtn').hasClass('listening')) {
+            stopAIVoiceInput();
+        } else {
+            startAIVoiceInput();
+        }
+    }
+    
+    function startAIVoiceInput() {
+        try {
+            aiRecognition.start();
+            $('#aiVoiceBtn').addClass('listening');
+            showMessage('Starlife AI is listening... Speak now', 'info');
+        } catch (error) {
+            console.error('Error starting speech recognition:', error);
+        }
+    }
+    
+    function stopAIVoiceInput() {
+        $('#aiVoiceBtn').removeClass('listening');
+    }
+    
+    // ============================================
+    // SOCKET.IO REAL-TIME COMMUNICATION
+    // ============================================
+    
+    function initializeSocket() {
+        console.log('📡 Initializing Socket.IO connection...');
+        
+        // Connect to Socket.IO server
+        socket = io();
+        
+        // Connection event handlers
+        socket.on('connect', function() {
+            console.log('✅ Connected to real-time tracking server');
+            showMessage('Real-time tracking connected', 'success');
+        });
+        
+        socket.on('disconnect', function() {
+            console.log('⚠ Disconnected from tracking server');
+            showMessage('Disconnected from tracking server', 'warning');
+        });
+        
+        socket.on('connected', function(data) {
+            console.log('🔌 Socket connected:', data.message);
+        });
+        
+        socket.on('error', function(data) {
+            console.error('Socket error:', data.message);
+            showMessage('Tracking error: ' + data.message, 'error');
+        });
+        
+        // Tracker events
+        socket.on('tracker_created', function(data) {
+            console.log('✅ Tracker created:', data.tracker_id);
+            currentTrackerId = data.tracker_id;
+            isTracking = true;
+            
+            // Update UI
+            $('#myTracker').show();
+            $('#myTrackerName').text(trackerName);
+            $('#myTrackerColor').css('background', data.tracker_data.color);
+            $('#trackingStatus').show();
+            
+            updateTrackingInfo(data.tracker_data);
+            showMessage('Tracking started! Share your tracker ID: ' + data.tracker_id, 'success');
+            
+            // Start position updates
+            startPositionTracking();
+        });
+        
+        socket.on('tracker_joined', function(data) {
+            console.log('✅ Joined tracker:', data.tracker_id);
+            updateTrackerOnMap(data.tracker_data);
+            showMessage('Joined tracker: ' + data.tracker_data.name, 'success');
+        });
+        
+        socket.on('tracker_update', function(data) {
+            updateTrackerOnMap(data.tracker_data);
+        });
+        
+        socket.on('tracker_location_update', function(data) {
+            updateTrackerPosition(data);
+        });
+        
+        socket.on('active_trackers', function(data) {
+            updateTrackersList(data.trackers);
+        });
+        
+        socket.on('tracker_left', function(data) {
+            console.log('👋 Left tracker');
+            showMessage('Left tracker', 'info');
+        });
+        
+        socket.on('tracker_status', function(data) {
+            updateTrackerStatus(data.tracker_id, data.online);
+        });
+        
+        // Request active trackers
+        socket.emit('get_active_trackers');
+    }
+    
+    // ============================================
+    // MAP INITIALIZATION
+    // ============================================
+    
+    function initializeMap() {
+        console.log('🗺️ Initializing responsive map...');
+        
+        const initialZoom = isMobile ? 16 : 17;
+        
+        // Create map with responsive settings
+        map = L.map('map', {
+            center: CAMPUS_CENTER,
+            zoom: initialZoom,
+            zoomControl: false,
+            tap: isMobile,
+            touchZoom: isMobile,
+            scrollWheelZoom: !isMobile,
+            dragging: true,
+            tapTolerance: isMobile ? 15 : 10
+        });
+        
+        // Add default tile layer
+        const defaultTile = Object.values(MAP_TILES).find(tile => tile.default);
+        currentTileLayer = L.tileLayer(defaultTile.url, {
+            attribution: defaultTile.attribution,
+            maxZoom: isMobile ? 19 : 20,
+            minZoom: 15,
+            detectRetina: true
+        }).addTo(map);
+        
+        // Add zoom control
+        L.control.zoom({
+            position: isMobile ? 'bottomright' : 'topright'
+        }).addTo(map);
+        
+        // Add scale control
+        L.control.scale({
+            position: 'bottomleft',
+            imperial: false,
+            maxWidth: isMobile ? 100 : 200
+        }).addTo(map);
+        
+        console.log('✅ Responsive map initialized');
+    }
+    
+    function addMapControls() {
+        // Add fullscreen control
+        L.control.fullscreen({
+            position: 'topright',
+            title: {
+                'false': 'View Fullscreen',
+                'true': 'Exit Fullscreen'
+            }
+        }).addTo(map);
+        
+        // Initialize tile layers
+        initializeTileLayers();
+    }
+    
+    function initializeTileLayers() {
+        Object.keys(MAP_TILES).forEach(key => {
+            const tileConfig = MAP_TILES[key];
+            tileLayers[key] = L.tileLayer(tileConfig.url, {
+                attribution: tileConfig.attribution,
+                maxZoom: isMobile ? 19 : 20,
+                minZoom: 15,
+                detectRetina: true
+            });
+        });
+    }
+    
+    function switchTileLayer(tileKey) {
+        if (!tileLayers[tileKey]) return;
+        
+        // Remove current layer
+        if (currentTileLayer && map.hasLayer(currentTileLayer)) {
+            map.removeLayer(currentTileLayer);
+        }
+        
+        // Add new layer
+        currentTileLayer = tileLayers[tileKey];
+        currentTileLayer.addTo(map);
+        
+        // Update UI
+        $('.tile-layer-btn').removeClass('active');
+        $(`.tile-layer-btn[data-tile="${tileKey}"]`).addClass('active');
+        
+        console.log(`✅ Switched to: ${MAP_TILES[tileKey].name}`);
+    }
+    
+    // ============================================
+    // BUILDING MARKERS WITH RESPONSIVE LABELS
+    // ============================================
+    
+    function loadBuildingsOnMap() {
+        console.log('📍 Loading buildings with name labels...');
+        
+        // Clear existing markers
+        markers.forEach(marker => map.removeLayer(marker));
+        markers = [];
+        buildingLabels = [];
+        
+        // Create marker cluster group
+        if (clusterGroup) {
+            map.removeLayer(clusterGroup);
+        }
+        
+        clusterGroup = L.markerClusterGroup({
+            maxClusterRadius: isMobile ? 40 : 50,
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: false,
+            zoomToBoundsOnClick: true,
+            disableClusteringAtZoom: isMobile ? 18 : 17
+        });
+        
+        // Create building markers with labels
+        buildings.forEach(building => {
+            try {
+                const config = ICON_CONFIG[building.type] || ICON_CONFIG.default;
+                const labelClass = categoryToLabelClass[building.category] || 'default';
+                
+                // Create marker with container for label
+                const markerHtml = `
+                    <div class="marker-container" style="position: relative;">
+                        <!-- Building Name Label (will be shown/hidden based on zoom) -->
+                        <div class="building-name-label ${labelClass}" 
+                             style="border-left-color: ${config.color};"
+                             id="label-${building.id}">
+                            ${building.name}
+                        </div>
+                        
+                        <!-- Marker Icon -->
+                        <div class="marker-icon-container" style="position: relative;">
+                            <div class="building-pulse" style="
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                width: ${isMobile ? '50px' : '60px'};
+                                height: ${isMobile ? '50px' : '60px'};
+                                border-radius: 50%;
+                                background: ${config.color}20;
+                                animation: pulse 2s infinite;
+                            "></div>
+                            <div class="building-icon" style="
+                                background: white;
+                                border: 3px solid ${config.color};
+                                border-radius: 50%;
+                                width: ${isMobile ? '40px' : '45px'};
+                                height: ${isMobile ? '40px' : '45px'};
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                box-shadow: 0 3px 15px rgba(0,0,0,0.3);
+                                cursor: pointer;
+                                transition: all 0.3s;
+                                position: relative;
+                                z-index: 2;
+                            ">
+                                <i class="fas fa-${config.icon}" style="color:${config.color}; font-size: ${isMobile ? '18px' : '20px'};"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                const icon = L.divIcon({
+                    html: markerHtml,
+                    className: 'building-marker',
+                    iconSize: isMobile ? [40, 40] : [45, 45],
+                    iconAnchor: isMobile ? [20, 40] : [22.5, 45]
+                });
+                
+                // Create marker
+                const marker = L.marker([building.latitude, building.longitude], { 
+                    icon: icon,
+                    title: building.name,
+                    riseOnHover: true
+                });
+                
+                // Enhanced popup
+                const popupContent = `
+                    <div style="padding: 15px; min-width: ${isMobile ? '250px' : '300px'};">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                            <div style="
+                                width: 50px;
+                                height: 50px;
+                                border-radius: 50%;
+                                background: ${config.color}20;
+                                color: ${config.color};
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 22px;
+                            ">
+                                <i class="fas fa-${config.icon}"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin: 0 0 5px 0; font-size: 16px;">${building.name}</h4>
+                                <div style="font-size: 13px; color: #666;">
+                                    <i class="fas fa-${config.icon}"></i> ${building.type_name}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p style="margin: 0 0 15px 0; color: #666; font-size: 14px;">
+                            ${building.description.substring(0, 120)}...
+                        </p>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <button onclick="selectAsStart(${building.id}); $(this).closest('.leaflet-popup').remove();" 
+                                    style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 13px;">
+                                <i class="fas fa-play"></i> Start
+                            </button>
+                            <button onclick="selectAsEnd(${building.id}); $(this).closest('.leaflet-popup').remove();" 
+                                    style="padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 13px;">
+                                <i class="fas fa-flag"></i> End
+                            </button>
+                        </div>
+                        
+                        <button onclick="showBuildingDetails(${building.id}); $(this).closest('.leaflet-popup').remove();" 
+                                style="padding: 10px; background: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 10px;">
+                            <i class="fas fa-info-circle"></i> More Details
+                        </button>
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent, {
+                    maxWidth: isMobile ? 300 : 350,
+                    minWidth: isMobile ? 250 : 300
+                });
+                
+                // Hover effects
+                marker.on('mouseover', function(e) {
+                    const markerEl = this.getElement();
+                    if (markerEl) {
+                        const iconDiv = markerEl.querySelector('.building-icon');
+                        if (iconDiv) {
+                            iconDiv.style.transform = 'scale(1.2)';
+                            iconDiv.style.boxShadow = `0 5px 20px ${config.color}80`;
+                        }
+                        
+                        // Show label on hover (if zoom level is appropriate)
+                        if (map.getZoom() >= (isMobile ? 17 : 16)) {
+                            const label = markerEl.querySelector('.building-name-label');
+                            if (label) {
+                                label.classList.add('show');
+                            }
+                        }
+                    }
+                });
+                
+                marker.on('mouseout', function() {
+                    const markerEl = this.getElement();
+                    if (markerEl) {
+                        const iconDiv = markerEl.querySelector('.building-icon');
+                        if (iconDiv) {
+                            iconDiv.style.transform = 'scale(1)';
+                            iconDiv.style.boxShadow = '0 3px 15px rgba(0,0,0,0.3)';
+                        }
+                        
+                        // Hide label on mouseout (unless zoom level shows it)
+                        if (map.getZoom() < (isMobile ? 17 : 17)) {
+                            const label = markerEl.querySelector('.building-name-label');
+                            if (label) {
+                                label.classList.remove('show');
+                            }
+                        }
+                    }
+                });
+                
+                marker.buildingId = building.id;
+                marker.buildingData = building;
+                
+                // Store the label element reference
+                marker.labelElement = null;
+                
+                // Add to cluster group
+                clusterGroup.addLayer(marker);
+                markers.push(marker);
+                
+            } catch (error) {
+                console.error('Error creating marker:', error);
+            }
+        });
+        
+        // Add cluster group to map
+        map.addLayer(clusterGroup);
+        
+        // Setup zoom change listener for labels
+        map.on('zoomend', updateLabelsBasedOnZoom);
+        map.on('moveend', updateLabelPositions);
+        
+        // Initial label update
+        updateLabelsBasedOnZoom();
+        
+        console.log(`✅ Loaded ${markers.length} buildings with name labels`);
+        
+        // Update building list
+        updateBuildingList(buildings);
+    }
+    
+    function updateLabelsBasedOnZoom() {
+        const zoom = map.getZoom();
+        const showLabels = zoom >= (isMobile ? 17 : 17) && labelsVisible;
+        
+        // Update zoom indicator
+        if ($('#zoomValue').length) {
+            $('#zoomValue').text(zoom);
+            $('#labelStatus').text(labelsVisible ? 'On' : 'Off');
+        }
+        
+        // Update all markers' labels
+        markers.forEach(marker => {
+            const markerEl = marker.getElement();
+            if (markerEl) {
+                const label = markerEl.querySelector('.building-name-label');
+                if (label) {
+                    if (showLabels) {
+                        label.classList.add('show');
+                    } else {
+                        label.classList.remove('show');
+                    }
+                }
+            }
+        });
+        
+        // Update toggle button text
+        if ($('#toggleLabels').length) {
+            $('#toggleLabels').html(labelsVisible ? 
+                '<i class="fas fa-tag-slash"></i> <span class="button-text">Hide Labels</span>' : 
+                '<i class="fas fa-tag"></i> <span class="button-text">Show Labels</span>');
+        }
+        
+        // Show/hide zoom indicator
+        if (zoomIndicatorVisible && $('#zoomLevel').length) {
+            $('#zoomLevel').show();
+        }
+    }
+    
+    function updateLabelPositions() {
+        // Labels are attached to markers, so they move automatically
+    }
+    
+    function toggleLabels() {
+        labelsVisible = !labelsVisible;
+        updateLabelsBasedOnZoom();
+        
+        const message = labelsVisible ? 'Building labels shown' : 'Building labels hidden';
+        showMessage(message, 'info');
+    }
+    
+    // ============================================
+    // REAL-TIME TRACKING FUNCTIONS
+    // ============================================
+    
+    function startTracking() {
+        if (!socket || !socket.connected) {
+            showMessage('Not connected to tracking server', 'error');
+            return;
+        }
+        
+        if (isTracking) {
+            showMessage('Already tracking your location', 'info');
+            return;
+        }
+        
+        // Get user info
+        trackerName = $('#trackerName').val() || 'Anonymous';
+        trackMode = $('.mode-btn.active').data('track-mode') || 'walking';
+        
+        // Request location permission and start tracking
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    
+                    // Create tracker
+                    socket.emit('create_tracker', {
+                        user_id: 'user_' + Math.random().toString(36).substr(2, 9),
+                        name: trackerName,
+                        latitude: latitude,
+                        longitude: longitude,
+                        mode: trackMode,
+                        speed: position.coords.speed || 0,
+                        accuracy: position.coords.accuracy || 0
+                    });
+                    
+                    // Center map on user
+                    map.setView([latitude, longitude], isMobile ? 17 : 18);
+                    
+                    // Switch to tracking tab
+                    switchTab('tracking');
+                    
+                    // Close sidebar on mobile
+                    if (isMobile) {
+                        closeSidebar();
+                    }
+                },
+                function(error) {
+                    showMessage('Unable to get location: ' + error.message, 'error');
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
+        } else {
+            showMessage('Geolocation not supported by your browser', 'error');
+        }
+    }
+    
+    function stopTracking() {
+        if (!isTracking || !currentTrackerId) return;
+        
+        // Stop position updates
+        if (watchPositionId !== null && navigator.geolocation.clearWatch) {
+            navigator.geolocation.clearWatch(watchPositionId);
+            watchPositionId = null;
+        }
+        
+        if (trackingInterval) {
+            clearInterval(trackingInterval);
+            trackingInterval = null;
+        }
+        
+        // Leave tracker
+        socket.emit('leave_tracker', { tracker_id: currentTrackerId });
+        
+        // Remove tracker from map
+        removeTrackerFromMap(currentTrackerId);
+        
+        // Reset tracking state
+        isTracking = false;
+        currentTrackerId = null;
+        
+        // Update UI
+        $('#myTracker').hide();
+        $('#trackingStatus').hide();
+        
+        showMessage('Tracking stopped', 'info');
+    }
+    
+    function startPositionTracking() {
+        if (!navigator.geolocation) return;
+        
+        // Update position every 5 seconds
+        watchPositionId = navigator.geolocation.watchPosition(
+            function(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                
+                // Update tracker
+                socket.emit('update_location', {
+                    tracker_id: currentTrackerId,
+                    latitude: latitude,
+                    longitude: longitude,
+                    speed: position.coords.speed || 0,
+                    accuracy: position.coords.accuracy || 0,
+                    heading: position.coords.heading,
+                    altitude: position.coords.altitude,
+                    mode: trackMode
+                });
+                
+                // Update local display
+                $('#myTrackerLocation').text(`${latitude.toFixed(6)}, ${longitude.toFixed(6)}`);
+                
+                // Update tracking info
+                updateTrackingInfo({
+                    latitude: latitude,
+                    longitude: longitude,
+                    speed: position.coords.speed || 0,
+                    accuracy: position.coords.accuracy || 0,
+                    timestamp: Date.now()
+                });
+                
+                // Center map on user occasionally
+                if (Math.random() < 0.1) { // 10% chance to re-center
+                    map.setView([latitude, longitude], map.getZoom());
+                }
+            },
+            function(error) {
+                console.error('Geolocation error:', error);
+                showMessage('Location error: ' + error.message, 'warning');
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+        );
+        
+        // Also update via interval for backup
+        trackingInterval = setInterval(function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        socket.emit('update_location', {
+                            tracker_id: currentTrackerId,
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                            speed: position.coords.speed || 0,
+                            accuracy: position.coords.accuracy || 0
+                        });
+                    },
+                    function(error) {
+                        console.error('Interval geolocation error:', error);
+                    },
+                    {
+                        enableHighAccuracy: false,
+                        timeout: 5000,
+                        maximumAge: 30000
+                    }
+                );
+            }
+        }, 15000); // Every 15 seconds as backup
+    }
+    
+    function joinTracker(trackerId) {
+        if (!socket || !socket.connected) {
+            showMessage('Not connected to tracking server', 'error');
+            return;
+        }
+        
+        socket.emit('join_tracker', {
+            tracker_id: trackerId,
+            user_id: 'viewer_' + Math.random().toString(36).substr(2, 9)
+        });
+        
+        showMessage('Joining tracker...', 'info');
+    }
+    
+    function updateTrackerOnMap(trackerData) {
+        const trackerId = trackerData.tracker_id || Object.keys(trackerData)[0];
+        const data = trackerData.tracker_data || trackerData;
+        
+        if (!data || !data.latitude || !data.longitude) return;
+        
+        // Remove existing marker if it exists
+        if (trackMarkers[trackerId]) {
+            map.removeLayer(trackMarkers[trackerId]);
+        }
+        
+        // Create or update marker
+        const iconSize = isMobile ? 35 : 40;
+        const iconHtml = `
+            <div style="
+                background: ${data.color || '#007bff'};
+                border: 3px solid white;
+                border-radius: 50%;
+                width: ${iconSize}px;
+                height: ${iconSize}px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 3px 15px rgba(0,0,0,0.3);
+                position: relative;
+                cursor: pointer;
+            ">
+                <i class="fas fa-${data.icon || 'user'}" style="color: white; font-size: ${isMobile ? '16px' : '18px'};"></i>
+                ${data.online === false ? `
+                    <div style="position: absolute; top: -5px; right: -5px; width: 12px; height: 12px; background: #6c757d; border: 2px solid white; border-radius: 50%;"></div>
+                ` : ''}
+            </div>
+        `;
+        
+        const icon = L.divIcon({
+            html: iconHtml,
+            className: 'tracker-marker',
+            iconSize: [iconSize, iconSize],
+            iconAnchor: [iconSize/2, iconSize]
+        });
+        
+        const marker = L.marker([data.latitude, data.longitude], { 
+            icon: icon,
+            title: data.name || 'Tracker'
+        });
+        
+        // Add popup
+        const popupContent = `
+            <div style="padding: 15px; min-width: 200px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <div style="
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        background: ${data.color || '#007bff'};
+                        color: white;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 18px;
+                    ">
+                        <i class="fas fa-${data.icon || 'user'}"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin: 0 0 3px 0; font-size: 16px;">${data.name || 'Tracker'}</h4>
+                        <div style="font-size: 12px; color: #666;">
+                            <span class="tracker-status ${data.online ? 'online' : 'offline'}">
+                                ${data.online ? 'Online' : 'Offline'}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                    <div>Mode: ${data.mode || 'Unknown'}</div>
+                    <div>Speed: ${data.speed ? data.speed.toFixed(1) + ' m/s' : 'N/A'}</div>
+                    <div>Updated: ${new Date(data.timestamp * 1000).toLocaleTimeString()}</div>
+                </div>
+                
+                <button onclick="centerOnTracker('${trackerId}')" 
+                        style="padding: 8px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; width: 100%; font-size: 13px;">
+                    <i class="fas fa-crosshairs"></i> Center on Tracker
+                </button>
+            </div>
+        `;
+        
+        marker.bindPopup(popupContent);
+        marker.addTo(map);
+        
+        // Store marker
+        trackMarkers[trackerId] = marker;
+        
+        // Update tracker path
+        updateTrackerPath(trackerId, data);
+    }
+    
+    function updateTrackerPosition(data) {
+        const trackerId = data.tracker_id;
+        if (!trackMarkers[trackerId]) return;
+        
+        // Update marker position
+        const marker = trackMarkers[trackerId];
+        marker.setLatLng([data.latitude, data.longitude]);
+        
+        // Update tracker path
+        updateTrackerPath(trackerId, data);
+    }
+    
+    function updateTrackerPath(trackerId, data) {
+        if (!trackerLines[trackerId]) {
+            // Create new path
+            trackerLines[trackerId] = L.polyline([], {
+                color: data.color || '#007bff',
+                weight: 3,
+                opacity: 0.7,
+                dashArray: '5, 10'
+            }).addTo(map);
+        }
+        
+        // Add point to path
+        const path = trackerLines[trackerId];
+        const latlngs = path.getLatLngs();
+        latlngs.push([data.latitude, data.longitude]);
+        
+        // Keep only last 100 points
+        if (latlngs.length > 100) {
+            latlngs.shift();
+        }
+        
+        path.setLatLngs(latlngs);
+    }
+    
+    function removeTrackerFromMap(trackerId) {
+        if (trackMarkers[trackerId]) {
+            map.removeLayer(trackMarkers[trackerId]);
+            delete trackMarkers[trackerId];
+        }
+        
+        if (trackerLines[trackerId]) {
+            map.removeLayer(trackerLines[trackerId]);
+            delete trackerLines[trackerId];
+        }
+    }
+    
+    function updateTrackerStatus(trackerId, online) {
+        if (trackMarkers[trackerId]) {
+            const marker = trackMarkers[trackerId];
+            // You could update the marker appearance here
+        }
+        
+        // Update tracker list
+        $(`.tracker-item[data-id="${trackerId}"]`).toggleClass('online', online).toggleClass('offline', !online);
+        $(`.tracker-item[data-id="${trackerId}"] .tracker-status`)
+            .toggleClass('online', online)
+            .toggleClass('offline', !online)
+            .text(online ? 'Online' : 'Offline');
+    }
+    
+    function updateTrackersList(trackers) {
+        const container = $('#trackersList');
+        container.empty();
+        
+        if (!trackers || Object.keys(trackers).length === 0) {
+            container.html(`
+                <div style="text-align: center; color: #6c757d; padding: 20px;">
+                    <i class="fas fa-satellite" style="font-size: 24px; margin-bottom: 10px;"></i>
+                    <div>No active trackers</div>
+                </div>
+            `);
+            return;
+        }
+        
+        Object.entries(trackers).forEach(([trackerId, trackerData]) => {
+            const isOnline = trackerData.online !== false;
+            const timeAgo = Math.floor((Date.now()/1000 - trackerData.timestamp) / 60);
+            
+            const item = $(`
+                <div class="tracker-item ${isOnline ? 'online' : 'offline'}" data-id="${trackerId}" onclick="centerOnTracker('${trackerId}')">
+                    <div class="tracker-info">
+                        <span class="tracker-color" style="background: ${trackerData.color};"></span>
+                        <span style="font-weight: 500;">${trackerData.name}</span>
+                        <span class="tracker-status ${isOnline ? 'online' : 'offline'}">
+                            ${isOnline ? 'Online' : 'Offline'}
+                        </span>
+                    </div>
+                    <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                        <div>Mode: ${trackerData.mode || 'Unknown'}</div>
+                        <div>Updated: ${timeAgo < 1 ? 'Just now' : timeAgo + ' min ago'}</div>
+                    </div>
+                    <div class="tracker-controls">
+                        <button class="tracker-btn" onclick="event.stopPropagation(); joinTracker('${trackerId}')" style="background: #007bff;">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="tracker-btn" onclick="event.stopPropagation(); removeTracker('${trackerId}')" style="background: #6c757d;">
+                            <i class="fas fa-times"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            `);
+            
+            container.append(item);
+        });
+    }
+    
+    function centerOnTracker(trackerId) {
+        const tracker = getTrackerData(trackerId);
+        if (tracker && tracker.latitude && tracker.longitude) {
+            map.setView([tracker.latitude, tracker.longitude], isMobile ? 18 : 19);
+            
+            // Open popup if marker exists
+            if (trackMarkers[trackerId]) {
+                trackMarkers[trackerId].openPopup();
+            }
+        }
+    }
+    
+    function removeTracker(trackerId) {
+        removeTrackerFromMap(trackerId);
+        
+        // Remove from list
+        $(`.tracker-item[data-id="${trackerId}"]`).remove();
+        
+        showMessage('Tracker removed from view', 'info');
+    }
+    
+    function getTrackerData(trackerId) {
+        // This would ideally come from the server
+        // For now, we'll check our local markers
+        if (trackMarkers[trackerId]) {
+            const latlng = trackMarkers[trackerId].getLatLng();
+            return {
+                latitude: latlng.lat,
+                longitude: latlng.lng
+            };
+        }
+        return null;
+    }
+    
+    function updateTrackingInfo(trackerData) {
+        const info = $('#trackingInfo');
+        const time = new Date(trackerData.timestamp * 1000).toLocaleTimeString();
+        
+        info.html(`
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                <div style="background: white; padding: 10px; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 12px; color: #6c757d;">Tracker ID</div>
+                    <div style="font-family: monospace; font-size: 12px; font-weight: 600;">${currentTrackerId}</div>
+                </div>
+                <div style="background: white; padding: 10px; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 12px; color: #6c757d;">Status</div>
+                    <div style="color: #28a745; font-weight: 600;">Active</div>
+                </div>
+            </div>
+            <div style="background: white; padding: 10px; border-radius: 8px;">
+                <div style="font-size: 12px; color: #6c757d; margin-bottom: 5px;">Current Location</div>
+                <div style="font-family: monospace; font-size: 13px;">
+                    ${trackerData.latitude.toFixed(6)}, ${trackerData.longitude.toFixed(6)}
+                </div>
+                ${trackerData.speed ? `
+                    <div style="font-size: 12px; color: #6c757d; margin-top: 5px;">Speed</div>
+                    <div>${trackerData.speed.toFixed(1)} m/s</div>
+                ` : ''}
+                <div style="font-size: 12px; color: #6c757d; margin-top: 5px;">Last Update</div>
+                <div>${time}</div>
+            </div>
+        `);
+    }
+    
+    function showTrackingPanel() {
+        $('#trackingPanel').toggle();
+        
+        // Refresh trackers list
+        if (socket && socket.connected) {
+            socket.emit('get_active_trackers');
+        }
+    }
+    
+    function shareTracker() {
+        if (!currentTrackerId) {
+            showMessage('No active tracker to share', 'warning');
+            return;
+        }
+        
+        const shareUrl = `${window.location.origin}/#tracker=${currentTrackerId}`;
+        $('#shareUrl').val(shareUrl);
+        $('#shareModal').show();
+        
+        // Generate QR code
+        const qrDiv = $('#qrCode');
+        qrDiv.empty();
+        
+        QRCode.toCanvas(shareUrl, { width: 150, margin: 1 }, function(error, canvas) {
+            if (error) {
+                console.error('QR code error:', error);
+                return;
+            }
+            qrDiv.append(canvas);
+        });
+    }
+    
+    function copyShareLink() {
+        const shareUrl = $('#shareUrl');
+        shareUrl.select();
+        document.execCommand('copy');
+        
+        showMessage('Link copied to clipboard!', 'success');
+    }
+    
+    function closeShareModal() {
+        $('#shareModal').hide();
+    }
+    
+    // ============================================
+    // ROUTING FUNCTIONS
+    // ============================================
+    
+    function selectAsStart(buildingId) {
+        selectedStart = buildingId;
+        $('#startSelect').val(buildingId);
+        switchTab('route');
+        
+        const building = buildings.find(b => b.id == buildingId);
+        if (building) {
+            map.setView([building.latitude, building.longitude], isMobile ? 18 : 19);
+            showMessage(`Start point set to: ${building.name}`, 'success');
+        }
+        
+        // Close sidebar on mobile
+        if (isMobile) {
+            closeSidebar();
+        }
+    }
+    
+    function selectAsEnd(buildingId) {
+        selectedEnd = buildingId;
+        $('#endSelect').val(buildingId);
+        switchTab('route');
+        
+        const building = buildings.find(b => b.id == buildingId);
+        if (building) {
+            map.setView([building.latitude, building.longitude], isMobile ? 18 : 19);
+            showMessage(`Destination set to: ${building.name}`, 'success');
+        }
+        
+        // Close sidebar on mobile
+        if (isMobile) {
+            closeSidebar();
+        }
+    }
+    
+    async function calculateRoute() {
+        if (!selectedStart || !selectedEnd) {
+            showMessage('Please select both start and end points', 'warning');
+            return;
+        }
+        
+        const startBuilding = buildings.find(b => b.id == selectedStart);
+        const endBuilding = buildings.find(b => b.id == selectedEnd);
+        
+        if (!startBuilding || !endBuilding) {
+            showMessage('Invalid selection', 'error');
+            return;
+        }
+        
+        if (startBuilding.id === endBuilding.id) {
+            showMessage('Start and end cannot be the same', 'warning');
+            return;
+        }
+        
+        showLoading(true);
+        
+        try {
+            const response = await fetch(
+                `/route?start_lat=${startBuilding.latitude}&start_lon=${startBuilding.longitude}&end_lat=${endBuilding.latitude}&end_lon=${endBuilding.longitude}&mode=${currentMode}`
+            );
+            
+            const data = await response.json();
+            
+            if (data.success && data.path && data.path.length > 0) {
+                // Clear previous route
+                clearRoute();
+                
+                // Add markers
+                addRouteMarkers(startBuilding, endBuilding);
+                
+                // Draw route
+                drawRouteLine(data.path, data.path_type);
+                
+                // Show route info
+                showRouteInfo(data);
+                
+                // Fit bounds
+                const bounds = L.latLngBounds(data.path.map(p => [p[0], p[1]]));
+                map.fitBounds(bounds.pad(0.1));
+                
+                showMessage(`Route found: ${data.distance}m in ${data.estimated_time} minutes`, 'success');
+                
+                // Close sidebar on mobile
+                if (isMobile) {
+                    closeSidebar();
+                }
+            } else {
+                showMessage('No route found', 'error');
+            }
+        } catch (error) {
+            console.error('Routing error:', error);
+            showMessage('Error calculating route', 'error');
+        } finally {
+            showLoading(false);
+        }
+    }
+    
+    function addRouteMarkers(startBuilding, endBuilding) {
+        // Clear previous markers
+        if (startMarker) map.removeLayer(startMarker);
+        if (endMarker) map.removeLayer(endMarker);
+        
+        // Start marker
+        const startIconSize = isMobile ? 35 : 40;
+        startMarker = L.marker([startBuilding.latitude, startBuilding.longitude], {
+            icon: L.divIcon({
+                html: `
+                    <div style="background: #007bff; border: 3px solid white; border-radius: 50%; width: ${startIconSize}px; height: ${startIconSize}px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 15px rgba(0,123,255,0.4);">
+                        <i class="fas fa-play" style="color: white; font-size: ${isMobile ? '16px' : '18px'};"></i>
+                    </div>
+                `,
+                iconSize: [startIconSize, startIconSize],
+                iconAnchor: [startIconSize/2, startIconSize]
+            })
+        }).addTo(map).bindPopup(`<b>Start:</b> ${startBuilding.name}`).openPopup();
+        
+        // End marker
+        const endIconSize = isMobile ? 35 : 40;
+        endMarker = L.marker([endBuilding.latitude, endBuilding.longitude], {
+            icon: L.divIcon({
+                html: `
+                    <div style="background: #28a745; border: 3px solid white; border-radius: 50%; width: ${endIconSize}px; height: ${endIconSize}px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 15px rgba(40,167,69,0.4);">
+                        <i class="fas fa-flag" style="color: white; font-size: ${isMobile ? '16px' : '18px'};"></i>
+                    </div>
+                `,
+                iconSize: [endIconSize, endIconSize],
+                iconAnchor: [endIconSize/2, endIconSize]
+            })
+        }).addTo(map).bindPopup(`<b>Destination:</b> ${endBuilding.name}`);
+    }
+    
+    function drawRouteLine(path, pathType) {
+        const latLngs = path.map(p => [p[0], p[1]]);
+        const color = ROUTE_COLORS[currentMode] || ROUTE_COLORS.default;
+        
+        routeLine = L.polyline(latLngs, {
+            color: color,
+            weight: isMobile ? 6 : 8,
+            opacity: 0.9,
+            lineJoin: 'round',
+            lineCap: 'round',
+            dashArray: pathType === 'direct' ? '10, 10' : null
+        }).addTo(map);
+    }
+    
+    function showRouteInfo(data) {
+        const routeInfo = $('#routeInfo');
+        routeInfo.html(`
+            <div class="route-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e9ecef;">
+                <h4 style="margin: 0;"><i class="fas fa-directions"></i> Route Information</h4>
+                <span style="font-size: 12px; color: ${data.path_type === 'following_paths' ? '#28a745' : '#ffc107'};">
+                    ${data.path_type === 'following_paths' ? '✓ Following paths' : '⚠ Direct route'}
+                </span>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0;">
+                <div style="background: white; padding: 10px; border-radius: 8px; text-align: center; border: 2px solid #e9ecef;">
+                    <div style="font-size: ${isMobile ? '16px' : '18px'}; font-weight: bold; color: #2c3e50; margin-bottom: 3px;">${data.distance}m</div>
+                    <div style="font-size: 11px; color: #6c757d; text-transform: uppercase; letter-spacing: 1px;">Distance</div>
+                </div>
+                <div style="background: white; padding: 10px; border-radius: 8px; text-align: center; border: 2px solid #e9ecef;">
+                    <div style="font-size: ${isMobile ? '16px' : '18px'}; font-weight: bold; color: #2c3e50; margin-bottom: 3px;">${data.estimated_time}min</div>
+                    <div style="font-size: 11px; color: #6c757d; text-transform: uppercase; letter-spacing: 1px;">Time</div>
+                </div>
+                <div style="background: white; padding: 10px; border-radius: 8px; text-align: center; border: 2px solid #e9ecef;">
+                    <div style="font-size: ${isMobile ? '16px' : '18px'}; font-weight: bold; color: #2c3e50; margin-bottom: 3px;">${data.point_count}</div>
+                    <div style="font-size: 11px; color: #6c757d; text-transform: uppercase; letter-spacing: 1px;">Points</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <h5><i class="fas fa-list-ol"></i> Directions</h5>
+                <div id="directionsList" style="margin-top: 10px; max-height: ${isMobile ? '150px' : '200px'}; overflow-y: auto;">
+                    ${data.directions ? data.directions.map(dir => `
+                        <div style="padding: 10px; margin-bottom: 8px; background: #f8f9fa; border-radius: 5px; border-left: 4px solid ${getStepColor(dir.type)}; display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 25px; height: 25px; background: ${getStepColor(dir.type)}; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">${dir.step}</div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 500; font-size: ${isMobile ? '13px' : 'inherit'};">${dir.instruction}</div>
+                                ${dir.distance ? `<div style="font-size: 12px; color: #666;">${dir.distance}m</div>` : ''}
+                            </div>
+                        </div>
+                    `).join('') : '<p style="color: #666;">No directions available.</p>'}
+                </div>
+            </div>
+        `);
+        
+        routeInfo.show();
+    }
+    
+    function getStepColor(type) {
+        switch(type) {
+            case 'start': return '#007bff';
+            case 'walking': return ROUTE_COLORS.walking;
+            case 'cycling': return ROUTE_COLORS.cycling;
+            case 'driving': return ROUTE_COLORS.driving;
+            case 'arrival': return '#28a745';
+            default: return '#6c757d';
+        }
+    }
+    
+    function clearRoute() {
+        if (routeLine) {
+            map.removeLayer(routeLine);
+            routeLine = null;
+        }
+        
+        if (startMarker) {
+            map.removeLayer(startMarker);
+            startMarker = null;
+        }
+        
+        if (endMarker) {
+            map.removeLayer(endMarker);
+            endMarker = null;
+        }
+        
+        $('#routeInfo').hide();
+    }
+    
+    // ============================================
+    // UI FUNCTIONS
+    // ============================================
+    
+    function setupTabs() {
+        $('.tab-btn').click(function() {
+            const tabName = $(this).data('tab');
+            
+            $('.tab-btn').removeClass('active');
+            $(this).addClass('active');
+            
+            $('.tab-content').removeClass('active').hide();
+            $(`#${tabName}-tab`).addClass('active').show();
+            
+            if (tabName === 'search') {
+                updateBuildingList(buildings);
+                if (isMobile) {
+                    setTimeout(() => {
+                        $('#search').focus();
+                    }, 300);
+                }
+            } else if (tabName === 'tracking') {
+                // Refresh trackers when switching to tracking tab
+                if (socket && socket.connected) {
+                    socket.emit('get_active_trackers');
+                }
+            }
+        });
+    }
+    
+    function updateBuildingList(buildingsToShow) {
+        const container = $('#buildingList');
+        container.empty();
+        
+        if (buildingsToShow.length === 0) {
+            container.html(`
+                <div style="text-align: center; color: #6c757d; padding: 30px;">
+                    <i class="fas fa-search" style="font-size: 24px; margin-bottom: 10px;"></i>
+                    <div>No buildings found</div>
+                </div>
+            `);
+            return;
+        }
+        
+        buildingsToShow.forEach(building => {
+            const config = ICON_CONFIG[building.type] || ICON_CONFIG.default;
+            
+            const item = $(`
+                <div class="building-item">
+                    <div class="building-icon-small" style="background: ${config.color}20; color: ${config.color};">
+                        <i class="fas fa-${config.icon}"></i>
+                    </div>
+                    <div class="building-info">
+                        <div class="building-name">${building.name}</div>
+                        <div class="building-type">${building.type_name}</div>
+                    </div>
+                    <div class="building-actions">
+                        <button class="action-btn start-btn" onclick="selectAsStart(${building.id})">Start</button>
+                        <button class="action-btn end-btn" onclick="selectAsEnd(${building.id})">End</button>
+                    </div>
+                </div>
+            `);
+            
+            item.click(() => {
+                map.setView([building.latitude, building.longitude], isMobile ? 18 : 19);
+                const marker = markers.find(m => m.buildingId === building.id);
+                if (marker) marker.openPopup();
+                
+                // Close sidebar on mobile
+                if (isMobile) {
+                    setTimeout(closeSidebar, 300);
+                }
+            });
+            
+            container.append(item);
+        });
+    }
+    
+    function filterBuildings(searchQuery) {
+        const filterType = $('#filter').val();
+        
+        const filtered = buildings.filter(building => {
+            const nameMatch = building.name.toLowerCase().includes(searchQuery);
+            const typeMatch = !filterType || building.type === filterType;
+            return nameMatch && typeMatch;
+        });
+        
+        updateBuildingList(filtered);
+    }
+    
+    function switchTab(tabName) {
+        $(`.tab-btn[data-tab="${tabName}"]`).click();
+    }
+    
+    function setupEventHandlers() {
+        // Mode selection
+        $('.mode-btn').click(function() {
+            const mode = $(this).data('mode');
+            $('.mode-btn').removeClass('active');
+            $(this).addClass('active');
+            
+            if ($(this).closest('.mode-selector').parent().find('label').text().includes('Transport')) {
+                currentMode = mode;
+            } else {
+                trackMode = $(this).data('track-mode') || mode;
+            }
+        });
+        
+        // Start/end selection
+        $('#startSelect').change(function() { selectedStart = $(this).val(); });
+        $('#endSelect').change(function() { selectedEnd = $(this).val(); });
+        
+        // Route buttons
+        $('#routeBtn').click(calculateRoute);
+        $('#clearRouteBtn').click(clearRoute);
+        
+        // Search and filter
+        $('#search').on('input', function() {
+            filterBuildings($(this).val().toLowerCase());
+        });
+        
+        $('#filter').change(function() {
+            filterBuildings($('#search').val().toLowerCase());
+        });
+        
+        // Control panel buttons
+        $('#locateMe').click(useMyLocation);
+        $('#resetView').click(resetMapView);
+        $('#togglePaths').click(togglePaths);
+        $('#toggleBuildings').click(toggleBuildings);
+        $('#toggleTiles').click(() => $('#tileSelector').toggle());
+        $('#toggleTracking').click(showTrackingPanel);
+        $('#toggleAI').click(toggleAISidebar);
+        $('#toggleFullscreen').click(toggleFullscreen);
+        
+        // Tile layer selection
+        $('.tile-layer-btn').click(function() {
+            const tileKey = $(this).data('tile');
+            switchTileLayer(tileKey);
+            $('#tileSelector').hide();
+        });
+        
+        // Info tab buttons
+        $('#useMyLocation').click(useMyLocation);
+        $('#refreshData').click(() => location.reload());
+        $('#testPathfinding').click(testPathfinding);
+        $('#toggleLabels').click(toggleLabels);
+        $('#toggleZoomIndicator').click(toggleZoomIndicator);
+        $('#toggleTrackingPanel').click(showTrackingPanel);
+        
+        // Close details
+        $('#closeDetails').click(hideBuildingDetails);
+        $('#closeTracking').click(() => $('#trackingPanel').hide());
+        
+        // Close panels when clicking outside
+        $(document).click(function(e) {
+            if (!$(e.target).closest('#detailsPanel').length && 
+                !$(e.target).closest('.building-marker').length &&
+                !$(e.target).closest('.leaflet-popup').length) {
+                hideBuildingDetails();
+            }
+            
+            if (!$(e.target).closest('#tileSelector').length && 
+                !$(e.target).closest('#toggleTiles').length &&
+                !$(e.target).closest('#desktopControls').length &&
+                !$(e.target).closest('#mobileBottomControls').length) {
+                $('#tileSelector').hide();
+            }
+            
+            if (!$(e.target).closest('#trackingPanel').length && 
+                !$(e.target).closest('#toggleTracking').length &&
+                !$(e.target).closest('#mobileTracking').length &&
+                !$(e.target).closest('#mobileTrackingBtn').length) {
+                $('#trackingPanel').hide();
+            }
+            
+            if (!$(e.target).closest('#shareModal').length) {
+                closeShareModal();
+            }
+        });
+    }
+    
+    function setupMobileEventHandlers() {
+        // Mobile menu button
+        $('#mobileMenuBtn').click(toggleSidebar);
+        
+        // Mobile AI button
+        $('#mobileAIBtn, #mobileAI').click(toggleAISidebar);
+        
+        // Mobile location button
+        $('#mobileLocateBtn, #mobileLocate').click(useMyLocation);
+        
+        // Mobile search button
+        $('#mobileSearchBtn, #mobileSearch').click(function() {
+            if (isMobile) {
+                toggleSidebar();
+                setTimeout(() => {
+                    switchTab('search');
+                    $('#search').focus();
+                }, 300);
+            } else {
+                switchTab('search');
+                $('#search').focus();
+            }
+        });
+        
+        // Mobile tracking button
+        $('#mobileTrackingBtn, #mobileTracking').click(function() {
+            if (isMobile) {
+                toggleSidebar();
+                setTimeout(() => {
+                    switchTab('tracking');
+                }, 300);
+            } else {
+                showTrackingPanel();
+            }
+        });
+        
+        // Mobile controls
+        $('#mobileReset').click(resetMapView);
+        $('#mobilePaths').click(function() {
+            togglePaths();
+            $(this).toggleClass('active');
+        });
+        
+        // Sidebar backdrop click
+        $('#sidebarBackdrop').click(closeSidebar);
+        
+        // Close sidebar when clicking a building (on mobile)
+        $(document).on('click', '.building-item', function() {
+            if (isMobile) {
+                setTimeout(closeSidebar, 300);
+            }
+        });
+        
+        // Handle orientation changes
+        window.addEventListener('orientationchange', function() {
+            setTimeout(checkResponsive, 300);
+        });
+    }
+    
+    // ============================================
+    // UTILITY FUNCTIONS
+    // ============================================
+    
+    function useMyLocation() {
+        if (!navigator.geolocation) {
+            showMessage('Geolocation not supported', 'error');
+            return;
+        }
+        
+        const button = isMobile ? $('#mobileLocateBtn') : $('#locateMe');
+        button.html('<i class="fas fa-spinner fa-spin"></i>');
+        
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                
+                // Remove previous location marker
+                if (userLocation) map.removeLayer(userLocation);
+                
+                // Add new marker with mobile-optimized size
+                const iconSize = isMobile ? 35 : 40;
+                
+                userLocation = L.marker([lat, lon], {
+                    icon: L.divIcon({
+                        html: `
+                            <div style="
+                                background: #2ecc71; 
+                                border: 3px solid white; 
+                                border-radius: 50%; 
+                                width: ${iconSize}px; 
+                                height: ${iconSize}px; 
+                                display: flex; 
+                                align-items: center; 
+                                justify-content: center; 
+                                box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+                            ">
+                                <i class="fas fa-user" style="color: white; font-size: ${isMobile ? '16px' : '18px'};"></i>
+                            </div>
+                        `,
+                        iconSize: [iconSize, iconSize],
+                        iconAnchor: [iconSize/2, iconSize]
+                    })
+                }).addTo(map).bindPopup('Your Location').openPopup();
+                
+                // Center map with mobile-appropriate zoom
+                map.setView([lat, lon], isMobile ? 17 : 18);
+                
+                showMessage('Location found!', 'success');
+                button.html('<i class="fas fa-location-arrow"></i>');
+                
+                // Close sidebar on mobile
+                if (isMobile) {
+                    closeSidebar();
+                }
+            },
+            (error) => {
+                showMessage('Unable to get location: ' + error.message, 'error');
+                button.html('<i class="fas fa-location-arrow"></i>');
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+        );
+    }
+    
+    function resetMapView() {
+        map.setView(CAMPUS_CENTER, isMobile ? 16 : 17);
+        showMessage('Map view reset', 'info');
+    }
+    
+    function togglePaths() {
+        const visible = $('#togglePaths').hasClass('active');
+        if (visible) {
+            pathLayers.forEach(layer => map.removeLayer(layer));
+            $('#togglePaths').removeClass('active');
+            showMessage('Paths hidden', 'info');
+        } else {
+            pathLayers.forEach(layer => map.addLayer(layer));
+            $('#togglePaths').addClass('active');
+            showMessage('Paths shown', 'info');
+        }
+    }
+    
+    function toggleBuildings() {
+        const visible = $('#toggleBuildings').hasClass('active');
+        if (visible) {
+            map.removeLayer(clusterGroup);
+            $('#toggleBuildings').removeClass('active');
+            showMessage('Buildings hidden', 'info');
+        } else {
+            map.addLayer(clusterGroup);
+            $('#toggleBuildings').addClass('active');
+            showMessage('Buildings shown', 'info');
+        }
+    }
+    
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+            $('#toggleFullscreen').html('<i class="fas fa-compress"></i>');
+        } else {
+            document.exitFullscreen();
+            $('#toggleFullscreen').html('<i class="fas fa-expand"></i>');
+        }
+    }
+    
+    async function testPathfinding() {
+        showLoading(true);
+        
+        try {
+            const response = await fetch('/api/test_pathfinding');
+            const data = await response.json();
+            
+            if (data.success) {
+                showMessage(`Pathfinding test: ${data.route_found ? 'SUCCESS' : 'NO PATH'}`, 
+                           data.route_found ? 'success' : 'warning');
+            } else {
+                showMessage('Test failed: ' + data.error, 'error');
+            }
+        } catch (error) {
+            showMessage('Test error: ' + error.message, 'error');
+        } finally {
+            showLoading(false);
+        }
+    }
+    
+    function toggleZoomIndicator() {
+        zoomIndicatorVisible = !zoomIndicatorVisible;
+        if (zoomIndicatorVisible) {
+            $('#zoomLevel').show();
+            $('#toggleZoomIndicator').html('<i class="fas fa-search-minus"></i> <span class="button-text">Hide Zoom Indicator</span>');
+            showMessage('Zoom indicator shown', 'info');
+        } else {
+            $('#zoomLevel').hide();
+            $('#toggleZoomIndicator').html('<i class="fas fa-search-plus"></i> <span class="button-text">Show Zoom Indicator</span>');
+        }
+    }
+    
+    function showLoading(show) {
+        const overlay = $('#loadingOverlay');
+        if (show) {
+            overlay.fadeIn(200);
+        } else {
+            overlay.fadeOut(200);
+        }
+    }
+    
+    function showMessage(message, type = 'info') {
+        console.log(`📢 ${type.toUpperCase()}: ${message}`);
+        
+        // Remove existing messages
+        $('.message').remove();
+        
+        // Colors for message types
+        const colors = {
+            'success': '#28a745',
+            'error': '#dc3545',
+            'warning': '#ffc107',
+            'info': '#17a2b8'
+        };
+        
+        // Position differently on mobile
+        const position = isMobile ? 'top: 70px;' : 'top: 20px;';
+        
+        // Create message element
+        const messageEl = $(`
+            <div class="message" style="
+                position: fixed;
+                ${position}
+                right: 20px;
+                padding: ${isMobile ? '12px 15px' : '15px 20px'};
+                background: ${colors[type] || colors.info};
+                color: white;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation: fadeIn 0.3s ease;
+                max-width: ${isMobile ? 'calc(100% - 40px)' : '400px'};
+                font-size: ${isMobile ? '14px' : 'inherit'};
+            ">
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            </div>
+        `);
+        
+        $('body').append(messageEl);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            messageEl.fadeOut(300, () => messageEl.remove());
+        }, 3000);
+    }
+    
+    // ============================================
+    // BUILDING DETAILS FUNCTIONS
+    // ============================================
+    
+    async function showBuildingDetails(buildingId) {
+        showLoading(true);
+        
+        try {
+            const response = await fetch(`/api/building/${buildingId}`);
+            const data = await response.json();
+            
+            if (data.success) {
+                currentBuildingId = buildingId;
+                const building = data.building;
+                const config = ICON_CONFIG[building.type] || ICON_CONFIG.default;
+                
+                // Update header
+                $('#detailsIcon').html(`<i class="fas fa-${building.icon}"></i>`);
+                $('#detailsIcon').css('color', building.color);
+                $('#detailsName').text(building.name);
+                $('#detailsType').text(building.type_name);
+                $('#detailsDescription').text(building.description);
+                $('#detailsLat').text(building.latitude.toFixed(6));
+                $('#detailsLon').text(building.longitude.toFixed(6));
+                
+                // Update photo gallery
+                updatePhotoGallery(building.photos, buildingId, building);
+                
+                // Update nearby buildings
+                updateNearbyBuildings(data.nearby);
+                
+                // Show panel with animation
+                $('#detailsPanel').css({
+                    'display': 'block',
+                    'animation': 'fadeIn 0.3s ease-out'
+                });
+                
+                // Adjust height for mobile
+                const contentHeight = isMobile ? 'calc(100vh - 130px)' : 'calc(85vh - 150px)';
+                $('.details-content').css({
+                    'max-height': contentHeight,
+                    'overflow-y': 'auto'
+                });
+                
+                // Center map on building
+                map.setView([building.latitude, building.longitude], isMobile ? 18 : 19);
+                
+                // Close sidebar on mobile when showing details
+                if (isMobile) {
+                    closeSidebar();
+                }
+                
+            } else {
+                showMessage('Error loading building details', 'error');
+            }
+        } catch (error) {
+            console.error('Error loading building details:', error);
+            showMessage('Error loading building details', 'error');
+        } finally {
+            showLoading(false);
+        }
+    }
+    
+    function updatePhotoGallery(photos, buildingId, building) {
+        const gallery = $('#photoGallery');
+        const noPhotos = $('#noPhotos');
+        const photoCount = $('#photoCount');
+        
+        gallery.empty();
+        
+        if (photos && photos.length > 0) {
+            photoCount.text(`${photos.length} photo${photos.length !== 1 ? 's' : ''}`);
+            noPhotos.hide();
+            
+            // Display SINGLE larger photo
+            const photo = photos[0];
+            const photoUrl = photo.url + (photo.url.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
+            
+            gallery.html(`
+                <div class="single-photo-container" style="
+                    width: 100%;
+                    height: ${isMobile ? '200px' : '250px'};
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    overflow: hidden;
+                    border-radius: 10px;
+                    border: 1px solid #dee2e6;
+                    background: white;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                    cursor: pointer;
+                ">
+                    <img src="${photoUrl}" alt="${photo.title || building.name}" 
+                         style="
+                            max-width: 100%;
+                            max-height: 100%;
+                            object-fit: contain;
+                            padding: 10px;
+                         "
+                         onerror="this.src='https://via.placeholder.com/400x250?text=Building+Photo'; this.style.objectFit='cover'"
+                         onclick="openLightbox(${buildingId}, 0)">
+                </div>
+                ${photos.length > 1 ? `
+                    <div style="text-align: center; margin-top: 10px; font-size: 12px; color: #666;">
+                        Showing 1 of ${photos.length} photos
+                    </div>
+                ` : ''}
+            `);
+            
+        } else {
+            photoCount.text('0 photos');
+            noPhotos.show();
+            
+            noPhotos.html(`
+                <i class="fas fa-camera" style="font-size: 48px;"></i>
+                <div style="font-size: 16px; margin: 15px 0;">No photo available for this building</div>
+                <div style="font-size: 12px; color: #6c757d;">
+                    Photos in this system are view-only
+                </div>
+            `);
+        }
+    }
+    
+    function updateNearbyBuildings(nearby) {
+        const container = $('#nearbyBuildings');
+        container.empty();
+        
+        if (nearby && nearby.length > 0) {
+            nearby.forEach(building => {
+                const element = `
+                    <div style="padding: 10px; margin-bottom: 8px; background: white; border-radius: 5px; border: 1px solid #e9ecef; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.3s;">
+                        <div style="width: 35px; height: 35px; border-radius: 50%; background: ${building.color}20; color: ${building.color}; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-${building.icon}"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 500; font-size: ${isMobile ? '13px' : 'inherit'};">${building.name}</div>
+                            <div style="font-size: 12px; color: #666;">${building.distance}m away</div>
+                        </div>
+                        <div>
+                            <button onclick="selectAsEnd(${building.id})" style="padding: 5px 10px; background: #28a745; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 12px;">
+                                Go
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.append(element);
+            });
+        } else {
+            container.html('<p style="color: #666; text-align: center;">No nearby buildings found within 200m.</p>');
+        }
+    }
+    
+    function hideBuildingDetails() {
+        $('#detailsPanel').hide();
+        currentBuildingId = null;
+    }
+    
+    function openLightbox(buildingId, photoIndex) {
+        // Get photos for this building
+        fetch(`/api/photos/${buildingId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.photos.length > photoIndex) {
+                    const photo = data.photos[photoIndex];
+                    window.open(photo.url, '_blank');
+                }
+            });
+    }
+    
+    // ============================================
+    // PATH LOADING AND DISPLAY
+    // ============================================
+    
+    async function loadPaths() {
+        try {
+            const response = await fetch('/api/paths');
+            const data = await response.json();
+            
+            if (data.success && data.features && data.features.length > 0) {
+                displayPaths(data.features);
+            }
+        } catch (error) {
+            console.error('Error loading paths:', error);
+        }
+    }
+    
+    function displayPaths(features) {
+        // Clear existing paths
+        pathLayers.forEach(layer => map.removeLayer(layer));
+        pathLayers = [];
+        
+        const pathGroup = L.layerGroup();
+        
+        features.forEach(feature => {
+            try {
+                const geometry = feature.geometry;
+                const properties = feature.properties || {};
+                const pathType = properties.type || 'walking';
+                
+                // Style based on path type
+                let style = {
+                    color: pathType === 'cycling' ? '#2ecc71' : 
+                           pathType === 'driving' ? '#e74c3c' : '#3498db',
+                    weight: isMobile ? (pathType === 'walking' ? 3 : 2) : (pathType === 'walking' ? 4 : 3),
+                    opacity: 0.8
+                };
+                
+                // Create polyline
+                let latLngs = [];
+                if (geometry.type === 'LineString' && geometry.coordinates) {
+                    latLngs = geometry.coordinates.map(coord => [coord[1], coord[0]]);
+                } else if (geometry.type === 'MultiLineString' && geometry.coordinates) {
+                    geometry.coordinates.forEach(line => {
+                        const lineLatLngs = line.map(coord => [coord[1], coord[0]]);
+                        latLngs.push(lineLatLngs);
+                    });
+                }
+                
+                if (latLngs.length > 0) {
+                    const pathLayer = L.polyline(latLngs, style);
+                    pathGroup.addLayer(pathLayer);
+                    pathLayers.push(pathLayer);
+                }
+            } catch (error) {
+                console.error('Error displaying path:', error);
+            }
+        });
+        
+        pathGroup.addTo(map);
+        console.log(`✅ Displayed ${pathLayers.length} path segments`);
+    }
+    
+    // ============================================
+    // UTILITY FUNCTIONS
+    // ============================================
+    
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+    
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+    
+    $(document).ready(function() {
+        console.log('🚀 Starting UoEm Starlife Navigation System with Real-time Tracking...');
+        console.log('🤖 Starlife AI Assistant ready');
+        try {
+            // First check responsive state
+            checkResponsive();
+            
+            // Initialize map based on device
+            initializeMap();
+            
+            // Initialize Socket.IO connection
+            initializeSocket();
+            
+            // Setup handlers
+            setupTabs();
+            setupEventHandlers();
+            setupMobileEventHandlers();
+            
+            // Load data
+            loadPaths();
+            loadBuildingsOnMap();
+            addMapControls();
+            
+            // Listen for resize events
+            $(window).on('resize', debounce(checkResponsive, 250));
+            
+            // Initialize building list
+            updateBuildingList(buildings);
+            
+            // Add animation CSS
+            $('head').append(`
+                <style>
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(-10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                
+                @keyframes pulse {
+                    0% { transform: scale(1); opacity: 0.8; }
+                    50% { transform: scale(1.1); opacity: 0.4; }
+                    100% { transform: scale(1); opacity: 0.8; }
+                }
+                
+                .leaflet-control-fullscreen a {
+                    background: white !important;
+                    color: #495057 !important;
+                    border-radius: 4px !important;
+                    border: 1px solid #dee2e6 !important;
+                }
+                
+                .leaflet-control-fullscreen a:hover {
+                    background: #f8f9fa !important;
+                }
+                </style>
+            `);
+            
+            // Check URL for tracker parameter
+            const hash = window.location.hash;
+            if (hash.includes('tracker=')) {
+                const trackerId = hash.split('tracker=')[1];
+                setTimeout(() => {
+                    joinTracker(trackerId);
+                    showMessage('Joining shared tracker...', 'info');
+                }, 1000);
+            }
+            
+            console.log('✅ Navigation system with real-time tracking fully loaded');
+            console.log(`📝 ${buildings.length} buildings ready`);
+            showMessage('UoEm Starlife Navigation System is ready!', 'success');
+            
+            // Auto-open AI sidebar on desktop for better UX
+            if (!isMobile) {
+                setTimeout(() => {
+                    toggleAISidebar();
+                }, 1000);
+            }
+            
+        } catch (error) {
+            console.error('❌ Initialization error:', error);
+            showMessage('System loaded with some errors. Basic functionality available.', 'warning');
+        }
+    });
+    
+    // Development test function
+    $('#responsiveTest').click(function() {
+        alert(`Screen: ${window.innerWidth}x${window.innerHeight}\nMobile: ${isMobile}\nZoom: ${map ? map.getZoom() : 'N/A'}\nSidebar: ${sidebarOpen ? 'Open' : 'Closed'}\nAI Sidebar: ${aiSidebarOpen ? 'Open' : 'Closed'}\nTracking: ${isTracking ? 'Active' : 'Inactive'}`);
+    });
+    </script>
+</body>
+</html>

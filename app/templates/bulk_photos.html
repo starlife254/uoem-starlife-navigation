@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Photo Upload - UoEm Navigation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; padding: 20px; }
+        
+        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 10px; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { color: #2c3e50; margin-bottom: 10px; }
+        .header p { color: #6c757d; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #495057; }
+        
+        select, input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        select:focus { outline: none; border-color: #007bff; }
+        
+        .building-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .building-info.show { display: block; }
+        
+        .upload-area {
+            border: 3px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .upload-area:hover {
+            border-color: #007bff;
+            background: #f8f9fa;
+        }
+        
+        .upload-area i { font-size: 48px; color: #6c757d; margin-bottom: 15px; }
+        
+        .btn {
+            padding: 12px 24px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover { background: #0056b3; transform: translateY(-2px); }
+        .btn:disabled { background: #6c757d; cursor: not-allowed; }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #28a745;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .uploaded-photos {
+            margin-top: 30px;
+        }
+        
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .photo-preview {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .photo-preview img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+        
+        .remove-photo {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(220,53,69,0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #6c757d;
+            text-decoration: none;
+        }
+        
+        .back-link:hover { color: #007bff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-images"></i> Bulk Photo Upload</h1>
+            <p>Upload multiple photos for buildings at once</p>
+        </div>
+        
+        <div class="form-group">
+            <label for="buildingSelect">Select Building</label>
+            <select id="buildingSelect">
+                <option value="">Choose a building...</option>
+                {% for building in buildings %}
+                <option value="{{ building.id }}">{{ building.name }} ({{ building.type_name }})</option>
+                {% endfor %}
+            </select>
+            
+            <div id="buildingInfo" class="building-info">
+                <!-- Building info will appear here -->
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Select Photos</label>
+            <div class="upload-area" id="dropArea">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <div style="font-size: 18px; margin-bottom: 10px;">Drag & Drop Photos Here</div>
+                <div style="color: #6c757d; margin-bottom: 15px;">or click to browse</div>
+                <div style="font-size: 12px; color: #999;">
+                    Supports JPG, PNG, GIF, WEBP (Max 5MB each)
+                </div>
+                <input type="file" id="photoInput" multiple accept="image/*" style="display: none;">
+            </div>
+            
+            <div id="selectedFiles" style="margin-top: 15px; display: none;">
+                <div id="fileList"></div>
+            </div>
+        </div>
+        
+        <button class="btn" id="uploadBtn" disabled>
+            <i class="fas fa-upload"></i> Upload Photos
+        </button>
+        
+        <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="uploaded-photos" id="uploadedPhotos" style="display: none;">
+            <h3>Uploaded Photos</h3>
+            <div id="uploadedGrid" class="photo-grid"></div>
+        </div>
+        
+        <a href="/" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Main Map
+        </a>
+    </div>
+    
+    <!-- Hidden data container to pass Python data to JavaScript -->
+    <div id="buildingData" style="display: none;">
+        {{ buildings|tojson }}
+    </div>
+    
+    <script>
+        // Initialize building data from template
+        const buildingData = JSON.parse(document.getElementById('buildingData').textContent);
+        
+        let selectedBuilding = null;
+        let selectedFiles = [];
+        
+        // Building selection
+        document.getElementById('buildingSelect').addEventListener('change', function() {
+            const buildingId = parseInt(this.value);
+            const btn = document.getElementById('uploadBtn');
+            
+            if (buildingId) {
+                // Find building data from the buildingData array
+                const building = buildingData.find(b => b.id === buildingId);
+                
+                if (building) {
+                    selectedBuilding = building;
+                    
+                    // Show building info
+                    const infoDiv = document.getElementById('buildingInfo');
+                    infoDiv.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background: ${building.color}20; color: ${building.color}; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                                <i class="fas fa-${building.icon}"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">${building.name}</div>
+                                <div style="font-size: 14px; color: #666;">${building.type_name}</div>
+                                <div style="font-size: 12px; color: #999;">${building.description ? building.description.substring(0, 100) + '...' : 'No description available'}</div>
+                            </div>
+                        </div>
+                    `;
+                    infoDiv.classList.add('show');
+                    
+                    // Enable upload button if files are selected
+                    btn.disabled = selectedFiles.length === 0;
+                }
+            } else {
+                selectedBuilding = null;
+                document.getElementById('buildingInfo').classList.remove('show');
+                btn.disabled = true;
+            }
+        });
+        
+        // File selection
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('photoInput');
+        
+        dropArea.addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', handleFileSelect);
+        
+        // Drag and drop
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.style.borderColor = '#007bff';
+            dropArea.style.background = '#f8f9fa';
+        });
+        
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.borderColor = '#dee2e6';
+            dropArea.style.background = 'white';
+        });
+        
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.style.borderColor = '#dee2e6';
+            dropArea.style.background = 'white';
+            
+            if (e.dataTransfer.files.length) {
+                selectedFiles = Array.from(e.dataTransfer.files);
+                updateFileList();
+            }
+        });
+        
+        function handleFileSelect(e) {
+            selectedFiles = Array.from(e.target.files);
+            updateFileList();
+        }
+        
+        function updateFileList() {
+            const fileListDiv = document.getElementById('fileList');
+            const filesDiv = document.getElementById('selectedFiles');
+            const uploadBtn = document.getElementById('uploadBtn');
+            
+            if (selectedFiles.length > 0) {
+                fileListDiv.innerHTML = `
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                        <div style="font-weight: 500; margin-bottom: 10px;">
+                            Selected ${selectedFiles.length} photo(s):
+                        </div>
+                        <div style="max-height: 200px; overflow-y: auto;">
+                            ${selectedFiles.map((file, index) => `
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: white; border-radius: 5px; margin-bottom: 5px;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-image" style="color: #6c757d;"></i>
+                                        <div>
+                                            <div style="font-size: 12px; font-weight: 500;">${file.name}</div>
+                                            <div style="font-size: 11px; color: #999;">${(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                                        </div>
+                                    </div>
+                                    <button onclick="removeFile(${index})" style="background: #dc3545; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                filesDiv.style.display = 'block';
+                
+                // Enable upload button if building is selected
+                uploadBtn.disabled = !selectedBuilding;
+            } else {
+                filesDiv.style.display = 'none';
+                uploadBtn.disabled = true;
+            }
+        }
+        
+        window.removeFile = function(index) {
+            selectedFiles.splice(index, 1);
+            updateFileList();
+        };
+        
+        // Upload function
+        document.getElementById('uploadBtn').addEventListener('click', async function() {
+            if (!selectedBuilding || selectedFiles.length === 0) return;
+            
+            const btn = this;
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+            const uploadedGrid = document.getElementById('uploadedGrid');
+            
+            // Validate files before upload
+            const validFiles = selectedFiles.filter(file => {
+                const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                
+                if (!validTypes.includes(file.type)) {
+                    alert(`File ${file.name} has invalid type. Only images are allowed.`);
+                    return false;
+                }
+                
+                if (file.size > maxSize) {
+                    alert(`File ${file.name} is too large. Maximum size is 5MB.`);
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            if (validFiles.length === 0) return;
+            
+            // Disable button and show progress
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+            progressBar.style.display = 'block';
+            progressFill.style.width = '0%';
+            
+            const formData = new FormData();
+            formData.append('building_id', selectedBuilding.id);
+            
+            validFiles.forEach(file => {
+                formData.append('photos', file);
+            });
+            
+            try {
+                const response = await fetch('/api/bulk_upload_photos', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Update progress to 100%
+                    progressFill.style.width = '100%';
+                    
+                    // Show uploaded photos section
+                    document.getElementById('uploadedPhotos').style.display = 'block';
+                    
+                    // Display uploaded thumbnails
+                    uploadedGrid.innerHTML = data.files.map(filename => `
+                        <div class="photo-preview">
+                            <img src="/static/photos/${filename}?t=${new Date().getTime()}" alt="Uploaded photo">
+                            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: white; padding: 5px; font-size: 10px; text-align: center;">
+                                ${filename.substring(0, 20)}${filename.length > 20 ? '...' : ''}
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    // Reset form
+                    selectedFiles = [];
+                    updateFileList();
+                    document.getElementById('photoInput').value = '';
+                    
+                    // Show success message
+                    showNotification(`Successfully uploaded ${data.uploaded_count} photo(s) to ${selectedBuilding.name}!`, 'success');
+                    
+                } else {
+                    showNotification('Upload failed: ' + data.error, 'error');
+                }
+                
+            } catch (error) {
+                showNotification('Upload error: ' + error.message, 'error');
+            } finally {
+                // Reset button
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-upload"></i> Upload Photos';
+                setTimeout(() => {
+                    progressBar.style.display = 'none';
+                    progressFill.style.width = '0%';
+                }, 2000);
+            }
+        });
+        
+        function showNotification(message, type = 'info') {
+            // Remove existing notifications
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
+            
+            const colors = {
+                'success': '#28a745',
+                'error': '#dc3545',
+                'info': '#17a2b8'
+            };
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <div style="position: fixed; top: 20px; right: 20px; padding: 15px 20px; background: ${colors[type]}; color: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10000; display: flex; align-items: center; gap: 10px; animation: fadeIn 0.3s ease;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Add CSS animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(-10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(-10px)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

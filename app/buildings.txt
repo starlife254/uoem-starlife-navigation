@@ -1,0 +1,25 @@
+Academic Block A
+Academic Block B
+Library
+Administration Building
+Student Center
+Cafeteria
+Hostel A
+Hostel B
+Hostel C
+Computer Lab 1
+Computer Lab 2
+Science Laboratory
+Auditorium
+Sports Complex
+Health Center
+Security Office
+Main Gate
+Parking Lot A
+Parking Lot B
+Bus Stop
+Registrar Office
+Dean's Office
+ICT Department
+Finance Office
+Examination Hall

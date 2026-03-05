@@ -1,0 +1,6554 @@
+[
+  {
+    "query": "Where is Academic Block A?",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Academic Block A?",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "How to get to Academic Block A? thanks",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Academic Block A please",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Academic Block A",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Academic Block A",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Academic Block A",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Location of Academic Block A",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Academic Block A",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Academic Block A",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Academic Block A?",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Academic Block A?",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Academic Block A?",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Academic Block A?",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Academic Block A",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Academic Block A",
+    "intent": "navigation",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "What is Academic Block A?",
+    "intent": "information",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Academic Block A",
+    "intent": "information",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Information about Academic Block A",
+    "intent": "information",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Information about Academic Block A thank you",
+    "intent": "information",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Describe Academic Block A",
+    "intent": "information",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Academic Block A?",
+    "intent": "information",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Academic Block A? thank you",
+    "intent": "information",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Academic Block A?",
+    "intent": "information",
+    "building": "Academic Block A",
+    "language": "swahili"
+  },
+  {
+    "query": "Ni nini Academic Block A?",
+    "intent": "information",
+    "building": "Academic Block A",
+    "language": "swahili"
+  },
+  {
+    "query": "Ni nini Academic Block A? thx",
+    "intent": "information",
+    "building": "Academic Block A",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Academic Block A",
+    "intent": "information",
+    "building": "Academic Block A",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Academic Block A",
+    "intent": "information",
+    "building": "Academic Block A",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Academic Block A open?",
+    "intent": "hours",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Academic Block A?",
+    "intent": "hours",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Academic Block A? thx",
+    "intent": "hours",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Academic Block A",
+    "intent": "hours",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Is Academic Block A open now?",
+    "intent": "hours",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Academic Block A inafungua lini?",
+    "intent": "hours",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Academic Block A",
+    "intent": "hours",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Academic Block A",
+    "intent": "contact",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Academic Block A",
+    "intent": "contact",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Academic Block A",
+    "intent": "contact",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Academic Block A thanks",
+    "intent": "contact",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Email of Academic Block A",
+    "intent": "contact",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Academic Block A",
+    "intent": "contact",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Academic Block A",
+    "intent": "contact",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Academic Block A",
+    "intent": "contact",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Academic Block A thank you",
+    "intent": "contact",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Academic Block A",
+    "intent": "contact",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Academic Block A",
+    "intent": "contact",
+    "building": "Academic Block A",
+    "language": "english"
+  },
+  {
+    "query": "Where is Academic Block B?",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Academic Block B?",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Academic Block B please",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Academic Block B",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Academic Block B",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Academic Block B",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Location of Academic Block B",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Academic Block B",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Academic Block B",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Academic Block B",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Academic Block B?",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Academic Block B?",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Academic Block B?",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Academic Block B?",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Academic Block B",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Academic Block B",
+    "intent": "navigation",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "What is Academic Block B?",
+    "intent": "information",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Academic Block B",
+    "intent": "information",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Information about Academic Block B",
+    "intent": "information",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Describe Academic Block B",
+    "intent": "information",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Describe Academic Block B thx",
+    "intent": "information",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Academic Block B?",
+    "intent": "information",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Academic Block B?",
+    "intent": "information",
+    "building": "Academic Block B",
+    "language": "swahili"
+  },
+  {
+    "query": "Ni nini Academic Block B? please",
+    "intent": "information",
+    "building": "Academic Block B",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Academic Block B",
+    "intent": "information",
+    "building": "Academic Block B",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Academic Block B",
+    "intent": "information",
+    "building": "Academic Block B",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Academic Block B open?",
+    "intent": "hours",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "When does Academic Block B open?",
+    "intent": "hours",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Academic Block B?",
+    "intent": "hours",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Academic Block B",
+    "intent": "hours",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Is Academic Block B open now?",
+    "intent": "hours",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Academic Block B inafungua lini?",
+    "intent": "hours",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Academic Block B",
+    "intent": "hours",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Academic Block B",
+    "intent": "contact",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Contact infromation for Academic Block B",
+    "intent": "contact",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Academic Block B",
+    "intent": "contact",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Academic Block B",
+    "intent": "contact",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Academic Block B",
+    "intent": "contact",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Email of Academic Block B",
+    "intent": "contact",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Email of Academic Block B thanks",
+    "intent": "contact",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Academic Block B",
+    "intent": "contact",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Academic Block B",
+    "intent": "contact",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Academic Block B",
+    "intent": "contact",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Academic Block B",
+    "intent": "contact",
+    "building": "Academic Block B",
+    "language": "english"
+  },
+  {
+    "query": "Where is Library?",
+    "intent": "navigation",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Library?",
+    "intent": "navigation",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Library please",
+    "intent": "navigation",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Library",
+    "intent": "navigation",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Library",
+    "intent": "navigation",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Location of Library",
+    "intent": "navigation",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Library",
+    "intent": "navigation",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Library",
+    "intent": "navigation",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Library?",
+    "intent": "navigation",
+    "building": "Library",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Library?",
+    "intent": "navigation",
+    "building": "Library",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Library?",
+    "intent": "navigation",
+    "building": "Library",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Library?",
+    "intent": "navigation",
+    "building": "Library",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Library",
+    "intent": "navigation",
+    "building": "Library",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Library",
+    "intent": "navigation",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "What is Library?",
+    "intent": "information",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Library",
+    "intent": "information",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Information about Library",
+    "intent": "information",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Describe Library",
+    "intent": "information",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Library?",
+    "intent": "information",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Library?",
+    "intent": "information",
+    "building": "Library",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Library",
+    "intent": "information",
+    "building": "Library",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Library",
+    "intent": "information",
+    "building": "Library",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Library open?",
+    "intent": "hours",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Library?",
+    "intent": "hours",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Library? thank you",
+    "intent": "hours",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Library",
+    "intent": "hours",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Is Library open now?",
+    "intent": "hours",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Is Library open now?",
+    "intent": "hours",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Library inafungua lini?",
+    "intent": "hours",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Library inafungua lini?",
+    "intent": "hours",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Library",
+    "intent": "hours",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Library",
+    "intent": "contact",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Library",
+    "intent": "contact",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Email of Library",
+    "intent": "contact",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Email of Library thx",
+    "intent": "contact",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Library",
+    "intent": "contact",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Library",
+    "intent": "contact",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Library",
+    "intent": "contact",
+    "building": "Library",
+    "language": "english"
+  },
+  {
+    "query": "Where is Administration Building?",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Administration Building?",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Administration Building please",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Administration Building",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Guide me to Administration Building thx",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Administration Building",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Location of Administration Building",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Administration Building",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Administration Building",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Administration Building pls",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Administration Building?",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Administration Building?",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Administration Building?",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Administration Building",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Administration builing",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Administration Building please",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Administration Building",
+    "intent": "navigation",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "What is Administration Building?",
+    "intent": "information",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Administration Building",
+    "intent": "information",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Information about Administration Building",
+    "intent": "information",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Describe Administration Building",
+    "intent": "information",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Administration Building?",
+    "intent": "information",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in adminstration Building?",
+    "intent": "information",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Administration Building?",
+    "intent": "information",
+    "building": "Administration Building",
+    "language": "swahili"
+  },
+  {
+    "query": "Ni nini Administration Building? pls",
+    "intent": "information",
+    "building": "Administration Building",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Administration Building",
+    "intent": "information",
+    "building": "Administration Building",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Administration Building",
+    "intent": "information",
+    "building": "Administration Building",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Administration Building open?",
+    "intent": "hours",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Administration Building?",
+    "intent": "hours",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Administration Building? thanks",
+    "intent": "hours",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Administration Building",
+    "intent": "hours",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Administration Building please",
+    "intent": "hours",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Is Administration Building open now?",
+    "intent": "hours",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Is Administration Building open now? thanks",
+    "intent": "hours",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Administration Building inafungua lini?",
+    "intent": "hours",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Administration Building",
+    "intent": "hours",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Administration Building",
+    "intent": "contact",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Administration Building thanks",
+    "intent": "contact",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Administration Building",
+    "intent": "contact",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of adminstration builing",
+    "intent": "contact",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Email of Administration Building",
+    "intent": "contact",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Administration Building",
+    "intent": "contact",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Administration Building",
+    "intent": "contact",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Administration Building thank you",
+    "intent": "contact",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Administration Building",
+    "intent": "contact",
+    "building": "Administration Building",
+    "language": "english"
+  },
+  {
+    "query": "Where is Student Center?",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Student Center?",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Student Center please",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "diretions to Student Center please",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Student Center",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Student Center",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Student Center",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Location of Student Center",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Student Center",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Show me teh way to Student Center",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Student Center",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Student Center?",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Student Center?",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Student Center? please",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Student Center?",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Student Center",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Student Center",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Naomba maelekezo ya Student Center thank you",
+    "intent": "navigation",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "What is Student Center?",
+    "intent": "information",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "What is Student Center?",
+    "intent": "information",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Student Center",
+    "intent": "information",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Information about Student Center",
+    "intent": "information",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Describe Student Center",
+    "intent": "information",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Describe Student Center please",
+    "intent": "information",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Student Center?",
+    "intent": "information",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Student Center? pls",
+    "intent": "information",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Student Center?",
+    "intent": "information",
+    "building": "Student Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Student Center",
+    "intent": "information",
+    "building": "Student Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Student Center",
+    "intent": "information",
+    "building": "Student Center",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Student Center open?",
+    "intent": "hours",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Student Center?",
+    "intent": "hours",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "What are teh opening hours of Student Center?",
+    "intent": "hours",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Student Center",
+    "intent": "hours",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Student Center thx",
+    "intent": "hours",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Is Student Center open now?",
+    "intent": "hours",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Is Student Center open now?",
+    "intent": "hours",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Student Center inafungua lini?",
+    "intent": "hours",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Student Center",
+    "intent": "hours",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Student Center",
+    "intent": "contact",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Student Center",
+    "intent": "contact",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Email of Student Center",
+    "intent": "contact",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Student Center",
+    "intent": "contact",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Student Center please",
+    "intent": "contact",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Student Center",
+    "intent": "contact",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Student Center",
+    "intent": "contact",
+    "building": "Student Center",
+    "language": "english"
+  },
+  {
+    "query": "Where is Cafeteria?",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Cafeteria?",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Cafeteria please",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Path to Cafeteria please",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Cafeteria",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Take me to cafetaria",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Cafeteria",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Location of Cafeteria",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Cafeteria",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Cafeteria",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Cafeteria pls",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Cafeteria?",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Cafeteria?",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Cafeteria?",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Cafeteria? thank you",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Cafeteria",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Cafeteria",
+    "intent": "navigation",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "What is Cafeteria?",
+    "intent": "information",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Cafeteria",
+    "intent": "information",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Information about Cafeteria",
+    "intent": "information",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Describe Cafeteria",
+    "intent": "information",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Cafeteria?",
+    "intent": "information",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Cafeteria?",
+    "intent": "information",
+    "building": "Cafeteria",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Cafeteria",
+    "intent": "information",
+    "building": "Cafeteria",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Cafeteria",
+    "intent": "information",
+    "building": "Cafeteria",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Cafeteria open?",
+    "intent": "hours",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "When does cafetaria open?",
+    "intent": "hours",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Cafeteria?",
+    "intent": "hours",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Cafeteria? thanks",
+    "intent": "hours",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Cafeteria",
+    "intent": "hours",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Is Cafeteria open now?",
+    "intent": "hours",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Is Cafeteria open now? please",
+    "intent": "hours",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Cafeteria inafungua lini?",
+    "intent": "hours",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Cafeteria inafungua lini? please",
+    "intent": "hours",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Cafeteria",
+    "intent": "hours",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Cafeteria",
+    "intent": "contact",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Cafeteria",
+    "intent": "contact",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Email of Cafeteria",
+    "intent": "contact",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Email of Cafeteria thx",
+    "intent": "contact",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Cafeteria",
+    "intent": "contact",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Cafeteria",
+    "intent": "contact",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya cafetaria",
+    "intent": "contact",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Cafeteria",
+    "intent": "contact",
+    "building": "Cafeteria",
+    "language": "english"
+  },
+  {
+    "query": "Where is Hostel A?",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Hostel A?",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Hostel A?",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "How to get to Hostel A? pls",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Hostel A please",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Hostel A",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Hostel A",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Hostel A",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Location of Hostel A",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Hostel A",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Hostel A please",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Hostel A",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Hostel A",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Hostel A?",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Hostel A?",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Hostel A?",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Hostel A? pls",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Hostel A",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Hostel A",
+    "intent": "navigation",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "What is Hostel A?",
+    "intent": "information",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Hostel A",
+    "intent": "information",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Information about Hostel A",
+    "intent": "information",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Describe Hostel A",
+    "intent": "information",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Hostel A?",
+    "intent": "information",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Hostel A?",
+    "intent": "information",
+    "building": "Hostel A",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Hostel A",
+    "intent": "information",
+    "building": "Hostel A",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Hostel A pls",
+    "intent": "information",
+    "building": "Hostel A",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Hostel A",
+    "intent": "information",
+    "building": "Hostel A",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Hostel A open?",
+    "intent": "hours",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Hostel A?",
+    "intent": "hours",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Hostel A",
+    "intent": "hours",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Hostel A",
+    "intent": "hours",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Is Hostel A open now?",
+    "intent": "hours",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Is Hostel A open now? please",
+    "intent": "hours",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Hostel A inafungua lini?",
+    "intent": "hours",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Hostel A",
+    "intent": "hours",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Hostel A",
+    "intent": "contact",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Hostel A",
+    "intent": "contact",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Email of Hostel A",
+    "intent": "contact",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Hostel A",
+    "intent": "contact",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Hostel A please",
+    "intent": "contact",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Hostel A",
+    "intent": "contact",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Hostel A pls",
+    "intent": "contact",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Hostel A",
+    "intent": "contact",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Hostel A",
+    "intent": "contact",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Hostel A please",
+    "intent": "contact",
+    "building": "Hostel A",
+    "language": "english"
+  },
+  {
+    "query": "Where is Hostel B?",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Hostel B?",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Hostel B please",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Hostel B",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Guide me to Hostel B thanks",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Hostel B",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Hostel B thanks",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Location of Hostel B",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Hostel B",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Hostel B please",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Hostel B",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Hostel B?",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Hostel B?",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Hostel B? thank you",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Hostel B?",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Hostel B? please",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Hostel B",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Hostel B",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Naomba maelekezo ya Hostel B",
+    "intent": "navigation",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "What is Hostel B?",
+    "intent": "information",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Hostel B",
+    "intent": "information",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Information about Hostel B",
+    "intent": "information",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Describe Hostel B",
+    "intent": "information",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Hostel B?",
+    "intent": "information",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Hostel B?",
+    "intent": "information",
+    "building": "Hostel B",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Hostel B",
+    "intent": "information",
+    "building": "Hostel B",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Hostel B",
+    "intent": "information",
+    "building": "Hostel B",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Hostel B open?",
+    "intent": "hours",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Hostel B?",
+    "intent": "hours",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Hostel B? thank you",
+    "intent": "hours",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Hostel B",
+    "intent": "hours",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Is Hostel B open now?",
+    "intent": "hours",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Hostel B inafungua lini?",
+    "intent": "hours",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Hostel B inafungua lini? pls",
+    "intent": "hours",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Hostel B",
+    "intent": "hours",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Hostel B thank you",
+    "intent": "hours",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Hostel B",
+    "intent": "contact",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Hostel B",
+    "intent": "contact",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Email of Hostel B",
+    "intent": "contact",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Hostel B",
+    "intent": "contact",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Hostel B",
+    "intent": "contact",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Hostel B",
+    "intent": "contact",
+    "building": "Hostel B",
+    "language": "english"
+  },
+  {
+    "query": "Where is Hostel C?",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Hostel C?",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Hostel C please",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Hostel C",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Hostel C",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Location of Hostel C",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Location of Hostel C please",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Hostel C",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Hostel C",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Hostel C?",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Hostel C?",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Hostel C?",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Hostel C?",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Hostel C",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Hostel C",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Naomba maelekezo ya Hostel C thanks",
+    "intent": "navigation",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "What is Hostel C?",
+    "intent": "information",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "What's Hostel C?",
+    "intent": "information",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Hostel C",
+    "intent": "information",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Information about Hostel C",
+    "intent": "information",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Describe Hostel C",
+    "intent": "information",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Hostel C?",
+    "intent": "information",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Hostel C?",
+    "intent": "information",
+    "building": "Hostel C",
+    "language": "swahili"
+  },
+  {
+    "query": "Ni nini Hostel C?",
+    "intent": "information",
+    "building": "Hostel C",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Hostel C",
+    "intent": "information",
+    "building": "Hostel C",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Hostel C",
+    "intent": "information",
+    "building": "Hostel C",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Hostel C",
+    "intent": "information",
+    "building": "Hostel C",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Hostel C open?",
+    "intent": "hours",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Hostel C?",
+    "intent": "hours",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Hostel C",
+    "intent": "hours",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Is Hostel C open now?",
+    "intent": "hours",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Hostel C inafungua lini?",
+    "intent": "hours",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Hostel C",
+    "intent": "hours",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Hostel C",
+    "intent": "contact",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Hostel C",
+    "intent": "contact",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Email of Hostel C",
+    "intent": "contact",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Hostel C",
+    "intent": "contact",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Hostel C",
+    "intent": "contact",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Hostel C",
+    "intent": "contact",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Hostel C",
+    "intent": "contact",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Hostel C",
+    "intent": "contact",
+    "building": "Hostel C",
+    "language": "english"
+  },
+  {
+    "query": "Where is Computer Lab 1?",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Computer Lab 1?",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Computer Lab 1 please",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Computer Lab 1",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Computer Lab 1",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Location of Computer Lab 1",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Location of Computer Lab 1 pls",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Computer Lab 1",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Computer Lab 1",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Computer Lab 1",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Computer Lab 1 thanks",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Computer Lab 1?",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "swahili"
+  },
+  {
+    "query": "Iko wapi Computer Lab 1? please",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Computer Lab 1?",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Computer Lab 1?",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Computer Lab 1",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Computer Lab 1 thank you",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Computer Lab 1",
+    "intent": "navigation",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "What is Computer Lab 1?",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Computer Lab 1",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Information about Computer Lab 1",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Information abut Computer Lab 1",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Information about Computer Lab 1 pls",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Describe Computer Lab 1",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Describe Computer Lab 1",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Computer Lab 1?",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Computer Lab 1?",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Computer Lab 1? thx",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Computer Lab 1?",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Computer Lab 1",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Computer Lab 1 thx",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Computer Lab 1",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Computer Lab 1 pls",
+    "intent": "information",
+    "building": "Computer Lab 1",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Computer Lab 1 open?",
+    "intent": "hours",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Computer Lab 1?",
+    "intent": "hours",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Computer Lab 1?",
+    "intent": "hours",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Computer Lab 1",
+    "intent": "hours",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Computer Lab 1 thx",
+    "intent": "hours",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Is Computer Lab 1 open now?",
+    "intent": "hours",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Is Computer Lab 1 open now?",
+    "intent": "hours",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Computer Lab 1 inafungua lini?",
+    "intent": "hours",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Computer Lab 1",
+    "intent": "hours",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Computer Lab 1",
+    "intent": "contact",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Computer Lab 1",
+    "intent": "contact",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Email of Computer Lab 1",
+    "intent": "contact",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Email of Computer Lab 1 thx",
+    "intent": "contact",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Computer Lab 1",
+    "intent": "contact",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Computer Lab 1",
+    "intent": "contact",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Computer Lab 1 thanks",
+    "intent": "contact",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Computer Lab 1",
+    "intent": "contact",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Computer Lab 1",
+    "intent": "contact",
+    "building": "Computer Lab 1",
+    "language": "english"
+  },
+  {
+    "query": "Where is Computer Lab 2?",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Computer Lab 2?",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Computer Lab 2 please",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Computer Lab 2",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Bring me to Computer Lab 2",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Computer Lab 2",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Location of Computer Lab 2",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Computer Lab 2",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Computer Lab 2",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Computer Lab 2 thank you",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Computer Lab 2?",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Computer Lab 2?",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Computer Lab 2?",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Computer Lab 2?",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Computer Lab 2",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Computer Lab 2",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Naomba maelekezo ya Computer Lab 2 thanks",
+    "intent": "navigation",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "What is Computer Lab 2?",
+    "intent": "information",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Computer Lab 2",
+    "intent": "information",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "What can you tell me about Computer Lab 2 please",
+    "intent": "information",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Information about Computer Lab 2",
+    "intent": "information",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Describe Computer Lab 2",
+    "intent": "information",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Computer Lab 2?",
+    "intent": "information",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Computer Lab 2? thanks",
+    "intent": "information",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Computer Lab 2?",
+    "intent": "information",
+    "building": "Computer Lab 2",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Computer Lab 2",
+    "intent": "information",
+    "building": "Computer Lab 2",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Computer Lab 2",
+    "intent": "information",
+    "building": "Computer Lab 2",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Computer Lab 2 thank you",
+    "intent": "information",
+    "building": "Computer Lab 2",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Computer Lab 2 open?",
+    "intent": "hours",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Computer Lab 2?",
+    "intent": "hours",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Computer Lab 2",
+    "intent": "hours",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Is Computer Lab 2 open now?",
+    "intent": "hours",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Computer Lab 2 inafungua lini?",
+    "intent": "hours",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Computer Lab 2",
+    "intent": "hours",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Computer Lab 2",
+    "intent": "hours",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Computer Lab 2",
+    "intent": "contact",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Computer Lab 2",
+    "intent": "contact",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Email of Computer Lab 2",
+    "intent": "contact",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Email of Computer Lab 2 thank you",
+    "intent": "contact",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Computer Lab 2",
+    "intent": "contact",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Computer Lab 2",
+    "intent": "contact",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Computer Lab 2",
+    "intent": "contact",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Computer Lab 2",
+    "intent": "contact",
+    "building": "Computer Lab 2",
+    "language": "english"
+  },
+  {
+    "query": "Where is Science Laboratory?",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Science Laboratory?",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Science Laboratory please",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Science Laboratory",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Science Laboratory",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Science Laboratory pls",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Location of Science Laboratory",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Science Laboratory",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Science Laboratory",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Science Laboratory",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Science Laboratory?",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Science Laboratory?",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Science Laboratory?",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Science Laboratory",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Science Laboratory",
+    "intent": "navigation",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "What is Science Laboratory?",
+    "intent": "information",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "What is Science Laboratory?",
+    "intent": "information",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "What's Science Laboratory?",
+    "intent": "information",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Science Laboratory",
+    "intent": "information",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "What can you tell me about Science Laboratory please",
+    "intent": "information",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Information about Science Laboratory",
+    "intent": "information",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Describe Science Laboratory",
+    "intent": "information",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Science Laboratory?",
+    "intent": "information",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Science Laboratory?",
+    "intent": "information",
+    "building": "Science Laboratory",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Science Laboratory",
+    "intent": "information",
+    "building": "Science Laboratory",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Science Laboratory",
+    "intent": "information",
+    "building": "Science Laboratory",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Science Laboratory open?",
+    "intent": "hours",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "When does Science Laboratory open? thx",
+    "intent": "hours",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Science Laboratory?",
+    "intent": "hours",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Science Laboratory?",
+    "intent": "hours",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Science Laboratory",
+    "intent": "hours",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Science Laboratory",
+    "intent": "hours",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Is Science Laboratory open now?",
+    "intent": "hours",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Science Laboratory inafungua lini?",
+    "intent": "hours",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Science Laboratory",
+    "intent": "hours",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Science Laboratory",
+    "intent": "contact",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Science Laboratory",
+    "intent": "contact",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Science Laboratory",
+    "intent": "contact",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Email of Science Laboratory",
+    "intent": "contact",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Science Laboratory",
+    "intent": "contact",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Science Laboratory",
+    "intent": "contact",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Science Laboratory thanks",
+    "intent": "contact",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Science Laboratory",
+    "intent": "contact",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Science Laboratory",
+    "intent": "contact",
+    "building": "Science Laboratory",
+    "language": "english"
+  },
+  {
+    "query": "Where is Auditorium?",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Where is Auditorium?",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Auditorium?",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Auditorium?",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Auditorium please",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Way to Auditorium please",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Auditorium",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Auditorium",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Location of Auditorium",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Auditorium",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Auditorium",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Auditorium thank you",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Auditorium?",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "swahili"
+  },
+  {
+    "query": "Iko wapi Auditorium?",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Auditorium?",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Auditorium?",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Auditorium?",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Auditorium",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Auditorium",
+    "intent": "navigation",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "What is Auditorium?",
+    "intent": "information",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Auditorium",
+    "intent": "information",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Information about Auditorium",
+    "intent": "information",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Describe Auditorium",
+    "intent": "information",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Auditorium?",
+    "intent": "information",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Auditorium?",
+    "intent": "information",
+    "building": "Auditorium",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Auditorium",
+    "intent": "information",
+    "building": "Auditorium",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Auditorium",
+    "intent": "information",
+    "building": "Auditorium",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Auditorium open?",
+    "intent": "hours",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Auditorium?",
+    "intent": "hours",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Auditorium",
+    "intent": "hours",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Is Auditorium open now?",
+    "intent": "hours",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Auditorium inafungua lini?",
+    "intent": "hours",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Auditorium",
+    "intent": "hours",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Auditorium",
+    "intent": "contact",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Auditorium",
+    "intent": "contact",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Email of Auditorium",
+    "intent": "contact",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Auditorium",
+    "intent": "contact",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Auditorium",
+    "intent": "contact",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Auditorium thx",
+    "intent": "contact",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Auditorium",
+    "intent": "contact",
+    "building": "Auditorium",
+    "language": "english"
+  },
+  {
+    "query": "Where is Sports Complex?",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Sports Complex?",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Sports Complex please",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Path to Sports Complex please",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Sports Complex",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Guide me to Sports Complex",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Sports Complex",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Location of Sports Complex",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Sports Complex",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Sports Complex",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Sports Complex thank you",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Sports Complex?",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "swahili"
+  },
+  {
+    "query": "Iko wap Sports Complex?",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Sports Complex?",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Sports Complex?",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Sports Complex",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Sports Complex thanks",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Sports Complex",
+    "intent": "navigation",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "What is Sports Complex?",
+    "intent": "information",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Tell me what is Sports Complex? thanks",
+    "intent": "information",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Sports Complex",
+    "intent": "information",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Information about Sports Complex",
+    "intent": "information",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Describe Sports Complex",
+    "intent": "information",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Sports Complex?",
+    "intent": "information",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Sports Complex?",
+    "intent": "information",
+    "building": "Sports Complex",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Sports Complex",
+    "intent": "information",
+    "building": "Sports Complex",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Sports Complex",
+    "intent": "information",
+    "building": "Sports Complex",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Sports Complex open?",
+    "intent": "hours",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "When does Sports Complex open? pls",
+    "intent": "hours",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Sports Complex?",
+    "intent": "hours",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Sports Complex",
+    "intent": "hours",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Is Sports Complex open now?",
+    "intent": "hours",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Is Sports Complex open now? pls",
+    "intent": "hours",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Sports Complex inafungua lini?",
+    "intent": "hours",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Sports Complex",
+    "intent": "hours",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Sports Complex",
+    "intent": "contact",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Sports Complex",
+    "intent": "contact",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Email of Sports Complex",
+    "intent": "contact",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Sports Complex",
+    "intent": "contact",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Sports Complex",
+    "intent": "contact",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Sports Complex thanks",
+    "intent": "contact",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Sports Complex",
+    "intent": "contact",
+    "building": "Sports Complex",
+    "language": "english"
+  },
+  {
+    "query": "Where is Health Center?",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Health Center?",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Health Center please",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Way to Health Center please",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Health Center",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Bring me to Health Center thanks",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Health Center",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Location of Health Center",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Location of Health Center pls",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Health Center",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Health Center",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Health Center?",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Iko wapi Health Center?",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Health Center?",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Health Center?",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Health Center? pls",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Health Center",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Health Center",
+    "intent": "navigation",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "What is Health Center?",
+    "intent": "information",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Health Center",
+    "intent": "information",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Information about Health Center",
+    "intent": "information",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Information about Health Center",
+    "intent": "information",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Describe Health Center",
+    "intent": "information",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Health Center?",
+    "intent": "information",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Health Center?",
+    "intent": "information",
+    "building": "Health Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Health Center",
+    "intent": "information",
+    "building": "Health Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Health Center thanks",
+    "intent": "information",
+    "building": "Health Center",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Health Center",
+    "intent": "information",
+    "building": "Health Center",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Health Center open?",
+    "intent": "hours",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Health Center?",
+    "intent": "hours",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Health Center",
+    "intent": "hours",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Is Health Center open now?",
+    "intent": "hours",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Health Center inafungua lini?",
+    "intent": "hours",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Health Center",
+    "intent": "hours",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Health Center",
+    "intent": "contact",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Health Center",
+    "intent": "contact",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Email of Health Center",
+    "intent": "contact",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Health Center",
+    "intent": "contact",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Health Center",
+    "intent": "contact",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Health Center",
+    "intent": "contact",
+    "building": "Health Center",
+    "language": "english"
+  },
+  {
+    "query": "Where is Security Office?",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Security Office?",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Security Office?",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Security Office please",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Security Office",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Security Office",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Location of Security Office",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Security Office",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Security Office",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Security Office?",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Security Office?",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Security Office? thx",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Security Office?",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Security Office",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Security Office",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Naomba maelekezo ya Security Office",
+    "intent": "navigation",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "What is Security Office?",
+    "intent": "information",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "What is Security Office?",
+    "intent": "information",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Tell me what is Security Office? pls",
+    "intent": "information",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Security Office",
+    "intent": "information",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Information about Security Office",
+    "intent": "information",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Describe Security Office",
+    "intent": "information",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Describe Security Office please",
+    "intent": "information",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Security Office?",
+    "intent": "information",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Security Office?",
+    "intent": "information",
+    "building": "Security Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Security Office",
+    "intent": "information",
+    "building": "Security Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Security Office",
+    "intent": "information",
+    "building": "Security Office",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Security Office open?",
+    "intent": "hours",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Security Office?",
+    "intent": "hours",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Security Office? please",
+    "intent": "hours",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Security Office",
+    "intent": "hours",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Security Office thx",
+    "intent": "hours",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Is Security Office open now?",
+    "intent": "hours",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Is Security Office open now?",
+    "intent": "hours",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Is Security Office open now? thanks",
+    "intent": "hours",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Security Office inafungua lini?",
+    "intent": "hours",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Security Office",
+    "intent": "hours",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Security Office",
+    "intent": "contact",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Security Office",
+    "intent": "contact",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Security Office",
+    "intent": "contact",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Security Office thanks",
+    "intent": "contact",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Email of Security Office",
+    "intent": "contact",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Email of Security Office",
+    "intent": "contact",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Security Office",
+    "intent": "contact",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Security Office",
+    "intent": "contact",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Security Office",
+    "intent": "contact",
+    "building": "Security Office",
+    "language": "english"
+  },
+  {
+    "query": "Where is Main Gate?",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Main Gate?",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "How can I reach Main Gate? please",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Main Gate please",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Main Gate",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Main Gate",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Main Gate",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Main Gate thx",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Location of Main Gate",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Main Gate",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Main Gate",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Main Gate?",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Main Gate?",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Main Gate?",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Main Gate",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Main Gate",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Main Gate",
+    "intent": "navigation",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "What is Main Gate?",
+    "intent": "information",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Main Gate",
+    "intent": "information",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Information about Main Gate",
+    "intent": "information",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Describe Main Gate",
+    "intent": "information",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Main Gate?",
+    "intent": "information",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Main Gate?",
+    "intent": "information",
+    "building": "Main Gate",
+    "language": "swahili"
+  },
+  {
+    "query": "Ni nini Main Gate?",
+    "intent": "information",
+    "building": "Main Gate",
+    "language": "swahili"
+  },
+  {
+    "query": "Ni nini Main Gate? thank you",
+    "intent": "information",
+    "building": "Main Gate",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Main Gate",
+    "intent": "information",
+    "building": "Main Gate",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Main Gate",
+    "intent": "information",
+    "building": "Main Gate",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Main Gate",
+    "intent": "information",
+    "building": "Main Gate",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Main Gate open?",
+    "intent": "hours",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Main Gate?",
+    "intent": "hours",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Main Gate",
+    "intent": "hours",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Main Gate",
+    "intent": "hours",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Is Main Gate open now?",
+    "intent": "hours",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Main Gate inafungua lini?",
+    "intent": "hours",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Main Gate inafungua lini? thx",
+    "intent": "hours",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Main Gate",
+    "intent": "hours",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Main Gate",
+    "intent": "contact",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Main Gate",
+    "intent": "contact",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Email of Main Gate",
+    "intent": "contact",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Main Gate",
+    "intent": "contact",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Main Gate",
+    "intent": "contact",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Main Gate",
+    "intent": "contact",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Main Gate",
+    "intent": "contact",
+    "building": "Main Gate",
+    "language": "english"
+  },
+  {
+    "query": "Where is Parking Lot A?",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Parking Lot A?",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Parking Lot A please",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Parking Lot A",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Bring me to Parking Lot A",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Parking Lot A",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Location of Parking Lot A",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Parking Lot A",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Parking Lot A",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Parking Lot A",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Parking Lot A?",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Parking Lot A?",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Parking Lot A?",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Parking Lot A",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Parking Lot A",
+    "intent": "navigation",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "What is Parking Lot A?",
+    "intent": "information",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Parking Lot A",
+    "intent": "information",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Information about Parking Lot A",
+    "intent": "information",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Describe Parking Lot A",
+    "intent": "information",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Parking Lot A?",
+    "intent": "information",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Parking Lot A?",
+    "intent": "information",
+    "building": "Parking Lot A",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Parking Lot A",
+    "intent": "information",
+    "building": "Parking Lot A",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Parking Lot A",
+    "intent": "information",
+    "building": "Parking Lot A",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Parking Lot A thx",
+    "intent": "information",
+    "building": "Parking Lot A",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Parking Lot A open?",
+    "intent": "hours",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "When does Parking Lot A open? please",
+    "intent": "hours",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Parking Lot A?",
+    "intent": "hours",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Parking Lot A",
+    "intent": "hours",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Is Parking Lot A open now?",
+    "intent": "hours",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Parking Lot A inafungua lini?",
+    "intent": "hours",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Parking Lot A",
+    "intent": "hours",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Parking Lot A",
+    "intent": "contact",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Parking Lot A",
+    "intent": "contact",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Parking Lot A",
+    "intent": "contact",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Email of Parking Lot A",
+    "intent": "contact",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Parking Lot A",
+    "intent": "contact",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Parking Lot A",
+    "intent": "contact",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Parking Lot A",
+    "intent": "contact",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Parking Lot A thx",
+    "intent": "contact",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Parking Lot A",
+    "intent": "contact",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Parking Lot A please",
+    "intent": "contact",
+    "building": "Parking Lot A",
+    "language": "english"
+  },
+  {
+    "query": "Where is Parking Lot B?",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Where's Parking Lot B? thanks",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Parking Lot B?",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Parking Lot B please",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Parking Lot B",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Parking Lot B",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Location of Parking Lot B",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Parking Lot B",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Parking Lot B",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Parking Lot B?",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "swahili"
+  },
+  {
+    "query": "Iko wapi Parking Lot B? thx",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Parking Lot B?",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Parking Lot B?",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Parking Lot B? thx",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Parking Lot B",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Parking Lot B",
+    "intent": "navigation",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "What is Parking Lot B?",
+    "intent": "information",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Parking Lot B",
+    "intent": "information",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Information about Parking Lot B",
+    "intent": "information",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Describe Parking Lot B",
+    "intent": "information",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Describe Parking Lot B",
+    "intent": "information",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Parking Lot B?",
+    "intent": "information",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Parking Lot B?",
+    "intent": "information",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Parking Lot B?",
+    "intent": "information",
+    "building": "Parking Lot B",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Parking Lot B",
+    "intent": "information",
+    "building": "Parking Lot B",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Parking Lot B",
+    "intent": "information",
+    "building": "Parking Lot B",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Parking Lot B open?",
+    "intent": "hours",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "When does Parking Lot B open? pls",
+    "intent": "hours",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Parking Lot B?",
+    "intent": "hours",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Parking Lot B",
+    "intent": "hours",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Is Parking Lot B open now?",
+    "intent": "hours",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Parking Lot B inafungua lini?",
+    "intent": "hours",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Parking Lot B",
+    "intent": "hours",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Parking Lot B",
+    "intent": "hours",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Parking Lot B thank you",
+    "intent": "hours",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Parking Lot B",
+    "intent": "contact",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Parking Lot B",
+    "intent": "contact",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Parking Lot B",
+    "intent": "contact",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Email of Parking Lot B",
+    "intent": "contact",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Parking Lot B",
+    "intent": "contact",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Parking Lot B",
+    "intent": "contact",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Parking Lot B please",
+    "intent": "contact",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Parking Lot B",
+    "intent": "contact",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Parking Lot B please",
+    "intent": "contact",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Parking Lot B",
+    "intent": "contact",
+    "building": "Parking Lot B",
+    "language": "english"
+  },
+  {
+    "query": "Where is Bus Stop?",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Where's Bus Stop? thanks",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Bus Stop?",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Bus Stop please",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Bus Stop",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Bus Stop",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Location of Bus Stop",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Bus Stop",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Bus Stop",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Bus Stop?",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Bus Stop?",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Bus Stop?",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Bus Stop",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Bus Stop",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Bus Stop pls",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Bus Stop",
+    "intent": "navigation",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "What is Bus Stop?",
+    "intent": "information",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Bus Stop",
+    "intent": "information",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Information about Bus Stop",
+    "intent": "information",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Information about Bus Stop thx",
+    "intent": "information",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Describe Bus Stop",
+    "intent": "information",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Describe Bus Stop thx",
+    "intent": "information",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Bus Stop?",
+    "intent": "information",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Bus Stop?",
+    "intent": "information",
+    "building": "Bus Stop",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Bus Stop",
+    "intent": "information",
+    "building": "Bus Stop",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Bus Stop thx",
+    "intent": "information",
+    "building": "Bus Stop",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Bus Stop",
+    "intent": "information",
+    "building": "Bus Stop",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Bus Stop open?",
+    "intent": "hours",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Bus Stop?",
+    "intent": "hours",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Bus Stop",
+    "intent": "hours",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Is Bus Stop open now?",
+    "intent": "hours",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Bus Stop inafungua lini?",
+    "intent": "hours",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Bus Stop",
+    "intent": "hours",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Bus Stop",
+    "intent": "hours",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Bus Stop",
+    "intent": "contact",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Bus Stop",
+    "intent": "contact",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Email of Bus Stop",
+    "intent": "contact",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Bus Stop",
+    "intent": "contact",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Bus Stop",
+    "intent": "contact",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Bus Stop",
+    "intent": "contact",
+    "building": "Bus Stop",
+    "language": "english"
+  },
+  {
+    "query": "Where is Registrar Office?",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Where can I find Registrar Office?",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Registrar Office?",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Registrar Office please",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Path to Registrar Office please",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Registrar Office",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Registrar Office",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Registrar Office please",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Location of Registrar Office",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Registrar Office",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Registrar Office",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Registrar Office",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Registrar Office?",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Registrar Office?",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Registrar Office? thx",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Registrar Office?",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Registrar Office",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Registrar Office pls",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Registrar Office",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Naomba maelekezo ya Registrar Office thanks",
+    "intent": "navigation",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "What is Registrar Office?",
+    "intent": "information",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Registrar Office",
+    "intent": "information",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Information about Registrar Office",
+    "intent": "information",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Describe Registrar Office",
+    "intent": "information",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Registrar Office?",
+    "intent": "information",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Registrar Office?",
+    "intent": "information",
+    "building": "Registrar Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Registrar Office",
+    "intent": "information",
+    "building": "Registrar Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Registrar Office",
+    "intent": "information",
+    "building": "Registrar Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Registrar Office please",
+    "intent": "information",
+    "building": "Registrar Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Registrar Office",
+    "intent": "information",
+    "building": "Registrar Office",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Registrar Office open?",
+    "intent": "hours",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Registrar Office?",
+    "intent": "hours",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Registrar Office",
+    "intent": "hours",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Is Registrar Office open now?",
+    "intent": "hours",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Registrar Office inafungua lini?",
+    "intent": "hours",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Registrar Office",
+    "intent": "hours",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Registrar Office",
+    "intent": "contact",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Registrar Office",
+    "intent": "contact",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Email of Registrar Office",
+    "intent": "contact",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Registrar Office",
+    "intent": "contact",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Registrar Office",
+    "intent": "contact",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Registrar Office",
+    "intent": "contact",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Registrar Office",
+    "intent": "contact",
+    "building": "Registrar Office",
+    "language": "english"
+  },
+  {
+    "query": "Where is Dean's Office?",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Where's Dean's Office? thx",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Dean's Office?",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Dean's Office please",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Dean's Office",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Dean's Office",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Location of Dean's Office",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Location of Dean's Office thanks",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Dean's Office",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Dean's Office",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Dean's Office?",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Dean's Office?",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Dean's Office? please",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Dean's Office?",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Dean's Office",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Dean's Office pls",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Dean's Office",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Naomba maelekezo ya Dean's Office thank you",
+    "intent": "navigation",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "What is Dean's Office?",
+    "intent": "information",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Tell me what is Dean's Office?",
+    "intent": "information",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Dean's Office",
+    "intent": "information",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Information about Dean's Office",
+    "intent": "information",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Describe Dean's Office",
+    "intent": "information",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Dean's Office?",
+    "intent": "information",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Dean's Office?",
+    "intent": "information",
+    "building": "Dean's Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Ni nini Dean's Office?",
+    "intent": "information",
+    "building": "Dean's Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Dean's Office",
+    "intent": "information",
+    "building": "Dean's Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Dean's Office",
+    "intent": "information",
+    "building": "Dean's Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Dean's Office thx",
+    "intent": "information",
+    "building": "Dean's Office",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Dean's Office open?",
+    "intent": "hours",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "When does Dean's Office open?",
+    "intent": "hours",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Dean's Office?",
+    "intent": "hours",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Dean's Office",
+    "intent": "hours",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Is Dean's Office open now?",
+    "intent": "hours",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Dean's Office inafungua lini?",
+    "intent": "hours",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Dean's Office inafungua lini?",
+    "intent": "hours",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Dean's Office inafungua lini? thank you",
+    "intent": "hours",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Dean's Office",
+    "intent": "hours",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Dean's Office",
+    "intent": "contact",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Dean's Office",
+    "intent": "contact",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Dean's Office",
+    "intent": "contact",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Dean's Office thanks",
+    "intent": "contact",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Email of Dean's Office",
+    "intent": "contact",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Email of Dean's Office thx",
+    "intent": "contact",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Dean's Office",
+    "intent": "contact",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Dean's Office",
+    "intent": "contact",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Dean's Office",
+    "intent": "contact",
+    "building": "Dean's Office",
+    "language": "english"
+  },
+  {
+    "query": "Where is ICT Department?",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Wheres ICT Department?",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to ICT Department?",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to ICT Department?",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "How can I reach ICT Department? thx",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Directions to ICT Department please",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Take me to ICT Department",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "I need to find ICT Department",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "I need to find ICT Department",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Location of ICT Department",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to ICT Department",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to ICT Department",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi ICT Department?",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi ICT Department?",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi ICT Department?",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea ICT Department",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea ICT Department",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya ICT Department",
+    "intent": "navigation",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "What is ICT Department?",
+    "intent": "information",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about ICT Department",
+    "intent": "information",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Information about ICT Department",
+    "intent": "information",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Describe ICT Department",
+    "intent": "information",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Describe ICT Department",
+    "intent": "information",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in ICT Department?",
+    "intent": "information",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in ICT Department?",
+    "intent": "information",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini ICT Department?",
+    "intent": "information",
+    "building": "ICT Department",
+    "language": "swahili"
+  },
+  {
+    "query": "Ni nini ICT Department?",
+    "intent": "information",
+    "building": "ICT Department",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu ICT Department",
+    "intent": "information",
+    "building": "ICT Department",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu ICT Department please",
+    "intent": "information",
+    "building": "ICT Department",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za ICT Department",
+    "intent": "information",
+    "building": "ICT Department",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za ICT Department",
+    "intent": "information",
+    "building": "ICT Department",
+    "language": "swahili"
+  },
+  {
+    "query": "When does ICT Department open?",
+    "intent": "hours",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "When does ICT Department open? thx",
+    "intent": "hours",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of ICT Department?",
+    "intent": "hours",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of ICT Department?",
+    "intent": "hours",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for ICT Department",
+    "intent": "hours",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Is ICT Department open now?",
+    "intent": "hours",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "ICT Department inafungua lini?",
+    "intent": "hours",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia ICT Department",
+    "intent": "hours",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia ICT Department",
+    "intent": "hours",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for ICT Department",
+    "intent": "contact",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for ICT Department thx",
+    "intent": "contact",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of ICT Department",
+    "intent": "contact",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of ICT Department thanks",
+    "intent": "contact",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Email of ICT Department",
+    "intent": "contact",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "How to contact ICT Department",
+    "intent": "contact",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya ICT Department",
+    "intent": "contact",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya ICT Department",
+    "intent": "contact",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya ICT Department please",
+    "intent": "contact",
+    "building": "ICT Department",
+    "language": "english"
+  },
+  {
+    "query": "Where is Finance Office?",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Finance Office?",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "How can I reach Finance Office? pls",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Finance Office please",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "diretions to Finance Office please",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Path to Finance Office please",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Finance Office",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Finance Office",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Location of Finance Office",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Location of Finance Office pls",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Finance Office",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Finance Office thanks",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Finance Office",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Finance Office?",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Finance Office?",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Finance Office?",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Finance Office",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Finance Office",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Naomba maelekezo ya Finance Office thank you",
+    "intent": "navigation",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "What is Finance Office?",
+    "intent": "information",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Finance Office",
+    "intent": "information",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Tell me abut Finance Office",
+    "intent": "information",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Information about Finance Office",
+    "intent": "information",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Describe Finance Office",
+    "intent": "information",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Finance Office?",
+    "intent": "information",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Finance Office? please",
+    "intent": "information",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Finance Office?",
+    "intent": "information",
+    "building": "Finance Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Finance Office",
+    "intent": "information",
+    "building": "Finance Office",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Finance Office",
+    "intent": "information",
+    "building": "Finance Office",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Finance Office open?",
+    "intent": "hours",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "When does Finance Office open? please",
+    "intent": "hours",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Finance Office?",
+    "intent": "hours",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Finance Office",
+    "intent": "hours",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Finance Office",
+    "intent": "hours",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Is Finance Office open now?",
+    "intent": "hours",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Finance Office inafungua lini?",
+    "intent": "hours",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Finance Office",
+    "intent": "hours",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Finance Office",
+    "intent": "contact",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Finance Office thanks",
+    "intent": "contact",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Finance Office",
+    "intent": "contact",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Email of Finance Office",
+    "intent": "contact",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Finance Office",
+    "intent": "contact",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Finance Office",
+    "intent": "contact",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Finance Office",
+    "intent": "contact",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Finance Office",
+    "intent": "contact",
+    "building": "Finance Office",
+    "language": "english"
+  },
+  {
+    "query": "Where is Examination Hall?",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "How do I get to Examination Hall?",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Directions to Examination Hall please",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Take me to Examination Hall",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Examination Hall",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "I need to find Examination Hall please",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Location of Examination Hall",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Show me the way to Examination Hall",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Navigate to Examination Hall",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Iko wapi Examination Hall?",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "swahili"
+  },
+  {
+    "query": "Naenda wapi Examination Hall?",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "swahili"
+  },
+  {
+    "query": "Nifikie wapi Examination Hall?",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "swahili"
+  },
+  {
+    "query": "Elekea Examination Hall",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "swahili"
+  },
+  {
+    "query": "Naomba maelekezo ya Examination Hall",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Naomba maelekezo ya Examination Hall",
+    "intent": "navigation",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "What is Examination Hall?",
+    "intent": "information",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Tell me about Examination Hall",
+    "intent": "information",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Information about Examination Hall",
+    "intent": "information",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Describe Examination Hall",
+    "intent": "information",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Describe Examination Hall pls",
+    "intent": "information",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "What facilities are in Examination Hall?",
+    "intent": "information",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Ni nini Examination Hall?",
+    "intent": "information",
+    "building": "Examination Hall",
+    "language": "swahili"
+  },
+  {
+    "query": "Ni nini Examination Hall?",
+    "intent": "information",
+    "building": "Examination Hall",
+    "language": "swahili"
+  },
+  {
+    "query": "Elezea kuhusu Examination Hall",
+    "intent": "information",
+    "building": "Examination Hall",
+    "language": "swahili"
+  },
+  {
+    "query": "Habari za Examination Hall",
+    "intent": "information",
+    "building": "Examination Hall",
+    "language": "swahili"
+  },
+  {
+    "query": "When does Examination Hall open?",
+    "intent": "hours",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "When does Examination Hall open? please",
+    "intent": "hours",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "What are the opening hours of Examination Hall?",
+    "intent": "hours",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Examination Hall",
+    "intent": "hours",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Examination Hall",
+    "intent": "hours",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Closing time for Examination Hall thanks",
+    "intent": "hours",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Is Examination Hall open now?",
+    "intent": "hours",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Examination Hall inafungua lini?",
+    "intent": "hours",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Examination Hall inafungua lini?",
+    "intent": "hours",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Muda wa kufungulia Examination Hall",
+    "intent": "hours",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Contact information for Examination Hall",
+    "intent": "contact",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Phone number of Examination Hall",
+    "intent": "contact",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Email of Examination Hall",
+    "intent": "contact",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Email of Examination Hall",
+    "intent": "contact",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "How to contact Examination Hall",
+    "intent": "contact",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Examination Hall",
+    "intent": "contact",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Mawasiliano ya Examination Hall thanks",
+    "intent": "contact",
+    "building": "Examination Hall",
+    "language": "english"
+  },
+  {
+    "query": "Nambari ya simu ya Examination Hall",
+    "intent": "contact",
+    "building": "Examination Hall",
+    "language": "english"
+  }
+]

@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Paths - UoEm Navigation</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; }
+        .container { display: flex; height: 100vh; }
+        .sidebar { width: 400px; background: white; padding: 20px; overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.1); }
+        .map-container { flex: 1; position: relative; }
+        #map { width: 100%; height: 100%; }
+        
+        /* Loading overlay */
+        .loading { 
+            position: absolute; 
+            top: 0; left: 0; right: 0; bottom: 0; 
+            background: rgba(255,255,255,0.9); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 1000;
+            flex-direction: column;
+        }
+        .spinner { 
+            width: 40px; 
+            height: 40px; 
+            border: 4px solid #f3f3f3; 
+            border-top: 4px solid #3498db; 
+            border-radius: 50%; 
+            animation: spin 1s linear infinite; 
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .header { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #e9ecef; }
+        .header h1 { color: #2c3e50; font-size: 1.5rem; }
+        .header p { color: #6c757d; margin-top: 5px; }
+        
+        .path-item { 
+            padding: 12px; 
+            margin-bottom: 8px; 
+            border-radius: 6px; 
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #dee2e6;
+        }
+        .path-item:hover { background: #e9ecef; }
+        .path-item.selected { 
+            background: #e3f2fd; 
+            border-left-color: #007bff;
+            border: 1px solid #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.1);
+        }
+        
+        .path-type-walking { border-left-color: #3498db !important; }
+        .path-type-cycling { border-left-color: #2ecc71 !important; }
+        .path-type-driving { border-left-color: #e74c3c !important; }
+        
+        .path-id { 
+            font-weight: bold; 
+            color: #2c3e50; 
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .path-name { margin: 5px 0; font-weight: 500; font-size: 13px; }
+        .path-info { 
+            font-size: 11px; 
+            color: #6c757d; 
+            display: flex; 
+            justify-content: space-between;
+            align-items: center;
+        }
+        .path-type-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .walking-badge { background: #3498db; color: white; }
+        .cycling-badge { background: #2ecc71; color: white; }
+        .driving-badge { background: #e74c3c; color: white; }
+        
+        .edit-form { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-top: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border: 1px solid #dee2e6;
+        }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { 
+            display: block; 
+            margin-bottom: 5px; 
+            font-weight: 500; 
+            color: #495057;
+            font-size: 13px;
+        }
+        .form-group select, .form-group input { 
+            width: 100%; 
+            padding: 8px 12px; 
+            border: 2px solid #dee2e6; 
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .form-group select:focus, .form-group input:focus { 
+            outline: none; 
+            border-color: #007bff; 
+        }
+        
+        .btn { 
+            padding: 8px 16px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: 500;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #545b62; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-success:hover { background: #218838; }
+        
+        .stats { 
+            background: #f8f9fa; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 20px;
+            font-size: 13px;
+            border: 1px solid #dee2e6;
+        }
+        .stat-item { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .stat-item:last-child { border-bottom: none; margin-bottom: 0; }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .debug-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #856404;
+        }
+        
+        .no-paths {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+        .no-paths i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+        
+        /* Map path styles */
+        .path-line {
+            cursor: pointer;
+        }
+        .path-line:hover {
+            filter: brightness(1.2);
+        }
+        .selected-path {
+            filter: brightness(1.3);
+            stroke-width: 2px !important;
+        }
+        
+        .map-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .map-btn {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="header">
+                <h1><i class="fas fa-edit"></i> Edit Path Types</h1>
+                <p>Click on paths in the list or map to edit their type</p>
+            </div>
+            
+            <div class="stats" id="stats">
+                <div class="stat-item">
+                    <span>Total Paths:</span>
+                    <span id="totalPaths">0</span>
+                </div>
+                <div class="stat-item">
+                    <span style="color: #3498db;"><i class="fas fa-walking"></i> Walking:</span>
+                    <span id="walkingCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span style="color: #2ecc71;"><i class="fas fa-bicycle"></i> Cycling:</span>
+                    <span id="cyclingCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span style="color: #e74c3c;"><i class="fas fa-car"></i> Driving:</span>
+                    <span id="drivingCount">0</span>
+                </div>
+            </div>
+            
+            <div id="pathList">
+                <!-- Paths will be loaded here -->
+            </div>
+            
+            <div class="edit-form" id="editForm" style="display: none;">
+                <h3 style="font-size: 16px; margin-bottom: 15px;">
+                    <i class="fas fa-edit"></i> Edit Path <span id="currentPathId"></span>
+                </h3>
+                
+                <div class="form-group">
+                    <label>Path Name</label>
+                    <input type="text" id="pathName" placeholder="Enter path name">
+                </div>
+                
+                <div class="form-group">
+                    <label>Path Type</label>
+                    <select id="pathType">
+                        <option value="walking">Walking (Pedestrians only)</option>
+                        <option value="cycling">Cycling (Bikes + Pedestrians)</option>
+                        <option value="driving">Driving (Vehicles + Bikes + Pedestrians)</option>
+                    </select>
+                </div>
+                
+                <div class="actions">
+                    <button class="btn btn-primary" id="saveBtn">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                    <button class="btn btn-secondary" id="cancelBtn">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button class="btn btn-success" id="zoomToBtn">
+                        <i class="fas fa-search-plus"></i> Zoom To
+                    </button>
+                </div>
+                
+                <div id="saveStatus" style="margin-top: 15px; font-size: 12px;"></div>
+            </div>
+            
+            <div class="debug-info" id="debugInfo" style="display: none;">
+                <i class="fas fa-bug"></i> Debug information will appear here
+            </div>
+        </div>
+        
+        <div class="map-container">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="margin-top: 10px; color: #666;">Loading paths...</p>
+            </div>
+            
+            <div class="map-controls">
+                <button class="map-btn" id="showAllPaths">
+                    <i class="fas fa-eye"></i> Show All
+                </button>
+                <button class="map-btn" id="fitBounds">
+                    <i class="fas fa-expand"></i> Fit View
+                </button>
+            </div>
+            
+            <div id="map"></div>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Global variables
+        let map;
+        let allPaths = [];
+        let selectedPathId = null;
+        let pathLayers = [];
+        let pathMarkers = [];
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, initializing...');
+            initializeMap();
+            setupEventListeners();
+            loadPaths();
+        });
+        
+        // Initialize map
+        function initializeMap() {
+            console.log('Initializing map...');
+            map = L.map('map').setView([-0.5075, 37.4575], 17);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 20,
+                minZoom: 15
+            }).addTo(map);
+            
+            console.log('Map initialized');
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('saveBtn').addEventListener('click', saveChanges);
+            document.getElementById('cancelBtn').addEventListener('click', cancelEdit);
+            document.getElementById('zoomToBtn').addEventListener('click', zoomToSelected);
+            document.getElementById('showAllPaths').addEventListener('click', showAllPaths);
+            document.getElementById('fitBounds').addEventListener('click', fitToBounds);
+        }
+        
+        // Load paths from server
+        async function loadPaths() {
+            console.log('Loading paths from server...');
+            showLoading(true);
+            
+            try {
+                const response = await fetch('/api/get_all_paths');
+                const data = await response.json();
+                
+                console.log('Server response:', data);
+                
+                if (data.success && data.paths && data.paths.length > 0) {
+                    allPaths = data.paths;
+                    console.log(`Loaded ${allPaths.length} paths`);
+                    renderPathList();
+                    displayPathsOnMap();
+                    updateStats();
+                    showLoading(false);
+                } else {
+                    showLoading(false);
+                    document.getElementById('pathList').innerHTML = `
+                        <div class="no-paths">
+                            <i class="fas fa-road"></i>
+                            <p>No paths found in database</p>
+                            <p style="font-size: 11px; margin-top: 10px;">
+                                Check if paths exist in embu_paths table
+                            </p>
+                        </div>
+                    `;
+                    
+                    document.getElementById('debugInfo').style.display = 'block';
+                    document.getElementById('debugInfo').innerHTML = `
+                        <strong>Debug Info:</strong><br>
+                        Success: ${data.success}<br>
+                        Paths found: ${data.paths ? data.paths.length : 0}<br>
+                        Error: ${data.error || 'None'}
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading paths:', error);
+                showLoading(false);
+                
+                document.getElementById('pathList').innerHTML = `
+                    <div class="no-paths">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Error loading paths</p>
+                        <p style="font-size: 11px; margin-top: 10px; color: #dc3545;">
+                            ${error.message}
+                        </p>
+                    </div>
+                `;
+                
+                document.getElementById('debugInfo').style.display = 'block';
+                document.getElementById('debugInfo').innerHTML = `
+                    <strong>Error Details:</strong><br>
+                    ${error.toString()}<br>
+                    Check browser console for details
+                `;
+            }
+        }
+        
+        // Render path list in sidebar
+        function renderPathList() {
+            const container = document.getElementById('pathList');
+            container.innerHTML = '';
+            
+            allPaths.forEach(path => {
+                const item = document.createElement('div');
+                item.className = `path-item path-type-${path.type}`;
+                item.dataset.id = path.id;
+                
+                // Get path type badge class
+                const badgeClass = `${path.type}-badge`;
+                
+                item.innerHTML = `
+                    <div class="path-id">
+                        <i class="fas fa-${getTypeIcon(path.type)}"></i>
+                        Path ${path.id}
+                    </div>
+                    <div class="path-name">${path.name || 'Unnamed Path'}</div>
+                    <div class="path-info">
+                        <span class="path-type-badge ${badgeClass}">${path.type}</span>
+                        <span>${path.length ? Math.round(path.length) + 'm' : 'Length unknown'}</span>
+                    </div>
+                `;
+                
+                item.addEventListener('click', () => selectPath(path.id));
+                container.appendChild(item);
+            });
+        }
+        
+        // Display paths on map
+        function displayPathsOnMap() {
+            console.log('Displaying paths on map...');
+            
+            // Clear existing layers
+            pathLayers.forEach(layer => {
+                if (layer && map.hasLayer(layer)) {
+                    map.removeLayer(layer);
+                }
+            });
+            pathLayers = [];
+            pathMarkers = [];
+            
+            // Define path styles
+            const pathStyles = {
+                'walking': { color: '#3498db', weight: 4, opacity: 0.8 },
+                'cycling': { color: '#2ecc71', weight: 4, opacity: 0.8 },
+                'driving': { color: '#e74c3c', weight: 5, opacity: 0.8 },
+                'default': { color: '#95a5a6', weight: 3, opacity: 0.6 }
+            };
+            
+            let bounds = null;
+            
+            allPaths.forEach(path => {
+                try {
+                    let geojson;
+                    
+                    // Parse GeoJSON if it's a string
+                    if (typeof path.geojson === 'string') {
+                        geojson = JSON.parse(path.geojson);
+                    } else {
+                        geojson = path.geojson;
+                    }
+                    
+                    if (!geojson) {
+                        console.warn(`Path ${path.id} has no GeoJSON`);
+                        return;
+                    }
+                    
+                    const style = pathStyles[path.type] || pathStyles.default;
+                    
+                    // Handle LineString geometry
+                    if (geojson.type === 'LineString' && geojson.coordinates) {
+                        const latLngs = geojson.coordinates.map(coord => [coord[1], coord[0]]);
+                        
+                        // Create polyline
+                        const polyline = L.polyline(latLngs, {
+                            color: style.color,
+                            weight: style.weight,
+                            opacity: style.opacity,
+                            className: 'path-line'
+                        });
+                        
+                        // Store path ID for reference
+                        polyline.pathId = path.id;
+                        
+                        // Add click handler
+                        polyline.on('click', function(e) {
+                            selectPath(path.id);
+                            e.originalEvent.preventDefault();
+                        });
+                        
+                        // Add to map
+                        polyline.addTo(map);
+                        pathLayers.push(polyline);
+                        
+                        // Create start marker
+                        const startMarker = L.circleMarker(latLngs[0], {
+                            radius: 5,
+                            fillColor: style.color,
+                            color: 'white',
+                            weight: 2,
+                            fillOpacity: 1
+                        }).bindTooltip(`Start: Path ${path.id}`, { direction: 'top' });
+                        
+                        // Create end marker
+                        const endMarker = L.circleMarker(latLngs[latLngs.length - 1], {
+                            radius: 5,
+                            fillColor: style.color,
+                            color: 'white',
+                            weight: 2,
+                            fillOpacity: 1
+                        }).bindTooltip(`End: Path ${path.id}`, { direction: 'top' });
+                        
+                        startMarker.addTo(map);
+                        endMarker.addTo(map);
+                        pathMarkers.push(startMarker, endMarker);
+                        
+                        // Update bounds
+                        if (!bounds) {
+                            bounds = L.latLngBounds(latLngs);
+                        } else {
+                            bounds.extend(latLngs);
+                        }
+                        
+                        console.log(`Added path ${path.id} to map`);
+                    }
+                    
+                    // Handle MultiLineString geometry
+                    else if (geojson.type === 'MultiLineString' && geojson.coordinates) {
+                        geojson.coordinates.forEach((line, index) => {
+                            const latLngs = line.map(coord => [coord[1], coord[0]]);
+                            const polyline = L.polyline(latLngs, {
+                                color: style.color,
+                                weight: style.weight,
+                                opacity: style.opacity,
+                                className: 'path-line'
+                            });
+                            
+                            polyline.pathId = path.id;
+                            polyline.on('click', () => selectPath(path.id));
+                            
+                            polyline.addTo(map);
+                            pathLayers.push(polyline);
+                            
+                            if (!bounds) {
+                                bounds = L.latLngBounds(latLngs);
+                            } else {
+                                bounds.extend(latLngs);
+                            }
+                        });
+                    }
+                    
+                } catch (error) {
+                    console.error(`Error displaying path ${path.id}:`, error);
+                }
+            });
+            
+            // Fit map to bounds if we have paths
+            if (bounds && bounds.isValid()) {
+                map.fitBounds(bounds, { padding: [50, 50] });
+                console.log('Map fitted to path bounds');
+            }
+            
+            console.log(`Displayed ${pathLayers.length} path layers on map`);
+        }
+        
+        // Select a path
+        function selectPath(pathId) {
+            console.log(`Selecting path ${pathId}`);
+            
+            selectedPathId = pathId;
+            const path = allPaths.find(p => p.id === pathId);
+            
+            if (!path) {
+                console.error(`Path ${pathId} not found`);
+                return;
+            }
+            
+            // Update UI - highlight selected item in list
+            document.querySelectorAll('.path-item').forEach(item => {
+                item.classList.remove('selected');
+                if (parseInt(item.dataset.id) === pathId) {
+                    item.classList.add('selected');
+                    item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+            
+            // Highlight selected path on map
+            pathLayers.forEach(layer => {
+                if (layer.pathId === pathId) {
+                    layer.setStyle({ weight: 8, opacity: 1 });
+                    layer.bringToFront();
+                    
+                    // Zoom to this path
+                    const bounds = layer.getBounds();
+                    if (bounds.isValid()) {
+                        map.fitBounds(bounds, { padding: [100, 100] });
+                    }
+                } else {
+                    const originalPath = allPaths.find(p => p.id === layer.pathId);
+                    if (originalPath) {
+                        const style = getPathStyle(originalPath.type);
+                        layer.setStyle(style);
+                    }
+                }
+            });
+            
+            // Show edit form
+            document.getElementById('editForm').style.display = 'block';
+            document.getElementById('currentPathId').textContent = path.id;
+            document.getElementById('pathName').value = path.name || '';
+            document.getElementById('pathType').value = path.type || 'walking';
+            
+            // Clear status messages
+            document.getElementById('saveStatus').innerHTML = '';
+            
+            console.log(`Path ${pathId} selected`);
+        }
+        
+        // Save changes to path
+        async function saveChanges() {
+            const pathId = selectedPathId;
+            const name = document.getElementById('pathName').value;
+            const type = document.getElementById('pathType').value;
+            
+            if (!pathId) {
+                alert('No path selected');
+                return;
+            }
+            
+            console.log(`Saving changes for path ${pathId}:`, { name, type });
+            
+            try {
+                const response = await fetch('/api/update_path', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        id: pathId, 
+                        name: name, 
+                        type: type 
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('Save response:', data);
+                
+                if (data.success) {
+                    // Update local data
+                    const pathIndex = allPaths.findIndex(p => p.id === pathId);
+                    if (pathIndex !== -1) {
+                        allPaths[pathIndex].name = name;
+                        allPaths[pathIndex].type = type;
+                    }
+                    
+                    // Update UI
+                    renderPathList();
+                    displayPathsOnMap();
+                    updateStats();
+                    
+                    // Re-select the path to update highlighting
+                    selectPath(pathId);
+                    
+                    // Show success message
+                    document.getElementById('saveStatus').innerHTML = `
+                        <div style="color: #28a745; background: #d4edda; padding: 8px; border-radius: 4px; font-size: 11px;">
+                            <i class="fas fa-check-circle"></i> Changes saved successfully!
+                        </div>
+                    `;
+                    
+                    // Clear message after 3 seconds
+                    setTimeout(() => {
+                        const statusDiv = document.getElementById('saveStatus');
+                        if (statusDiv) statusDiv.innerHTML = '';
+                    }, 3000);
+                    
+                } else {
+                    document.getElementById('saveStatus').innerHTML = `
+                        <div style="color: #dc3545; background: #f8d7da; padding: 8px; border-radius: 4px; font-size: 11px;">
+                            <i class="fas fa-exclamation-circle"></i> Error: ${data.error || 'Unknown error'}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error saving changes:', error);
+                document.getElementById('saveStatus').innerHTML = `
+                    <div style="color: #dc3545; background: #f8d7da; padding: 8px; border-radius: 4px; font-size: 11px;">
+                        <i class="fas fa-exclamation-circle"></i> Network error: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        // Cancel edit
+        function cancelEdit() {
+            document.getElementById('editForm').style.display = 'none';
+            selectedPathId = null;
+            
+            // Clear selection
+            document.querySelectorAll('.path-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Reset path styles on map
+            pathLayers.forEach(layer => {
+                const originalPath = allPaths.find(p => p.id === layer.pathId);
+                if (originalPath) {
+                    const style = getPathStyle(originalPath.type);
+                    layer.setStyle(style);
+                }
+            });
+        }
+        
+        // Zoom to selected path
+        function zoomToSelected() {
+            if (!selectedPathId) return;
+            
+            const layer = pathLayers.find(l => l.pathId === selectedPathId);
+            if (layer) {
+                const bounds = layer.getBounds();
+                if (bounds.isValid()) {
+                    map.fitBounds(bounds, { padding: [100, 100], maxZoom: 18 });
+                }
+            }
+        }
+        
+        // Show all paths
+        function showAllPaths() {
+            const bounds = L.latLngBounds([]);
+            
+            pathLayers.forEach(layer => {
+                bounds.extend(layer.getBounds());
+            });
+            
+            if (bounds.isValid()) {
+                map.fitBounds(bounds, { padding: [50, 50] });
+            }
+        }
+        
+        // Fit map to all paths
+        function fitToBounds() {
+            const bounds = L.latLngBounds([]);
+            
+            pathLayers.forEach(layer => {
+                bounds.extend(layer.getBounds());
+            });
+            
+            if (bounds.isValid()) {
+                map.fitBounds(bounds, { padding: [50, 50] });
+            } else {
+                map.setView([-0.5075, 37.4575], 17);
+            }
+        }
+        
+        // Update statistics
+        function updateStats() {
+            const total = allPaths.length;
+            const walking = allPaths.filter(p => p.type === 'walking').length;
+            const cycling = allPaths.filter(p => p.type === 'cycling').length;
+            const driving = allPaths.filter(p => p.type === 'driving').length;
+            
+            document.getElementById('totalPaths').textContent = total;
+            document.getElementById('walkingCount').textContent = walking;
+            document.getElementById('cyclingCount').textContent = cycling;
+            document.getElementById('drivingCount').textContent = driving;
+        }
+        
+        // Get icon for path type
+        function getTypeIcon(type) {
+            switch(type) {
+                case 'walking': return 'walking';
+                case 'cycling': return 'bicycle';
+                case 'driving': return 'car';
+                default: return 'road';
+            }
+        }
+        
+        // Get style for path type
+        function getPathStyle(type) {
+            switch(type) {
+                case 'walking': return { color: '#3498db', weight: 4, opacity: 0.8 };
+                case 'cycling': return { color: '#2ecc71', weight: 4, opacity: 0.8 };
+                case 'driving': return { color: '#e74c3c', weight: 5, opacity: 0.8 };
+                default: return { color: '#95a5a6', weight: 3, opacity: 0.6 };
+            }
+        }
+        
+        // Show/hide loading overlay
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'flex' : 'none';
+        }
+        
+        // Debug function - check what's in the database
+        async function debugDatabase() {
+            try {
+                const response = await fetch('/api/debug/paths');
+                const data = await response.json();
+                console.log('Database debug:', data);
+                return data;
+            } catch (error) {
+                console.error('Debug error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

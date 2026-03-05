@@ -1,0 +1,31 @@
+# AI & Machine Learning
+tensorflow>=2.10.0,<2.16.0  # Use older version for Python 3.11 compatibility
+keras>=2.10.0
+numpy>=1.23.0
+pandas>=1.5.0
+scikit-learn>=1.2.0
+
+# NLP & Language Processing
+spacy>=3.5.0
+nltk>=3.8.0
+textblob>=0.17.1
+
+# Speech Recognition
+SpeechRecognition>=3.10.0
+# pyaudio - Install separately due to Windows issues
+wave
+
+# Remove problematic packages
+# googletrans - Has installation issues
+# langdetect - Use alternative
+langdetect==1.0.9
+
+# Existing requirements
+flask>=2.3.0
+flask-socketio>=5.3.0
+pg8000>=1.29.0
+geopandas>=0.13.0
+shapely>=2.0.0
+folium>=0.14.0
+qrcode>=7.4.0
+pillow>=9.5.0
