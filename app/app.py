@@ -27,6 +27,7 @@ print("🚀 DEBUG: Starting app.py initialization...")
 # ============= RENDER.COM COMPATIBILITY ADDITIONS =============
 # Import for Render database connection
 import sys
+print("🚀 DEBUG: App script started", file=sys.stderr)
 from dotenv import load_dotenv
 
 # Load environment variables from .env file (if it exists)
@@ -503,6 +504,7 @@ def create_sample_photos(df, building_photos):
         print("  Sample photos not created. Continuing without them...")
 
 # Load buildings
+print("🗺️ DEBUG: Loading buildings...")
 df, building_photos = load_buildings_with_photos()
 
 # Optionally create sample photos (comment out if you don't want them)
