@@ -18,6 +18,19 @@ import os
 print("🔍 DEBUG: nlp_processor.py file loaded", file=sys.stderr)
 print("🔍 DEBUG: Starting to import nltk in nlp_processor.py", file=sys.stderr)
 
+# Add spaCy model verification
+import subprocess
+import sys
+
+# Verify spaCy model installation
+print("🔍 DEBUG: Checking spaCy model installation...", file=sys.stderr)
+try:
+    result = subprocess.run(['python', '-m', 'spacy', 'info'], 
+                           capture_output=True, text=True)
+    print(f"🔍 DEBUG: spaCy info output: {result.stdout[:200]}", file=sys.stderr)
+except Exception as e:
+    print(f"⚠ Could not run spacy info: {e}", file=sys.stderr)
+
 # Set NLTK data path to a persistent location
 nltk_data_dir = '/opt/render/nltk_data'
 os.makedirs(nltk_data_dir, exist_ok=True)
@@ -57,13 +70,38 @@ class CampusNLPProcessor:
         self.logger = logging.getLogger(__name__)
         
         print("🔍 DEBUG: CampusNLPProcessor.__init__ - step 2 - loading spaCy", file=sys.stderr)
-        # Load spaCy model
+        # Load spaCy model with better error handling
+        self.nlp = None
         try:
+            # First, try to load the model normally
+            import spacy
+            print("🔍 DEBUG: spaCy version: ", spacy.__version__, file=sys.stderr)
+            
+            # Check if model is installed by trying to find it
+            import subprocess
+            result = subprocess.run(['python', '-m', 'spacy', 'info', 'en_core_web_sm'], 
+                                   capture_output=True, text=True)
+            print(f"🔍 DEBUG: spaCy info result: {result.returncode}", file=sys.stderr)
+            
+            # Try to load the model
             self.nlp = spacy.load("en_core_web_sm")
             print("✅ spaCy model loaded successfully", file=sys.stderr)
+        except OSError as e:
+            print(f"⚠ spaCy model not available via load(): {e}", file=sys.stderr)
+            # Fallback: Try to load using the full package name
+            try:
+                import en_core_web_sm
+                self.nlp = en_core_web_sm.load()
+                print("✅ spaCy model loaded via en_core_web_sm.load()", file=sys.stderr)
+            except Exception as e2:
+                print(f"⚠ spaCy model also failed via direct import: {e2}", file=sys.stderr)
+                self.nlp = None
         except Exception as e:
-            print(f"⚠ spaCy model not available: {e}", file=sys.stderr)
+            print(f"⚠ Unexpected error loading spaCy model: {e}", file=sys.stderr)
             self.nlp = None
+        
+        if self.nlp is None:
+            print("⚠ spaCy model not available, using fallback NLP", file=sys.stderr)
         
         print("🔍 DEBUG: CampusNLPProcessor.__init__ - step 3 - setting campus buildings", file=sys.stderr)
         self.campus_buildings = campus_buildings
