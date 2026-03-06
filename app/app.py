@@ -49,18 +49,16 @@ if not __name__ == '__main__':
 # ---------------------------------------------------
 nlp_processor = None
 
-import os
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex(16)
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 
-# Ensure the app binds to the correct host and port for Render
-if __name__ != '__main__':
-    # When running under gunicorn, configure the app to use the PORT env var
-    port = int(os.environ.get('PORT', 10000))
-    # This doesn't actually run the server, but ensures socketio is configured
-    socketio.server_options['port'] = port
-    socketio.server_options['host'] = '0.0.0.0'
+# IMPORTANT: Use eventlet for async_mode with gunicorn
+# This configuration is critical for Render deployment
+socketio = SocketIO(app, 
+                   cors_allowed_origins="*", 
+                   async_mode='eventlet',  # Must be 'eventlet' for gunicorn worker
+                   logger=True,  # Enable logging for debugging
+                   engineio_logger=True)  # Enable engine.io logging
 
 # Register the feedback blueprint
 app.register_blueprint(feedback_bp, url_prefix='/api/feedback')
@@ -77,7 +75,6 @@ EXPORT_DIR = os.path.join(BASE_DIR, 'exports')
 # Create directories if they don't exist
 for directory in [PHOTOS_DIR, UPLOAD_DIR, EXPORT_DIR]:
     os.makedirs(directory, exist_ok=True)
-
 # ---------------------------------------------------
 # REAL-TIME TRACKING DATA STRUCTURES
 # ---------------------------------------------------
@@ -2842,13 +2839,13 @@ def cleanup_worker():
 cleanup_thread = threading.Thread(target=cleanup_worker, daemon=True)
 cleanup_thread.start()
 
-# ---------------------------------------------------
-# RUN SERVER WITH SOCKET.IO - MODIFIED FOR RENDER
+## ---------------------------------------------------
+# RUN SERVER WITH SOCKET.IO - CORRECTED FOR RENDER
 # ---------------------------------------------------
 if __name__ == '__main__':
+    # This block runs ONLY for local development with 'python app.py'
     print("=" * 60)
-    print("UNIVERSITY OF EMBU STARLIFE NAVIGATION SYSTEM")
-    print("              WITH REAL-TIME TRACKING")
+    print("UNIVERSITY OF EMBU STARLIFE NAVIGATION SYSTEM (LOCAL DEVELOPMENT)")
     print("=" * 60)
     print(f"📊 Buildings: {len(df)}")
     print(f"🏛️  Building types: {len(df['type'].unique())}")
@@ -2891,12 +2888,19 @@ if __name__ == '__main__':
         paths = get_paths(mode)
         print(f"   {mode}: {len(paths)} paths")
     
-    # Get port from environment variable (Render sets this)
+    # Get port from environment variable
     port = int(os.environ.get('PORT', 5000))
     
     print(f"\n🌐 Server starting on port {port}")
     print("📡 Socket.IO server running")
     print("=" * 60)
     
-    # For Render, we need to use the PORT environment variable
-    socketio.run(app, debug=False, host='0.0.0.0', port=port)
+    # For local development - debug mode ON
+    socketio.run(app, 
+                debug=True,           # Enable debug mode for local development
+                host='0.0.0.0', 
+                port=port,
+                allow_unsafe_werkzeug=True)  # Allow debug in development
+
+# No else block needed - Gunicorn handles production on Render
+# The SocketIO object is already configured with async_mode='eventlet'
