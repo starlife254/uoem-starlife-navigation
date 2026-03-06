@@ -14,17 +14,27 @@ from typing import Dict, List, Tuple, Optional
 import logging
 import sys
 
-print("🔍 DEBUG: nlp_processor.py loaded", file=sys.stderr)
+print("🔍 DEBUG: nlp_processor.py file loaded", file=sys.stderr)
+print("🔍 DEBUG: Starting to import nltk in nlp_processor.py", file=sys.stderr)
 
 # Download NLTK data
 # Just check if they exist, don't download at runtime
 nltk.data.path.append('/opt/render/nltk_data')  # Add Render's NLTK path
+print("🔍 DEBUG: NLTK path set to /opt/render/nltk_data", file=sys.stderr)
+
 try:
     nltk.data.find('tokenizers/punkt')
-    nltk.data.find('corpora/stopwords')
+    print("✅ NLTK punkt found", file=sys.stderr)
 except LookupError:
-    # Log a warning but don't try to download
-    print("⚠ NLTK data not found - ensure build command downloads it")
+    print("⚠ NLTK punkt not found", file=sys.stderr)
+
+try:
+    nltk.data.find('corpora/stopwords')
+    print("✅ NLTK stopwords found", file=sys.stderr)
+except LookupError:
+    print("⚠ NLTK stopwords not found", file=sys.stderr)
+
+print("🔍 DEBUG: nltk imports complete", file=sys.stderr)
 
 class CampusNLPProcessor:
     """NLP processor for understanding campus navigation queries"""
@@ -36,23 +46,25 @@ class CampusNLPProcessor:
         Args:
             campus_buildings: List of building names in University of Embu
         """
-        print("🔍 DEBUG: CampusNLPProcessor.__init__ started", file=sys.stderr)
-        
+        print("🔍 DEBUG: CampusNLPProcessor.__init__ - step 1", file=sys.stderr)
         self.logger = logging.getLogger(__name__)
         
+        print("🔍 DEBUG: CampusNLPProcessor.__init__ - step 2 - loading spaCy", file=sys.stderr)
         # Load spaCy model
         try:
             self.nlp = spacy.load("en_core_web_sm")
-            print("✅ spaCy model loaded successfully")
-        except:
-            # Create a simple fallback
+            print("✅ spaCy model loaded successfully", file=sys.stderr)
+        except Exception as e:
+            print(f"⚠ spaCy model not available: {e}", file=sys.stderr)
             self.nlp = None
-            print("⚠ spaCy model not available, using fallback")
         
-        # Campus-specific data
+        print("🔍 DEBUG: CampusNLPProcessor.__init__ - step 3 - setting campus buildings", file=sys.stderr)
         self.campus_buildings = campus_buildings
+        
+        print("🔍 DEBUG: CampusNLPProcessor.__init__ - step 4 - creating synonyms", file=sys.stderr)
         self.building_synonyms = self._create_building_synonyms()
         
+        print("🔍 DEBUG: CampusNLPProcessor.__init__ - step 5 - setting up intent patterns", file=sys.stderr)
         # Intent patterns
         self.intent_patterns = {
             'navigation': [
@@ -99,6 +111,7 @@ class CampusNLPProcessor:
             ]
         }
         
+        print("🔍 DEBUG: CampusNLPProcessor.__init__ - step 6 - setting up navigation keywords", file=sys.stderr)
         # Navigation keywords
         self.navigation_keywords = [
             'near', 'close', 'next', 'between', 'beside', 'opposite',
@@ -106,10 +119,12 @@ class CampusNLPProcessor:
             'east', 'west', 'upstairs', 'downstairs', 'ground', 'floor'
         ]
         
+        print("🔍 DEBUG: CampusNLPProcessor.__init__ - step 7 - setting up question words", file=sys.stderr)
         # Question words
         self.question_words = ['where', 'what', 'when', 'how', 'who', 'which', 'why']
         
-        print(f"✅ NLP Processor initialized with {len(campus_buildings)} campus buildings")
+        print(f"✅ NLP Processor initialized with {len(campus_buildings)} campus buildings", file=sys.stderr)
+        print("🔍 DEBUG: CampusNLPProcessor.__init__ completed successfully", file=sys.stderr)
     
     def _create_building_synonyms(self) -> Dict[str, List[str]]:
         """Create synonyms and common names for campus buildings"""
