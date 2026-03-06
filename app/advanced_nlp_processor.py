@@ -18,6 +18,9 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import spacy
 import os
+import sys
+
+print("🔍 DEBUG: advanced_nlp_processor.py loaded", file=sys.stderr)
 
 # Download NLTK data
 # Just check if they exist, don't download at runtime
@@ -28,6 +31,7 @@ try:
 except LookupError:
     # Log a warning but don't try to download
     print("⚠ NLTK data not found - ensure build command downloads it")
+
 class AdvancedNLPProcessor:
     """Advanced NLP processor with TensorFlow ML models and multilingual support"""
     
@@ -39,12 +43,30 @@ class AdvancedNLPProcessor:
             campus_buildings: List of building names
             model_dir: Directory to save/load ML models
         """
+        print("🔍 DEBUG: AdvancedNLPProcessor.__init__ started", file=sys.stderr)
+        
         self.logger = logging.getLogger(__name__)
         self.campus_buildings = campus_buildings
         self.model_dir = model_dir
         
-        # Create model directory
+        print("🔍 DEBUG: Creating model directory", file=sys.stderr)
         os.makedirs(model_dir, exist_ok=True)
+        
+        print("🔍 DEBUG: Loading spaCy model...", file=sys.stderr)
+        try:
+            self.english_nlp = spacy.load("en_core_web_sm")
+            print("✅ English spaCy model loaded", file=sys.stderr)
+        except Exception as e:
+            print(f"⚠ English spaCy model not available: {e}", file=sys.stderr)
+            self.english_nlp = None
+        
+        print("🔍 DEBUG: Creating synonyms...", file=sys.stderr)
+        self.building_synonyms = self._create_multilingual_synonyms()
+        
+        print("🔍 DEBUG: Initializing ML models...", file=sys.stderr)
+        self._initialize_models()
+        
+        print("✅ Advanced NLP Processor initialized", file=sys.stderr)
         
         # Initialize language models
         self.english_nlp = None

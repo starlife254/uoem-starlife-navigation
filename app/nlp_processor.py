@@ -12,6 +12,9 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from typing import Dict, List, Tuple, Optional
 import logging
+import sys
+
+print("🔍 DEBUG: nlp_processor.py loaded", file=sys.stderr)
 
 # Download NLTK data
 # Just check if they exist, don't download at runtime
@@ -33,6 +36,8 @@ class CampusNLPProcessor:
         Args:
             campus_buildings: List of building names in University of Embu
         """
+        print("🔍 DEBUG: CampusNLPProcessor.__init__ started", file=sys.stderr)
+        
         self.logger = logging.getLogger(__name__)
         
         # Load spaCy model
