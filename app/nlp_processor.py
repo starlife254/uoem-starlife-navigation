@@ -13,26 +13,33 @@ from nltk.corpus import stopwords
 from typing import Dict, List, Tuple, Optional
 import logging
 import sys
+import os
 
 print("🔍 DEBUG: nlp_processor.py file loaded", file=sys.stderr)
 print("🔍 DEBUG: Starting to import nltk in nlp_processor.py", file=sys.stderr)
 
-# Download NLTK data
-# Just check if they exist, don't download at runtime
-nltk.data.path.append('/opt/render/nltk_data')  # Add Render's NLTK path
-print("🔍 DEBUG: NLTK path set to /opt/render/nltk_data", file=sys.stderr)
+# Set NLTK data path to a persistent location
+nltk_data_dir = '/opt/render/nltk_data'
+os.makedirs(nltk_data_dir, exist_ok=True)
+nltk.data.path.append(nltk_data_dir)
 
+# Also add the current directory as fallback
+nltk.data.path.append(os.path.join(os.getcwd(), 'nltk_data'))
+
+print(f"🔍 NLTK data paths: {nltk.data.path}", file=sys.stderr)
+
+# Check if data exists, but DON'T crash if it doesn't - we'll handle gracefully
 try:
     nltk.data.find('tokenizers/punkt')
     print("✅ NLTK punkt found", file=sys.stderr)
 except LookupError:
-    print("⚠ NLTK punkt not found", file=sys.stderr)
+    print("⚠ NLTK punkt not found - will use fallback methods", file=sys.stderr)
 
 try:
     nltk.data.find('corpora/stopwords')
     print("✅ NLTK stopwords found", file=sys.stderr)
 except LookupError:
-    print("⚠ NLTK stopwords not found", file=sys.stderr)
+    print("⚠ NLTK stopwords not found - will use fallback methods", file=sys.stderr)
 
 print("🔍 DEBUG: nltk imports complete", file=sys.stderr)
 
@@ -169,7 +176,7 @@ class CampusNLPProcessor:
         
         return synonyms
     
-    def preprocess_query(self, query: str) -> str:
+    def preprocess_query(self, query: str, language: str = 'english') -> Dict:
         """Clean and preprocess the user query"""
         query = query.lower().strip()
         
@@ -179,7 +186,39 @@ class CampusNLPProcessor:
         # Remove punctuation except for question marks
         query = re.sub(r'[^\w\s?]', ' ', query)
         
-        return query
+        # Language-specific preprocessing
+        if language == 'swahili':
+            # Remove common Swahili question words
+            query = re.sub(r'\b(iko|wapi|naenda|nifikie|naomba)\b', '', query)
+        else:
+            # Remove common English question words
+            remove_words = ['where', 'how', 'what', 'when', 'which', 'who', 'why']
+            for word in remove_words:
+                query = query.replace(word + ' is', '').replace(word + ' are', '')
+        
+        # Extract keywords
+        keywords = query.split()
+        
+        # Remove stopwords - with fallback if NLTK fails
+        try:
+            if language == 'english':
+                stop_words = set(stopwords.words('english'))
+            else:
+                # Basic Swahili stopwords
+                stop_words = {'ya', 'kwa', 'na', 'wa', 'ni', 'za', 'ku', 'la'}
+        except LookupError:
+            # Fallback if NLTK data missing
+            stop_words = {'the', 'a', 'an', 'is', 'at', 'which', 'on', 'for', 'in', 'to', 'and'}  # basic English fallback
+            print("⚠ Using fallback stopwords in nlp_processor.py", file=sys.stderr)
+        
+        keywords = [word for word in keywords if word not in stop_words]
+        
+        return {
+            'original': query,
+            'cleaned': ' '.join(keywords),
+            'keywords': keywords,
+            'language': language
+        }
     
     def extract_intent(self, query: str) -> Tuple[str, float]:
         """
@@ -188,7 +227,7 @@ class CampusNLPProcessor:
         Returns:
             Tuple of (intent, confidence_score)
         """
-        query = self.preprocess_query(query)
+        query = self.preprocess_query(query)['cleaned']
         
         # Check for greeting
         if any(greeting in query for greeting in ['hello', 'hi', 'hey', 'greetings']):
@@ -228,7 +267,7 @@ class CampusNLPProcessor:
         Returns:
             Tuple of (building_name, confidence_score)
         """
-        query = self.preprocess_query(query)
+        query = self.preprocess_query(query)['cleaned']
         
         # Remove common phrases
         remove_phrases = [
@@ -262,7 +301,7 @@ class CampusNLPProcessor:
             common_words = query_words.intersection(building_words)
             if len(common_words) >= 1:
                 # Calculate overlap ratio
-                overlap = len(common_words) / len(building_words)
+                overlap = len(common_words) / len(building_words) if building_words else 0
                 if overlap >= 0.3:  # At least 30% overlap
                     return building, overlap
         

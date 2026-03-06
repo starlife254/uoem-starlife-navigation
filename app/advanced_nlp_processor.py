@@ -22,15 +22,28 @@ import sys
 
 print("🔍 DEBUG: advanced_nlp_processor.py loaded", file=sys.stderr)
 
-# Download NLTK data
-# Just check if they exist, don't download at runtime
-nltk.data.path.append('/opt/render/nltk_data')  # Add Render's NLTK path
+# Set NLTK data path to a persistent location
+nltk_data_dir = '/opt/render/nltk_data'
+os.makedirs(nltk_data_dir, exist_ok=True)
+nltk.data.path.append(nltk_data_dir)
+
+# Also add the current directory as fallback
+nltk.data.path.append(os.path.join(os.getcwd(), 'nltk_data'))
+
+print(f"🔍 NLTK data paths: {nltk.data.path}", file=sys.stderr)
+
+# Check if data exists, but DON'T crash if it doesn't - we'll handle gracefully
 try:
     nltk.data.find('tokenizers/punkt')
-    nltk.data.find('corpora/stopwords')
+    print("✅ NLTK punkt found", file=sys.stderr)
 except LookupError:
-    # Log a warning but don't try to download
-    print("⚠ NLTK data not found - ensure build command downloads it")
+    print("⚠ NLTK punkt not found - will use fallback methods", file=sys.stderr)
+
+try:
+    nltk.data.find('corpora/stopwords')
+    print("✅ NLTK stopwords found", file=sys.stderr)
+except LookupError:
+    print("⚠ NLTK stopwords not found - will use fallback methods", file=sys.stderr)
 
 class AdvancedNLPProcessor:
     """Advanced NLP processor with TensorFlow ML models and multilingual support"""
@@ -65,8 +78,6 @@ class AdvancedNLPProcessor:
         
         print("🔍 DEBUG: Initializing ML models...", file=sys.stderr)
         self._initialize_models()
-        
-        print("✅ Advanced NLP Processor initialized", file=sys.stderr)
         
         # Initialize language models
         self.english_nlp = None
@@ -110,9 +121,10 @@ class AdvancedNLPProcessor:
         # Load or train models
         self._initialize_models()
         
-        print(f"✅ Advanced NLP Processor initialized with {len(campus_buildings)} buildings")
-        print(f"   Supported languages: English, Swahili")
-        print(f"   ML Models: {'Loaded' if self.intent_model else 'Training required'}")
+        print(f"✅ Advanced NLP Processor initialized with {len(campus_buildings)} buildings", file=sys.stderr)
+        print(f"   Supported languages: English, Swahili", file=sys.stderr)
+        print(f"   ML Models: {'Loaded' if self.intent_model else 'Training required'}", file=sys.stderr)
+        print("✅ Advanced NLP Processor initialized", file=sys.stderr)
     
     def _create_multilingual_synonyms(self) -> Dict[str, Dict[str, List[str]]]:
         """Create synonyms in both English and Swahili"""
@@ -179,12 +191,12 @@ class AdvancedNLPProcessor:
             try:
                 self.intent_model = keras.models.load_model(intent_model_path)
                 self.building_model = keras.models.load_model(building_model_path)
-                print("✅ Pre-trained ML models loaded")
+                print("✅ Pre-trained ML models loaded", file=sys.stderr)
             except:
-                print("⚠ Error loading models, will train new ones")
+                print("⚠ Error loading models, will train new ones", file=sys.stderr)
                 self._train_models()
         else:
-            print("⚠ No pre-trained models found, training new ones...")
+            print("⚠ No pre-trained models found, training new ones...", file=sys.stderr)
             self._train_models()
     
     def _create_training_data(self):
@@ -257,7 +269,7 @@ class AdvancedNLPProcessor:
     
     def _train_models(self):
         """Train ML models for intent and building recognition"""
-        print("🔄 Training ML models...")
+        print("🔄 Training ML models...", file=sys.stderr)
         
         # Create training data
         intent_examples, building_examples = self._create_training_data()
@@ -278,7 +290,7 @@ class AdvancedNLPProcessor:
         self.intent_model.save(intent_model_path)
         self.building_model.save(building_model_path)
         
-        print("✅ ML models trained and saved")
+        print("✅ ML models trained and saved", file=sys.stderr)
     
     def _create_intent_model(self):
         """Create intent classification model"""
@@ -357,12 +369,17 @@ class AdvancedNLPProcessor:
         # Extract keywords
         keywords = query.split()
         
-        # Remove stopwords
-        if language == 'english':
-            stop_words = set(stopwords.words('english'))
-        else:
-            # Basic Swahili stopwords
-            stop_words = {'ya', 'kwa', 'na', 'wa', 'ni', 'za', 'ku', 'la'}
+        # Remove stopwords - with fallback if NLTK fails
+        try:
+            if language == 'english':
+                stop_words = set(stopwords.words('english'))
+            else:
+                # Basic Swahili stopwords
+                stop_words = {'ya', 'kwa', 'na', 'wa', 'ni', 'za', 'ku', 'la'}
+        except LookupError:
+            # Fallback if NLTK data missing
+            stop_words = {'the', 'a', 'an', 'is', 'at', 'which', 'on', 'for', 'in', 'to', 'and'}  # basic English fallback
+            print("⚠ Using fallback stopwords in advanced_nlp_processor.py", file=sys.stderr)
         
         keywords = [word for word in keywords if word not in stop_words]
         
