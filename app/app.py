@@ -30,6 +30,11 @@ import sys
 print("🚀 DEBUG: App script started", file=sys.stderr)
 from dotenv import load_dotenv
 
+# ============= DEBUG STARTUP =============
+import sys
+print("🚀 DEBUG: App script started", file=sys.stderr)
+# =========================================
+
 # Load environment variables from .env file (if it exists)
 load_dotenv()
 
@@ -503,12 +508,22 @@ def create_sample_photos(df, building_photos):
         print(f"⚠ Error in create_sample_photos: {e}")
         print("  Sample photos not created. Continuing without them...")
 
-# Load buildings
-print("🗺️ DEBUG: Loading buildings...")
+# After loading buildings
+print("📊 DEBUG: Loading buildings with photos...", file=sys.stderr)
 df, building_photos = load_buildings_with_photos()
+print(f"✅ DEBUG: Loaded {len(df)} buildings", file=sys.stderr)
 
-# Optionally create sample photos (comment out if you don't want them)
+# After creating sample photos
+print("🖼️ DEBUG: Creating sample photos...", file=sys.stderr)
 create_sample_photos(df, building_photos)
+print("✅ DEBUG: Sample photos created", file=sys.stderr)
+
+# Before NLP processor initialization
+print("🧠 DEBUG: Initializing NLP processor...", file=sys.stderr)
+if nlp_processor is None:
+    building_names = df['name'].tolist()
+    nlp_processor = create_nlp_processor(building_names, use_advanced=True)
+print(f"✅ DEBUG: NLP processor ready. Type: {type(nlp_processor).__name__}", file=sys.stderr)
 
 # ---------------------------------------------------
 # VERIFY NLP PROCESSOR
@@ -570,6 +585,9 @@ def get_db_connection():
     except Exception as e:
         print(f"✗ Database connection error: {e}")
         return None
+
+# After database connection function definition (optional)
+print("💾 DEBUG: Database connection function defined", file=sys.stderr)
 
 # ---------------------------------------------------
 # LOAD PATHS FROM POSTGIS WITH MODE FILTERING
@@ -1254,7 +1272,7 @@ def calculate_bearing(lat1, lon1, lat2, lon2):
     
     dlon = lon2 - lon1
     x = sin(dlon) * cos(lat2)
-    y = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dlon)
+    y = cos(lat1) * sin(lat2) - cos(lat1) * cos(lat2) * cos(dlon)
     
     bearing = atan2(x, y)
     bearing = degrees(bearing)
@@ -2912,3 +2930,6 @@ if __name__ == '__main__':
 
 # No else block needed - Gunicorn handles production on Render
 # The SocketIO object is already configured with async_mode='eventlet'
+
+# At the very end of app.py, after everything but before the if __name__ block
+print("✅✅✅ DEBUG: App.py fully loaded and parsed", file=sys.stderr)
