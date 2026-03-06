@@ -522,7 +522,7 @@ print("✅ DEBUG: Sample photos created", file=sys.stderr)
 print("🧠 DEBUG: Initializing NLP processor...", file=sys.stderr)
 if nlp_processor is None:
     building_names = df['name'].tolist()
-    nlp_processor = create_nlp_processor(building_names, use_advanced=True)
+    nlp_processor = create_nlp_processor(building_names, use_advanced=False)
 print(f"✅ DEBUG: NLP processor ready. Type: {type(nlp_processor).__name__}", file=sys.stderr)
 
 # ---------------------------------------------------
@@ -531,7 +531,7 @@ print(f"✅ DEBUG: NLP processor ready. Type: {type(nlp_processor).__name__}", f
 if nlp_processor is None:
     print("⚠ Warning: NLP processor not initialized, re-initializing...")
     building_names = df['name'].tolist()
-    nlp_processor = create_nlp_processor(building_names, use_advanced=True)
+    nlp_processor = create_nlp_processor(building_names, use_advanced=False)
     print("✅ NLP processor re-initialized")
 
 print(f"🤖 NLP Processor Type: {type(nlp_processor).__name__}")
