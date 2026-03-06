@@ -22,6 +22,8 @@ from voice_processor import get_voice_processor, voice_to_text
 import tensorflow as tf
 from feedback_module import feedback_bp
 
+print("🚀 DEBUG: Starting app.py initialization...")
+
 # ============= RENDER.COM COMPATIBILITY ADDITIONS =============
 # Import for Render database connection
 import sys
@@ -49,11 +51,14 @@ if not __name__ == '__main__':
 # ---------------------------------------------------
 nlp_processor = None
 
+print("🔧 DEBUG: Creating Flask app...")
 app = Flask(__name__)
+print("🔑 DEBUG: Setting secret key...")
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 
 # IMPORTANT: Use eventlet for async_mode with gunicorn
 # This configuration is critical for Render deployment
+print("🔌 DEBUG: Initializing SocketIO with eventlet...")
 socketio = SocketIO(app, 
                    cors_allowed_origins="*", 
                    async_mode='eventlet',  # Must be 'eventlet' for gunicorn worker
@@ -61,6 +66,7 @@ socketio = SocketIO(app,
                    engineio_logger=True)  # Enable engine.io logging
 
 # Register the feedback blueprint
+print("📋 DEBUG: Registering blueprints...")
 app.register_blueprint(feedback_bp, url_prefix='/api/feedback')
 
 # ---------------------------------------------------
