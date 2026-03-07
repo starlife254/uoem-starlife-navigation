@@ -18,18 +18,52 @@ import os
 print("🔍 DEBUG: nlp_processor.py file loaded", file=sys.stderr)
 print("🔍 DEBUG: Starting to import nltk in nlp_processor.py", file=sys.stderr)
 
-# Add spaCy model verification
-import subprocess
-import sys
+# Verify spaCy model installation - SAFE VERSION without subprocess
+print("🔍 DEBUG: Checking spaCy model installation safely...", file=sys.stderr)
 
-# Verify spaCy model installation
-print("🔍 DEBUG: Checking spaCy model installation...", file=sys.stderr)
+# Simple and reliable check - try to import the model directly
+spacy_model_available = False
 try:
-    result = subprocess.run(['python', '-m', 'spacy', 'info'], 
-                           capture_output=True, text=True)
-    print(f"🔍 DEBUG: spaCy info output: {result.stdout[:200]}", file=sys.stderr)
+    # Method 1: Try to load with spacy
+    import spacy
+    print(f"🔍 DEBUG: spaCy version: {spacy.__version__}", file=sys.stderr)
+    
+    # Try a quick, non-blocking check
+    import importlib.util
+    model_spec = importlib.util.find_spec("en_core_web_sm")
+    if model_spec is not None:
+        print("✅ en_core_web_sm module found via find_spec", file=sys.stderr)
+        spacy_model_available = True
+    else:
+        # Fallback: try a quick load with timeout protection
+        import threading
+        import time
+        
+        model_loaded = [False]
+        def load_model():
+            try:
+                nlp = spacy.load("en_core_web_sm")
+                model_loaded[0] = True
+            except:
+                pass
+        
+        thread = threading.Thread(target=load_model)
+        thread.daemon = True
+        thread.start()
+        thread.join(timeout=2)  # Wait max 2 seconds
+        
+        if model_loaded[0]:
+            print("✅ spaCy model loaded successfully (quick check)", file=sys.stderr)
+            spacy_model_available = True
+        else:
+            print("⚠ spaCy model load timed out or failed", file=sys.stderr)
+            spacy_model_available = False
+            
 except Exception as e:
-    print(f"⚠ Could not run spacy info: {e}", file=sys.stderr)
+    print(f"⚠ Error checking spaCy model: {e}", file=sys.stderr)
+    spacy_model_available = False
+
+print(f"🔍 DEBUG: spaCy model available: {spacy_model_available}", file=sys.stderr)
 
 # Set NLTK data path to a persistent location
 nltk_data_dir = '/opt/render/nltk_data'
@@ -70,35 +104,24 @@ class CampusNLPProcessor:
         self.logger = logging.getLogger(__name__)
         
         print("🔍 DEBUG: CampusNLPProcessor.__init__ - step 2 - loading spaCy", file=sys.stderr)
-        # Load spaCy model with better error handling
         self.nlp = None
-        try:
-            # First, try to load the model normally
-            import spacy
-            print("🔍 DEBUG: spaCy version: ", spacy.__version__, file=sys.stderr)
-            
-            # Check if model is installed by trying to find it
-            import subprocess
-            result = subprocess.run(['python', '-m', 'spacy', 'info', 'en_core_web_sm'], 
-                                   capture_output=True, text=True)
-            print(f"🔍 DEBUG: spaCy info result: {result.returncode}", file=sys.stderr)
-            
-            # Try to load the model
-            self.nlp = spacy.load("en_core_web_sm")
-            print("✅ spaCy model loaded successfully", file=sys.stderr)
-        except OSError as e:
-            print(f"⚠ spaCy model not available via load(): {e}", file=sys.stderr)
-            # Fallback: Try to load using the full package name
+        if spacy_model_available:
             try:
-                import en_core_web_sm
-                self.nlp = en_core_web_sm.load()
-                print("✅ spaCy model loaded via en_core_web_sm.load()", file=sys.stderr)
-            except Exception as e2:
-                print(f"⚠ spaCy model also failed via direct import: {e2}", file=sys.stderr)
-                self.nlp = None
-        except Exception as e:
-            print(f"⚠ Unexpected error loading spaCy model: {e}", file=sys.stderr)
-            self.nlp = None
+                # Use the global flag we set above
+                self.nlp = spacy.load("en_core_web_sm")
+                print("✅ spaCy model loaded successfully in __init__", file=sys.stderr)
+            except Exception as e:
+                print(f"⚠ Could not load spaCy model in __init__: {e}", file=sys.stderr)
+                # Try fallback import
+                try:
+                    import en_core_web_sm
+                    self.nlp = en_core_web_sm.load()
+                    print("✅ spaCy model loaded via en_core_web_sm.load()", file=sys.stderr)
+                except Exception as e2:
+                    print(f"⚠ spaCy model also failed via direct import: {e2}", file=sys.stderr)
+                    self.nlp = None
+        else:
+            print("⚠ spaCy model not available (from pre-check), using fallback NLP", file=sys.stderr)
         
         if self.nlp is None:
             print("⚠ spaCy model not available, using fallback NLP", file=sys.stderr)
