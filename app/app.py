@@ -1,3 +1,38 @@
+# ============= CRITICAL TENSORFLOW CONFIGURATION =============
+import os
+# Disable GPU completely
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress all TF logging
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'  # Disable oneDNN optimizations
+
+# Disable any GPU-related TensorFlow operations
+os.environ['TF_GPU_ALLOCATOR'] = 'cuda_malloc_async'
+os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'false'
+
+# Import TensorFlow after environment variables are set
+import tensorflow as tf
+
+# Configure TensorFlow to use CPU only and limit memory growth
+try:
+    # Disable GPU devices
+    tf.config.set_visible_devices([], 'GPU')
+    
+    # Limit CPU threads to prevent oversubscription
+    tf.config.threading.set_inter_op_parallelism_threads(1)
+    tf.config.threading.set_intra_op_parallelism_threads(1)
+    
+    # Set memory growth for any potential devices
+    physical_devices = tf.config.list_physical_devices('CPU')
+    if physical_devices:
+        tf.config.set_logical_device_configuration(
+            physical_devices[0],
+            [tf.config.LogicalDeviceConfiguration(memory_limit=512)]  # Limit to 512MB
+        )
+    
+    print("✅ TensorFlow configured for CPU-only with memory limits")
+except Exception as e:
+    print(f"⚠ TensorFlow configuration error: {e}")
+# ============================================================
 from flask import Flask, render_template, request, jsonify, send_file, Response, send_from_directory
 import pandas as pd
 import os
