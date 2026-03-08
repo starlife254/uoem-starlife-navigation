@@ -128,6 +128,39 @@
             align-items: center;
             justify-content: center;
         }
+        /* Fix for mobile blurring */
+.modal-open, .modal-open body {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+/* Ensure no backdrop blur affects navigation */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Keep navigation elements above backdrop */
+.navbar, .bottom-nav, .navigation-controls {
+    z-index: 1060 !important;
+    position: relative;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
+/* Fix for any blur filters */
+* {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
         
         .back-link {
             display: inline-block;

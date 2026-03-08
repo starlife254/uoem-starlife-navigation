@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>UoEm Starlife Navigation - Real-Time Tracking</title>
+    <title>UoEm Starlife Navigation </title>
     
     <!-- Mobile-specific meta tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -87,6 +87,39 @@
             margin-right: 350px;
             width: calc(100% - 700px);
         }
+        /* Fix for mobile blurring */
+.modal-open, .modal-open body {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+/* Ensure no backdrop blur affects navigation */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Keep navigation elements above backdrop */
+.navbar, .bottom-nav, .navigation-controls {
+    z-index: 1060 !important;
+    position: relative;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
+/* Fix for any blur filters */
+* {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
         
         /* ============================================
            TABLET LAYOUT
@@ -1503,6 +1536,23 @@
 </head>
 
 <body>
+    <!-- Add near the top of your navigation bar -->
+<div style="position: absolute; top: 10px; right: 10px; z-index: 1000;">
+    <button onclick="logout()" style="padding: 8px 15px; background: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+</div>
+
+<script>
+async function logout() {
+    try {
+        await fetch('/api/logout', { method: 'POST' });
+        window.location.href = '/login';
+    } catch (error) {
+        console.error('Logout error:', error);
+    }
+}
+</script>
     
     <!-- Mobile Header (visible only on mobile) -->
     <div class="mobile-header" id="mobileHeader" style="display: none;">

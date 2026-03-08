@@ -1,39 +1,4 @@
-# ============= CRITICAL TENSORFLOW CONFIGURATION =============
-import os
-# Disable GPU completely
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress all TF logging
-os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'  # Disable oneDNN optimizations
-
-# Disable any GPU-related TensorFlow operations
-os.environ['TF_GPU_ALLOCATOR'] = 'cuda_malloc_async'
-os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'false'
-
-# Import TensorFlow after environment variables are set
-import tensorflow as tf
-
-# Configure TensorFlow to use CPU only and limit memory growth
-try:
-    # Disable GPU devices
-    tf.config.set_visible_devices([], 'GPU')
-    
-    # Limit CPU threads to prevent oversubscription
-    tf.config.threading.set_inter_op_parallelism_threads(1)
-    tf.config.threading.set_intra_op_parallelism_threads(1)
-    
-    # Set memory growth for any potential devices
-    physical_devices = tf.config.list_physical_devices('CPU')
-    if physical_devices:
-        tf.config.set_logical_device_configuration(
-            physical_devices[0],
-            [tf.config.LogicalDeviceConfiguration(memory_limit=512)]  # Limit to 512MB
-        )
-    
-    print("✅ TensorFlow configured for CPU-only with memory limits")
-except Exception as e:
-    print(f"⚠ TensorFlow configuration error: {e}")
-# ============================================================
-from flask import Flask, render_template, request, jsonify, send_file, Response, send_from_directory
+from flask import Flask, render_template, request, jsonify, send_file, Response, send_from_directory, redirect
 import pandas as pd
 import os
 import pg8000
@@ -56,6 +21,9 @@ from advanced_nlp_processor import create_advanced_nlp_processor
 from voice_processor import get_voice_processor, voice_to_text
 import tensorflow as tf
 from feedback_module import feedback_bp
+from functools import wraps
+import jwt
+from datetime import datetime, timedelta
 
 print("🚀 DEBUG: Starting app.py initialization...")
 
@@ -109,6 +77,47 @@ socketio = SocketIO(app,
 # Register the feedback blueprint
 print("📋 DEBUG: Registering blueprints...")
 app.register_blueprint(feedback_bp, url_prefix='/api/feedback')
+
+# ---------------------------------------------------
+# AUTHENTICATION SETUP
+# ---------------------------------------------------
+
+# Simple user database (in production, use a real database)
+USERS = {
+    'demo': {
+        'password': 'password',
+        'name': 'Demo User',
+        'role': 'user'
+    },
+    'admin': {
+        'password': 'admin123',
+        'name': 'Administrator',
+        'role': 'admin'
+    }
+}
+
+# JWT secret key
+JWT_SECRET = os.environ.get('JWT_SECRET', secrets.token_hex(32))
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.cookies.get('token')
+        
+        if not token:
+            return redirect('/login')
+        
+        try:
+            data = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
+            current_user = USERS.get(data['username'])
+            if not current_user:
+                return redirect('/login')
+        except:
+            return redirect('/login')
+        
+        return f(current_user, *args, **kwargs)
+    
+    return decorated
 
 # ---------------------------------------------------
 # PATHS
@@ -920,7 +929,7 @@ class SimplePathFinder:
         
         print(f"✓ Graph built with {len(self.graph)} nodes for {self.mode} mode")
     
-    def find_nearest_node(self, lat, lon, max_distance=100):
+    def find_nearest_node(self, lat, lon, max_distance=200):
         """Find the nearest graph node to the given coordinates"""
         nearest_node = None
         nearest_distance = float('inf')
@@ -936,115 +945,143 @@ class SimplePathFinder:
         return nearest_node, nearest_distance
     
     def find_route(self, start_lat, start_lon, end_lat, end_lon):
-        """Find route using Dijkstra's algorithm"""
-        if not self.graph:
-            print("⚠ No graph available for pathfinding")
-            return None, float('inf')
-        
-        print(f"  Finding {self.mode} route: ({start_lat:.6f}, {start_lon:.6f}) -> ({end_lat:.6f}, {end_lon:.6f})")
-        
-        # Find nearest nodes
-        start_node, start_dist = self.find_nearest_node(start_lat, start_lon)
-        end_node, end_dist = self.find_nearest_node(end_lat, end_lon)
-        
-        if not start_node or not end_node:
-            print(f"  ⚠ Could not find start/end nodes near {self.mode} network")
-            return None, float('inf')
-        
-        print(f"  Start node: {start_node} (distance: {start_dist:.1f}m)")
-        print(f"  End node: {end_node} (distance: {end_dist:.1f}m)")
-        
-        # Dijkstra's algorithm
-        distances = {node: float('inf') for node in self.graph}
-        distances[start_node] = 0
-        previous = {node: None for node in self.graph}
-        previous_segment = {node: None for node in self.graph}
-        previous_segment_type = {node: None for node in self.graph}
-        
-        pq = [(0, start_node)]
-        
-        while pq:
-            current_dist, current_node = heapq.heappop(pq)
+        """Find route using Dijkstra's algorithm with better error handling"""
+        try:
+            if not self.graph or len(self.graph) == 0:
+                print("⚠ No graph available for pathfinding - using direct route")
+                return self._get_direct_route(start_lat, start_lon, end_lat, end_lon)
             
-            if current_dist > distances[current_node]:
-                continue
+            print(f"  Finding {self.mode} route: ({start_lat:.6f}, {start_lon:.6f}) -> ({end_lat:.6f}, {end_lon:.6f})")
+            
+            # Find nearest nodes with expanded search radius
+            start_node, start_dist = self.find_nearest_node(start_lat, start_lon, max_distance=200)
+            end_node, end_dist = self.find_nearest_node(end_lat, end_lon, max_distance=200)
+            
+            if not start_node:
+                print(f"⚠ Could not find start node near ({start_lat}, {start_lon})")
+                return self._get_direct_route(start_lat, start_lon, end_lat, end_lon)
+            
+            if not end_node:
+                print(f"⚠ Could not find end node near ({end_lat}, {end_lon})")
+                return self._get_direct_route(start_lat, start_lon, end_lat, end_lon)
+            
+            print(f"  Start node: {start_node} (distance: {start_dist:.1f}m)")
+            print(f"  End node: {end_node} (distance: {end_dist:.1f}m)")
+            
+            # Dijkstra's algorithm
+            distances = {node: float('inf') for node in self.graph}
+            distances[start_node] = 0
+            previous = {node: None for node in self.graph}
+            previous_segment = {node: None for node in self.graph}
+            previous_segment_type = {node: None for node in self.graph}
+            
+            pq = [(0, start_node)]
+            
+            while pq:
+                current_dist, current_node = heapq.heappop(pq)
                 
-            if current_node == end_node:
-                break
+                if current_dist > distances[current_node]:
+                    continue
+                    
+                if current_node == end_node:
+                    break
+                
+                for neighbor, weight, segment_id, segment_type in self.graph[current_node]:
+                    new_dist = current_dist + weight
+                    if new_dist < distances[neighbor]:
+                        distances[neighbor] = new_dist
+                        previous[neighbor] = current_node
+                        previous_segment[neighbor] = segment_id
+                        previous_segment_type[neighbor] = segment_type
+                        heapq.heappush(pq, (new_dist, neighbor))
             
-            for neighbor, weight, segment_id, segment_type in self.graph[current_node]:
-                new_dist = current_dist + weight
-                if new_dist < distances[neighbor]:
-                    distances[neighbor] = new_dist
-                    previous[neighbor] = current_node
-                    previous_segment[neighbor] = segment_id
-                    previous_segment_type[neighbor] = segment_type
-                    heapq.heappush(pq, (new_dist, neighbor))
+            if distances[end_node] == float('inf'):
+                print(f"  ⚠ No {self.mode} path found through graph - using direct route")
+                return self._get_direct_route(start_lat, start_lon, end_lat, end_lon)
+            
+            # Reconstruct path
+            path_nodes = []
+            path_segments = []
+            path_segment_types = []
+            current = end_node
+            
+            while current is not None:
+                path_nodes.append(current)
+                if previous[current] is not None:
+                    path_segments.append(previous_segment[current])
+                    path_segment_types.append(previous_segment_type[current])
+                current = previous[current]
+            
+            path_nodes.reverse()
+            path_segments.reverse()
+            path_segment_types.reverse()
+            
+            print(f"  ✓ {self.mode} path found: {len(path_nodes)} nodes, distance: {distances[end_node]:.1f}m")
+            
+            # Build coordinate path
+            coordinate_path = []
+            
+            # Add start point
+            coordinate_path.append([start_lat, start_lon])
+            
+            # Add connection to first node
+            if start_dist > 1:
+                start_node_lat, start_node_lon = start_node
+                coordinate_path.append([start_node_lat, start_node_lon])
+            
+            # Add all path nodes
+            for node in path_nodes:
+                node_lat, node_lon = node
+                coordinate_path.append([node_lat, node_lon])
+            
+            # Add connection to end point
+            if end_dist > 1:
+                end_node_lat, end_node_lon = end_node
+                coordinate_path.append([end_node_lat, end_node_lon])
+            
+            # Add end point
+            coordinate_path.append([end_lat, end_lon])
+            
+            # Remove consecutive duplicates
+            clean_path = []
+            for i, point in enumerate(coordinate_path):
+                if i == 0 or point != coordinate_path[i-1]:
+                    clean_path.append(point)
+            
+            # Calculate total path distance
+            total_distance = distances[end_node] + start_dist + end_dist
+            
+            print(f"  Clean path: {len(clean_path)} points, total distance: {total_distance:.1f}m")
+            
+            # Get path composition (what types of paths were used)
+            path_composition = {}
+            for seg_type in path_segment_types:
+                path_composition[seg_type] = path_composition.get(seg_type, 0) + 1
+            
+            return clean_path, total_distance, path_segment_types, path_composition
+            
+        except Exception as e:
+            print(f"⚠ Error in pathfinding: {e}")
+            return self._get_direct_route(start_lat, start_lon, end_lat, end_lon)
+
+    def _get_direct_route(self, start_lat, start_lon, end_lat, end_lon):
+        """Return a direct straight-line route as fallback"""
+        print("  Using direct route fallback")
         
-        if distances[end_node] == float('inf'):
-            print(f"  ⚠ No {self.mode} path found through graph")
-            return None, float('inf')
+        # Generate 20 points along straight line for smoother path
+        points = []
+        steps = 20
+        for i in range(steps + 1):
+            ratio = i / steps
+            lat = start_lat + (end_lat - start_lat) * ratio
+            lon = start_lon + (end_lon - start_lon) * ratio
+            points.append([lat, lon])
         
-        # Reconstruct path
-        path_nodes = []
-        path_segments = []
-        path_segment_types = []
-        current = end_node
+        # Calculate distance
+        distance = haversine_distance(start_lon, start_lat, end_lon, end_lat)
         
-        while current is not None:
-            path_nodes.append(current)
-            if previous[current] is not None:
-                path_segments.append(previous_segment[current])
-                path_segment_types.append(previous_segment_type[current])
-            current = previous[current]
-        
-        path_nodes.reverse()
-        path_segments.reverse()
-        path_segment_types.reverse()
-        
-        print(f"  ✓ {self.mode} path found: {len(path_nodes)} nodes, distance: {distances[end_node]:.1f}m")
-        
-        # Build coordinate path
-        coordinate_path = []
-        
-        # Add start point
-        coordinate_path.append([start_lat, start_lon])
-        
-        # Add connection to first node
-        if start_dist > 1:
-            start_node_lat, start_node_lon = start_node
-            coordinate_path.append([start_node_lat, start_node_lon])
-        
-        # Add all path nodes
-        for node in path_nodes:
-            node_lat, node_lon = node
-            coordinate_path.append([node_lat, node_lon])
-        
-        # Add connection to end point
-        if end_dist > 1:
-            end_node_lat, end_node_lon = end_node
-            coordinate_path.append([end_node_lat, end_node_lon])
-        
-        # Add end point
-        coordinate_path.append([end_lat, end_lon])
-        
-        # Remove consecutive duplicates
-        clean_path = []
-        for i, point in enumerate(coordinate_path):
-            if i == 0 or point != coordinate_path[i-1]:
-                clean_path.append(point)
-        
-        # Calculate total path distance
-        total_distance = distances[end_node] + start_dist + end_dist
-        
-        print(f"  Clean path: {len(clean_path)} points, total distance: {total_distance:.1f}m")
-        
-        # Get path composition (what types of paths were used)
-        path_composition = {}
-        for seg_type in path_segment_types:
-            path_composition[seg_type] = path_composition.get(seg_type, 0) + 1
-        
-        return clean_path, total_distance, path_segment_types, path_composition
+        # Return in the same format as the main method
+        return points, distance, ['direct'], {'direct': 1}
 
 # ---------------------------------------------------
 # CALCULATE TRAVEL TIME
@@ -1334,10 +1371,9 @@ def get_turn_direction(bearing1, bearing2):
     
     return f"Turn {severity}{turn_type}".strip()
 
-    # ---------------------------------------------------
+# ---------------------------------------------------
 # REFRESH BUILDING PHOTOS FUNCTION
 # ---------------------------------------------------
-
 def refresh_building_photos():
     """Refresh building photos from disk"""
     print("🔄 Refreshing building photos...")
@@ -1402,7 +1438,6 @@ def refresh_building_photos():
 # ---------------------------------------------------
 # REAL-TIME TRACKING FUNCTIONS
 # ---------------------------------------------------
-
 def cleanup_inactive_trackers():
     """Remove inactive trackers that haven't updated in TIMEOUT seconds"""
     current_time = time.time()
@@ -1438,7 +1473,6 @@ def get_tracker_icon(tracker_id):
 # ---------------------------------------------------
 # SOCKET.IO EVENT HANDLERS
 # ---------------------------------------------------
-
 @socketio.on('connect')
 def handle_connect():
     print(f"🔌 New client connected: {request.sid}")
@@ -2040,11 +2074,62 @@ def get_building_labels():
 # ---------------------------------------------------
 # PATH ADMINISTRATION ENDPOINTS
 # ---------------------------------------------------
+@app.route('/api/debug/routes', methods=['GET'])
+def debug_routes():
+    """Debug endpoint to check route availability"""
+    try:
+        conn = get_db_connection()
+        if conn is None:
+            return jsonify({'error': 'Database connection failed'})
+        
+        cursor = conn.cursor()
+        
+        # Check if embu_paths table exists and has data
+        cursor.execute("""
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_name = 'embu_paths'
+            );
+        """)
+        table_exists = cursor.fetchone()[0]
+        
+        if not table_exists:
+            return jsonify({'error': 'embu_paths table does not exist'})
+        
+        # Get path count by type
+        cursor.execute("""
+            SELECT path_type, COUNT(*) 
+            FROM embu_paths 
+            GROUP BY path_type
+        """)
+        path_counts = cursor.fetchall()
+        
+        # Get sample path
+        cursor.execute("""
+            SELECT id, name, path_type, 
+                   ST_AsGeoJSON(geom) as geojson
+            FROM embu_paths 
+            LIMIT 1
+        """)
+        sample = cursor.fetchone()
+        
+        cursor.close()
+        conn.close()
+        
+        return jsonify({
+            'table_exists': table_exists,
+            'path_counts': [{'type': row[0], 'count': row[1]} for row in path_counts],
+            'sample_path': sample[3] if sample else None,
+            'total_paths': sum(row[1] for row in path_counts)
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 @app.route('/admin/edit_paths', methods=['GET'])
-def edit_paths_page():
+@token_required
+def edit_paths_page(current_user):
     """Page for editing paths"""
-    return render_template('edit_paths.html')
+    return render_template('edit_paths.html', user=current_user)
 
 @app.route('/api/get_all_paths', methods=['GET'])
 def get_all_paths_for_editing():
@@ -2161,7 +2246,8 @@ def update_path():
         return jsonify({'success': False, 'error': str(e)})
 
 @app.route('/admin/paths', methods=['GET'])
-def admin_paths():
+@token_required
+def admin_paths(current_user):
     """Admin interface to view and update paths"""
     try:
         conn = get_db_connection()
@@ -2302,7 +2388,8 @@ def debug_paths():
 # ---------------------------------------------------
 
 @app.route('/admin/bulk_photos', methods=['GET'])
-def bulk_photos_page():
+@token_required
+def bulk_photos_page(current_user):
     """Page for bulk photo upload"""
     # Make sure you're passing the buildings data
     building_data = []
@@ -2317,7 +2404,7 @@ def bulk_photos_page():
             'icon': cfg['icon']
         })
     
-    return render_template('bulk_photos.html', buildings=building_data)
+    return render_template('bulk_photos.html', buildings=building_data, user=current_user)
 
 @app.route('/api/bulk_upload_photos', methods=['POST'])
 def bulk_upload_photos():
@@ -2489,6 +2576,7 @@ def ai_query():
             'error': str(e),
             'response': "I encountered an error processing your request. Please try again."
         })
+
 # Add voice input endpoint
 @app.route('/api/ai/voice', methods=['POST'])
 def voice_input():
@@ -2514,7 +2602,7 @@ def voice_input():
             'error': str(e)
         })
 
-        # Add endpoint to test NLP
+# Add endpoint to test NLP
 @app.route('/api/ai/test', methods=['GET'])
 def test_nlp():
     """Test endpoint for NLP functionality"""
@@ -2546,9 +2634,11 @@ def test_nlp():
     })
 
 @app.route('/ai-chat')
-def ai_chat():
+@token_required
+def ai_chat(current_user):
     """Serve the AI chat interface"""
-    return render_template('chat_interface.html')
+    return render_template('chat_interface.html', user=current_user)
+
 @app.route('/api/ai/advanced_query', methods=['POST'])
 def advanced_ai_query():
     """Advanced AI-powered query with voice and multilingual support"""
@@ -2764,13 +2854,89 @@ def get_model_info():
             'success': False,
             'error': str(e)
         })
-  
 
 # ---------------------------------------------------
-# MAIN ROUTE
+# AUTHENTICATION ROUTES
+# ---------------------------------------------------
+
+@app.route('/login', methods=['GET'])
+def login_page():
+    """Serve login page"""
+    return render_template('login.html')
+
+@app.route('/api/login', methods=['POST'])
+def api_login():
+    """Handle login requests"""
+    try:
+        data = request.json
+        username = data.get('username')
+        password = data.get('password')
+        
+        user = USERS.get(username)
+        
+        if user and user['password'] == password:
+            # Generate JWT token
+            token = jwt.encode({
+                'username': username,
+                'exp': datetime.utcnow() + timedelta(hours=24)
+            }, JWT_SECRET, algorithm='HS256')
+            
+            response = jsonify({
+                'success': True, 
+                'user': {
+                    'username': username,
+                    'name': user['name'],
+                    'role': user['role']
+                }
+            })
+            response.set_cookie('token', token, httponly=True, max_age=86400)
+            return response
+        
+        return jsonify({'success': False, 'error': 'Invalid credentials'}), 401
+        
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/logout', methods=['POST'])
+def api_logout():
+    """Handle logout"""
+    response = jsonify({'success': True})
+    response.delete_cookie('token')
+    return response
+
+@app.route('/api/current_user', methods=['GET'])
+def get_current_user():
+    """Get current authenticated user"""
+    token = request.cookies.get('token')
+    
+    if not token:
+        return jsonify({'success': False, 'authenticated': False})
+    
+    try:
+        data = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
+        user = USERS.get(data['username'])
+        if user:
+            return jsonify({
+                'success': True,
+                'authenticated': True,
+                'user': {
+                    'username': data['username'],
+                    'name': user['name'],
+                    'role': user['role']
+                }
+            })
+        else:
+            return jsonify({'success': False, 'authenticated': False})
+    except:
+        return jsonify({'success': False, 'authenticated': False})
+
+# ---------------------------------------------------
+# MAIN ROUTE - PROTECTED
 # ---------------------------------------------------
 @app.route('/')
-def index():
+@token_required
+def index(current_user):
+    """Main map page with buildings and navigation"""
     
     # Get paths for display
     try:
@@ -2880,7 +3046,8 @@ def index():
         TOTAL_PATHS=len(geojson_features),
         CAMPUS_CENTER=[center_lat, center_lon],
         PATH_TYPE_COUNTS=path_type_counts,
-        PATH_COMPATIBILITY=PATH_COMPATIBILITY
+        PATH_COMPATIBILITY=PATH_COMPATIBILITY,
+        current_user=current_user
     )
 
 # ---------------------------------------------------
@@ -2917,6 +3084,7 @@ if __name__ == '__main__':
     print(f"🗺️  Map tiles: {len(MAP_TILES)} styles available")
     print(f"📍 Real-time tracking: ENABLED")
     print(f"📡 Socket.IO server: READY")
+    print(f"🔐 Authentication: JWT-enabled")
     
     # Test database
     conn = get_db_connection()

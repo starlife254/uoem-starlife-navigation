@@ -414,43 +414,40 @@ class CampusNLPProcessor:
         
         return context
     
-    def generate_response(self, intent: str, building: Optional[str] = None, 
-                         confidence: float = 0.0) -> str:
-        """Generate natural language response based on intent"""
-        
-        if intent == 'greeting':
-            return random.choice([
-                "Hello! I'm your AI campus navigation assistant. How can I help you navigate the University of Embu today?",
-                "Hi there! Ready to explore the University of Embu? What location are you looking for?",
-                "Welcome to the University of Embu AI Navigation System! Where would you like to go?"
-            ])
-        
-        if intent == 'thanks':
-            return random.choice([
-                "You're welcome! Happy to help with your navigation needs.",
-                "Glad I could assist! Let me know if you need anything else.",
-                "You're welcome! Safe travels around campus."
-            ])
-        
-        if intent == 'navigation' and building:
-            if confidence > 0.6:
-                return f"I'll help you navigate to {building}. Calculating the best route now..."
-            else:
-                return f"I think you're looking for {building}. Let me find the route for you."
-        
-        if intent == 'navigation' and not building:
-            return "I understand you want navigation help. Which building or location are you looking for?"
-        
-        if intent == 'information' and building:
-            return f"I can provide information about {building}. What would you like to know?"
-        
-        if intent == 'information' and not building:
-            return "What campus location would you like information about?"
-        
-        if intent == 'unknown':
-            return "I'm not sure I understand. Could you rephrase your question? For example: 'Where is the library?' or 'How do I get to the administration building?'"
-        
-        return "I'll help you with that. Could you provide more details?"
+   def generate_response(self, intent: str, building: Optional[str] = None, 
+                     confidence: float = 0.0) -> str:
+    """Generate natural, friendly responses"""
+    
+    if intent == 'greeting':
+        return random.choice([
+            "👋 Hello! I'm Starlife AI your campus navigation assistant. Where would you like to go today?",
+            "Hi there! 🌟 Ready to explore the University of Embu? Just tell me which building you're looking for!",
+            "Welcome! 🎓 I can help you find any building on campus. What are you looking for?"
+        ])
+    
+    if intent == 'thanks':
+        return random.choice([
+            "You're very welcome! 😊 Let me know if you need anything else!",
+            "Happy to help! 🗺️ Enjoy your time on campus!",
+            "Anytime! 👍 Safe travels around the university!"
+        ])
+    
+    if intent == 'navigation' and building:
+        if confidence > 0.7:
+            return f"📍 I'll help you get to **{building}**! Let me calculate the best route for you... 🚶"
+        else:
+            return f"I think you're looking for **{building}**. Let me find the best way to get you there! 🔍"
+    
+    if intent == 'navigation' and not building:
+        return "I'd be happy to give you directions! 🗺️ Which building or location are you trying to reach?"
+    
+    if intent == 'information' and building:
+        return f"📚 Sure! I can tell you about **{building}**. What would you like to know? (opening hours, facilities, contact info, etc.)"
+    
+    if intent == 'unknown':
+        return "Hmm, I'm not quite sure I understood. 🤔 Could you rephrase that? For example, try asking: 'Where is the library?' or 'How do I get to the administration block?'"
+    
+    return "I'll do my best to help! Could you give me a bit more detail about what you're looking for? 🤗"
     
     def process_query(self, query: str) -> Dict:
         """
