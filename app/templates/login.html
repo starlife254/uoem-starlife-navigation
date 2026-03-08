@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - UoEM STARLIFE NAVIGATION</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='logos/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='logos/favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='logos/apple-touch-icon.png') }}">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         * {
             margin: 0;
@@ -36,30 +44,40 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
+        /* Logo styling */
         .logo {
             text-align: center;
             margin-bottom: 30px;
         }
         
-        .logo i {
-            font-size: 48px;
-            color: #667eea;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .logo img {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo img:hover {
+            transform: scale(1.05);
         }
         
         .logo h2 {
             color: #333;
             margin-top: 10px;
             font-size: 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
         }
         
         .logo p {
             color: #666;
             font-size: 14px;
+            margin-top: 5px;
         }
         
+        /* Form styling */
         .form-group {
             margin-bottom: 20px;
         }
@@ -113,28 +131,74 @@
             margin-bottom: 20px;
             text-align: center;
             display: none;
+            animation: shake 0.5s ease;
         }
         
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .error-message i {
+            margin-right: 5px;
+        }
+        
+        /* Footer styling */
         .footer {
             text-align: center;
             margin-top: 30px;
             color: #999;
             font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
         }
         
-        .footer a {
-            color: #667eea;
-            text-decoration: none;
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            
+            .logo img {
+                max-width: 100px;
+            }
+            
+            .logo h2 {
+                font-size: 20px;
+            }
+            
+            .logo p {
+                font-size: 12px;
+            }
+            
+            .form-group input {
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+            
+            .btn-login {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+        
+        /* Responsive picture logo (for different screen sizes) */
+        .responsive-logo {
+            display: none; /* Hidden by default since we already have the main logo */
         }
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="logo">
-            <i class="fas fa-map-marked-alt"></i>
-            <h2>UoEM STARLIFE</h2>
-            <p>AI Campus Navigation System</p>
-        </div>
+    <!-- Your working logo -->
+    <img src="{{ url_for('static', filename='logos/uoem-logo.png') }}" 
+         alt="University of Embu Logo">
+    
+    <h2>UoEM STARLIFE</h2>
+    <p>AI Campus Navigation System</p>
+</div>
         
         <div class="error-message" id="errorMessage">
             <i class="fas fa-exclamation-circle"></i> Invalid credentials
@@ -143,7 +207,7 @@
         <form id="loginForm">
             <div class="form-group">
                 <label><i class="fas fa-user"></i> Username</label>
-                <input type="text" id="username" placeholder="Enter your username" required>
+                <input type="text" id="username" placeholder="Enter your username" required autofocus>
             </div>
             
             <div class="form-group">
@@ -157,7 +221,7 @@
         </form>
         
         <div class="footer">
-              <p>&copy; 2026 UoEM STARLIFE </p>
+            <p>&copy; 2026 UoEM STARLIFE. All rights reserved.</p>
         </div>
     </div>
     
@@ -167,6 +231,12 @@
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            
+            // Show loading state
+            const submitBtn = document.querySelector('.btn-login');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+            submitBtn.disabled = true;
             
             try {
                 const response = await fetch('/api/login', {
@@ -180,12 +250,48 @@
                 const data = await response.json();
                 
                 if (data.success) {
+                    // Successful login - redirect to main page
                     window.location.href = '/';
                 } else {
-                    document.getElementById('errorMessage').style.display = 'block';
+                    // Show error message
+                    const errorMsg = document.getElementById('errorMessage');
+                    errorMsg.style.display = 'block';
+                    
+                    // Reset button
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Clear password field
+                    document.getElementById('password').value = '';
+                    
+                    // Auto-hide error after 3 seconds
+                    setTimeout(() => {
+                        errorMsg.style.display = 'none';
+                    }, 3000);
                 }
             } catch (error) {
                 console.error('Login error:', error);
+                
+                // Show network error
+                const errorMsg = document.getElementById('errorMessage');
+                errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Network error. Please try again.';
+                errorMsg.style.display = 'block';
+                
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Auto-hide error after 3 seconds
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                }, 3000);
+            }
+        });
+        
+        // Allow pressing Enter to submit
+        document.getElementById('password').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.querySelector('.btn-login').click();
             }
         });
     </script>
