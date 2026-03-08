@@ -1096,6 +1096,15 @@ def calculate_travel_time(distance_meters, mode='walking'):
 # ---------------------------------------------------
 # ROUTE API WITH MODE-SPECIFIC PATHFINDING
 # ---------------------------------------------------
+@app.route('/health')
+def health_check():
+    """Simple health check endpoint for keep-alive services"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'service': 'UoEM AI Navigation'
+    })
+
 @app.route('/route', methods=['GET'])
 def route():
     try:
