@@ -22,7 +22,7 @@ from voice_processor import get_voice_processor, voice_to_text
 import tensorflow as tf
 from feedback_module import feedback_bp
 from functools import wraps
-import jwt
+import jwt  # PyJWT library
 from datetime import datetime, timedelta
 
 print("🚀 DEBUG: Starting app.py initialization...")
