@@ -1628,7 +1628,7 @@ def handle_update_location(data):
             'latitude': data.get('latitude'),
             'longitude': data.get('longitude'),
             'timestamp': time.time(),
-            'speed': data.get('speed', 0),
+            'speed': data.getl('speed', 0),
             'accuracy': data.get('accuracy', 0),
             'heading': data.get('heading'),
             'altitude': data.get('altitude'),
