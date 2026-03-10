@@ -1112,7 +1112,7 @@ def health_check():
     return jsonify({
         'status': 'healthy',
         'timestamp': datetime.now().isoformat(),
-        'service': 'UoEM AI Navigation'
+        'service': 'UoEM STARLIFE Navigation'
     })
 
 @app.route('/route', methods=['GET'])
