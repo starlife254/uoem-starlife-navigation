@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>UoEm Starlife Navigation </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile-fixes.css') }}">
-    
+
     <!-- Mobile-specific meta tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -2824,12 +2824,19 @@ $(document).ready(function() {
         map = L.map('map', {
             center: CAMPUS_CENTER,
             zoom: initialZoom,
-            zoomControl: false,
+            zoomControl: true,
             tap: isMobile,
             touchZoom: isMobile,
             scrollWheelZoom: !isMobile,
             dragging: true,
             tapTolerance: isMobile ? 15 : 10
+            zoom: 15,           // Initial zoom level
+    minZoom: 12,        // Minimum zoom
+    maxZoom: 19,        // Maximum zoom
+    scrollWheelZoom: true,  // Enable mouse wheel zoom
+    doubleClickZoom: true,  // Enable double-click zoom
+    touchZoom: true,        // Enable touch zoom (for mobile)
+    dragging: true       
         });
         
         // Add default tile layer
@@ -2840,7 +2847,16 @@ $(document).ready(function() {
             minZoom: 15,
             detectRetina: true
         }).addTo(map);
-        
+
+        // For mobile, ensure touch interactions work
+map.on('zoomstart', function() {
+    console.log('Zoom started');
+});
+
+map.on('zoomend', function() {
+    console.log('Zoom ended at level: ' + map.getZoom());
+});
+
         // Add zoom control
         L.control.zoom({
             position: isMobile ? 'bottomright' : 'topright'

@@ -83,3 +83,31 @@ body.menu-open {
         min-width: 44px !important;
     }
 }
+/* Additional mobile fixes for map */
+@media (max-width: 768px) {
+    /* Ensure map container fills the screen properly */
+    #map {
+        height: 100vh !important;
+        width: 100vw !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        z-index: 1;
+    }
+    
+    /* Fix for Leaflet zoom controls on mobile */
+    .leaflet-control-zoom {
+        margin-bottom: 70px !important; /* Make room for bottom nav */
+        margin-right: 10px !important;
+    }
+    
+    /* Ensure touch targets are large enough */
+    .leaflet-control-zoom a {
+        width: 44px !important;
+        height: 44px !important;
+        line-height: 44px !important;
+        font-size: 20px !important;
+    }
+}
