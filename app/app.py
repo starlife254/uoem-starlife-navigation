@@ -27,6 +27,16 @@ from datetime import datetime, timedelta
 
 print("🚀 DEBUG: Starting app.py initialization...")
 
+# Test database connection on startup
+try:
+    conn = get_db_connection()
+    if conn:
+        print("✅ Database connection successful on startup")
+        conn.close()
+    else:
+        print("❌ Database connection failed on startup")
+except Exception as e:
+    print(f"❌ Database connection error: {e}")
 # ============= RENDER.COM COMPATIBILITY ADDITIONS =============
 # Import for Render database connection
 import sys
