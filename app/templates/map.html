@@ -2815,61 +2815,60 @@ $(document).ready(function() {
     // MAP INITIALIZATION
     // ============================================
     
-    function initializeMap() {
-        console.log('🗺️ Initializing responsive map...');
-        
-        const initialZoom = isMobile ? 16 : 17;
-        
-        // Create map with responsive settings
-        map = L.map('map', {
-            center: CAMPUS_CENTER,
-            zoom: initialZoom,
-            zoomControl: true,
-            tap: isMobile,
-            touchZoom: isMobile,
-            scrollWheelZoom: !isMobile,
-            dragging: true,
-            tapTolerance: isMobile ? 15 : 10
-            scrollWheelZoom: true,  // Enable mouse wheel zoom
-            doubleClickZoom: true,  // Enable double-click zoom
-            touchZoom: true,        // Enable touch zoom (for mobile)
-            dragging: true       
-        });
-        
-        // Add default tile layer
-        const defaultTile = Object.values(MAP_TILES).find(tile => tile.default);
-        currentTileLayer = L.tileLayer(defaultTile.url, {
-            attribution: defaultTile.attribution,
-            maxZoom: isMobile ? 19 : 20,
-            minZoom: 15,
-            detectRetina: true
-        }).addTo(map);
-
-        // For mobile, ensure touch interactions work
-map.on('zoomstart', function() {
-    console.log('Zoom started');
-});
-
-map.on('zoomend', function() {
-    console.log('Zoom ended at level: ' + map.getZoom());
-});
-
-        // Add zoom control
-        L.control.zoom({
-            position: isMobile ? 'bottomright' : 'topright'
-        }).addTo(map);
-        
-        // Add scale control
-        L.control.scale({
-            position: 'bottomleft',
-            imperial: false,
-            maxWidth: isMobile ? 100 : 200
-        }).addTo(map);
-        
-        console.log('✅ Responsive map initialized');
-    }
+   function initializeMap() {
+    console.log('🗺️ Initializing responsive map...');
     
-    function addMapControls() {
+    const initialZoom = isMobile ? 16 : 17;
+    
+    // Create map with responsive settings
+    map = L.map('map', {
+        center: CAMPUS_CENTER,
+        zoom: initialZoom,
+        zoomControl: true,
+        tap: isMobile,
+        touchZoom: true,           // Enable touch zoom (for mobile)
+        scrollWheelZoom: !isMobile, // Enable mouse wheel zoom on desktop only
+        doubleClickZoom: true,      // Enable double-click zoom
+        dragging: true,
+        tapTolerance: isMobile ? 15 : 10,
+        boxZoom: true,
+        keyboard: true,
+        bounceAtZoomLimits: true
+    });
+    
+    // Add default tile layer
+    const defaultTile = Object.values(MAP_TILES).find(tile => tile.default);
+    currentTileLayer = L.tileLayer(defaultTile.url, {
+        attribution: defaultTile.attribution,
+        maxZoom: 20,
+        minZoom: 15,
+        detectRetina: true
+    }).addTo(map);
+    
+    // Add zoom control
+    L.control.zoom({
+        position: isMobile ? 'bottomright' : 'topright'
+    }).addTo(map);
+    
+    // Add scale control
+    L.control.scale({
+        position: 'bottomleft',
+        imperial: false,
+        maxWidth: isMobile ? 100 : 200
+    }).addTo(map);
+    
+    // Add zoom event listener for debugging
+    map.on('zoomstart', function() {
+        console.log('Zoom started');
+    });
+
+    map.on('zoomend', function() {
+        console.log('Zoom ended at level: ' + map.getZoom());
+    });
+    
+    console.log('✅ Responsive map initialized');
+}
+function addMapControls() {
         // Add fullscreen control
         L.control.fullscreen({
             position: 'topright',
