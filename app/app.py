@@ -24,6 +24,16 @@ from feedback_module import feedback_bp
 from functools import wraps
 import jwt  # PyJWT library
 from datetime import datetime, timedelta
+# At the very top of app.py
+import os
+import sys
+
+print("🚀 APP: Starting app.py initialization...", file=sys.stderr)
+print(f"🚀 APP: PORT environment variable: {os.environ.get('PORT', 'Not set')}", file=sys.stderr)
+
+# Ensure the app binds to the correct port
+port = int(os.environ.get('PORT', 10000))
+print(f"🚀 APP: Will attempt to bind to port: {port}", file=sys.stderr)
 
 print("🚀 DEBUG: Starting app.py initialization...")
 
@@ -2949,6 +2959,11 @@ def get_current_user():
     except:
         return jsonify({'success': False, 'authenticated': False})
 
+
+# Simple test route to verify app is working
+@app.route('/ping')
+def ping():
+    return jsonify({'status': 'alive', 'message': 'pong'})
 # ---------------------------------------------------
 # MAIN ROUTE - PROTECTED
 # ---------------------------------------------------
