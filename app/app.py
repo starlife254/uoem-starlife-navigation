@@ -316,17 +316,49 @@ MAP_TILES = {
 # LOAD BUILDINGS WITH PHOTO SUPPORT
 # ---------------------------------------------------
 def load_buildings_with_photos():
-    try:
-        df = pd.read_csv(CSV_PATH, sep='\t')
-        print(f"✓ CSV loaded successfully. Shape: {df.shape}")
-    except Exception as e:
-        print(f"✗ Error loading CSV: {e}")
+    """Load buildings from CSV with multiple path fallbacks"""
+    
+    # Try multiple possible paths
+    possible_paths = [
+        CSV_PATH,  # Original path: /opt/render/project/src/app/data/buildings.csv
+        os.path.join(BASE_DIR, 'data', 'buildings.csv'),
+        os.path.join(os.getcwd(), 'data', 'buildings.csv'),
+        os.path.join(os.getcwd(), 'buildings.csv'),
+        os.path.join(BASE_DIR, 'buildings.csv'),
+        '/opt/render/project/src/data/buildings.csv',
+        '/opt/render/project/src/app/buildings.csv',
+    ]
+    
+    df = None
+    loaded_path = None
+    
+    for path in possible_paths:
+        try:
+            print(f"🔍 Trying to load CSV from: {path}", file=sys.stderr)
+            if os.path.exists(path):
+                print(f"✅ File exists at: {path}", file=sys.stderr)
+                df = pd.read_csv(path, sep='\t')
+                print(f"✓ CSV loaded successfully from: {path}", file=sys.stderr)
+                loaded_path = path
+                break
+            else:
+                print(f"❌ File does NOT exist at: {path}", file=sys.stderr)
+        except Exception as e:
+            print(f"✗ Failed to load from {path}: {e}", file=sys.stderr)
+            continue
+    
+    if df is None:
+        print("✗ Error loading CSV from all paths", file=sys.stderr)
+        print("📝 Creating empty DataFrame with default columns", file=sys.stderr)
         df = pd.DataFrame(columns=['name', 'type', 'latitude', 'longitude'])
+    else:
+        print(f"✅ Successfully loaded CSV from: {loaded_path}", file=sys.stderr)
+        print(f"📊 CSV shape: {df.shape}", file=sys.stderr)
 
     # Validate required columns
     required_cols = {"name", "type", "latitude", "longitude"}
     if not required_cols.issubset(set(df.columns)):
-        print(f"⚠ Warning: CSV missing required columns. Found: {set(df.columns)}")
+        print(f"⚠ Warning: CSV missing required columns. Found: {set(df.columns)}", file=sys.stderr)
         for col in required_cols:
             if col not in df.columns:
                 df[col] = None
@@ -479,9 +511,9 @@ def load_buildings_with_photos():
         photos = get_building_photos(int(row['id']), str(row['name']))
         building_photos[int(row['id'])] = photos
     
-    print(f"✓ Total buildings loaded: {len(df)}")
-    print(f"  Categories: {df['category'].unique().tolist()}")
-    print(f"  Photos found: {sum(len(photos) for photos in building_photos.values())} total photos")
+    print(f"✓ Total buildings loaded: {len(df)}", file=sys.stderr)
+    print(f"  Categories: {df['category'].unique().tolist()}", file=sys.stderr)
+    print(f"  Photos found: {sum(len(photos) for photos in building_photos.values())} total photos", file=sys.stderr)
     
     return df, building_photos
 
