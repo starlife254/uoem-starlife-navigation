@@ -38,15 +38,7 @@ print(f"🚀 APP: Will attempt to bind to port: {port}", file=sys.stderr)
 print("🚀 DEBUG: Starting app.py initialization...")
 
 # Test database connection on startup
-try:
-    conn = get_db_connection()
-    if conn:
-        print("✅ Database connection successful on startup")
-        conn.close()
-    else:
-        print("❌ Database connection failed on startup")
-except Exception as e:
-    print(f"❌ Database connection error: {e}")
+
 # ============= RENDER.COM COMPATIBILITY ADDITIONS =============
 # Import for Render database connection
 import sys
@@ -1732,6 +1724,64 @@ def handle_get_active_trackers():
 # API ENDPOINTS WITH PHOTO SUPPORT
 # ---------------------------------------------------
 route_history = []
+@app.route('/api/building_labels', methods=['GET'])
+def get_building_labels():
+    """API endpoint to get building data for map labels - USING CSV FALLBACK"""
+    try:
+        # Try database first
+        conn = get_db_connection()
+        if conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM buildings")
+            count = cursor.fetchone()[0]
+            
+            if count > 0:
+                # Database has data, use it
+                cursor.execute("SELECT id, name, latitude, longitude, type, category FROM buildings")
+                building_labels = []
+                for row in cursor.fetchall():
+                    config = ICON_CONFIG.get(str(row[4]), ICON_CONFIG['default'])
+                    building_labels.append({
+                        'id': row[0],
+                        'name': row[1],
+                        'latitude': float(row[2]),
+                        'longitude': float(row[3]),
+                        'type': row[4],
+                        'color': config['color'],
+                        'icon': config['icon'],
+                        'category': row[5]
+                    })
+                cursor.close()
+                conn.close()
+                return jsonify({'success': True, 'buildings': building_labels, 'count': len(building_labels)})
+            cursor.close()
+            conn.close()
+        
+        # Fallback to CSV data
+        print("⚠ Database empty, using CSV fallback for building labels")
+        building_labels = []
+        for _, row in df.iterrows():
+            config = ICON_CONFIG.get(str(row['type']), ICON_CONFIG['default'])
+            building_labels.append({
+                'id': int(row['id']),
+                'name': str(row['name']),
+                'latitude': float(row['latitude']),
+                'longitude': float(row['longitude']),
+                'type': str(row['type']),
+                'color': config['color'],
+                'icon': config['icon'],
+                'category': str(row['category'])
+            })
+        
+        return jsonify({
+            'success': True,
+            'buildings': building_labels,
+            'count': len(building_labels),
+            'source': 'csv_fallback'
+        })
+    except Exception as e:
+        print(f"Error in building_labels: {e}")
+        return jsonify({'success': False, 'error': str(e)})
 
 @app.route('/api/route_history', methods=['GET', 'POST'])
 def handle_route_history():
@@ -1755,75 +1805,6 @@ def handle_route_history():
         return jsonify({
             'history': route_history[-10:],
             'success': True
-        })
-
-@app.route('/api/building/<int:building_id>', methods=['GET'])
-def get_building_details(building_id):
-    try:
-        building = df[df['id'] == building_id].iloc[0]
-        
-        # Get building photos (from your existing building_photos dictionary)
-        photos = building_photos.get(building_id, [])
-        
-        # Ensure photos are properly formatted
-        formatted_photos = []
-        for photo in photos:
-            if isinstance(photo, dict):
-                formatted_photos.append({
-                    'filename': photo.get('filename', ''),
-                    'url': photo.get('url', f'/static/photos/{photo.get("filename", "")}'),
-                    'title': photo.get('title', building['name']),
-                    'uploaded_at': photo.get('uploaded_at', datetime.now().isoformat())
-                })
-        
-        # Get nearby buildings (within 200m)
-        nearby_buildings = []
-        for _, other in df.iterrows():
-            if other['id'] != building_id:
-                distance = haversine_distance(
-                    building['longitude'], building['latitude'],
-                    other['longitude'], other['latitude']
-                )
-                if distance <= 200:
-                    config = ICON_CONFIG.get(str(other['type']), ICON_CONFIG['default'])
-                    nearby_buildings.append({
-                        'id': int(other['id']),
-                        'name': str(other['name']),
-                        'type': str(other['type']),
-                        'distance': round(distance, 1),
-                        'icon': config['icon'],
-                        'color': config['color']
-                    })
-        
-        # Sort by distance
-        nearby_buildings = sorted(nearby_buildings, key=lambda x: x['distance'])[:5]
-        
-        config = ICON_CONFIG.get(str(building['type']), ICON_CONFIG['default'])
-        
-        return jsonify({
-            'success': True,
-            'building': {
-                'id': int(building['id']),
-                'name': str(building['name']),
-                'type': str(building['type']),
-                'type_name': config.get('name', str(building['type']).replace('_', ' ').title()),
-                'category': str(building['category']),
-                'latitude': float(building['latitude']),
-                'longitude': float(building['longitude']),
-                'description': str(building['description']),
-                'icon': config['icon'],
-                'color': config['color'],
-                'photos': formatted_photos,
-                'photo_count': len(formatted_photos)
-            },
-            'nearby': nearby_buildings
-        })
-    except Exception as e:
-        print(f"Error getting building details: {e}")
-        traceback.print_exc()
-        return jsonify({
-            'success': False,
-            'error': str(e)
         })
 
 @app.route('/api/upload_photo/<int:building_id>', methods=['POST'])
@@ -3167,116 +3148,7 @@ def get_building_details(building_id):
             'success': False,
             'error': str(e)
         })
-@app.route('/api/building/<int:building_id>', methods=['GET'])
-def get_building_details(building_id):
-    """Get building details - USING CSV FALLBACK"""
-    try:
-        # Try database first
-        conn = get_db_connection()
-        if conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM buildings WHERE id = %s", (building_id,))
-            if cursor.fetchone()[0] > 0:
-                # Get from database
-                cursor.execute("""
-                    SELECT id, name, type, latitude, longitude, description, category 
-                    FROM buildings WHERE id = %s
-                """, (building_id,))
-                row = cursor.fetchone()
-                cursor.close()
-                conn.close()
-                
-                if row:
-                    config = ICON_CONFIG.get(str(row[2]), ICON_CONFIG['default'])
-                    return jsonify({
-                        'success': True,
-                        'building': {
-                            'id': row[0],
-                            'name': row[1],
-                            'type': row[2],
-                            'type_name': config.get('name', row[2].replace('_', ' ').title()),
-                            'category': row[6],
-                            'latitude': float(row[3]),
-                            'longitude': float(row[4]),
-                            'description': row[5],
-                            'icon': config['icon'],
-                            'color': config['color'],
-                            'photos': [],
-                            'photo_count': 0
-                        },
-                        'nearby': []
-                    })
-            cursor.close()
-            conn.close()
-        
-        # Fallback to CSV
-        print(f"⚠ Database empty, using CSV fallback for building {building_id}")
-        building = df[df['id'] == building_id].iloc[0]
-        
-        # Get building photos
-        photos = building_photos.get(building_id, [])
-        
-        # Format photos
-        formatted_photos = []
-        for photo in photos:
-            if isinstance(photo, dict):
-                formatted_photos.append({
-                    'filename': photo.get('filename', ''),
-                    'url': photo.get('url', f'/static/photos/{photo.get("filename", "")}'),
-                    'title': photo.get('title', building['name']),
-                    'uploaded_at': photo.get('uploaded_at', datetime.now().isoformat())
-                })
-        
-        # Get nearby buildings from CSV
-        nearby_buildings = []
-        for _, other in df.iterrows():
-            if other['id'] != building_id:
-                distance = haversine_distance(
-                    building['longitude'], building['latitude'],
-                    other['longitude'], other['latitude']
-                )
-                if distance <= 200:
-                    config = ICON_CONFIG.get(str(other['type']), ICON_CONFIG['default'])
-                    nearby_buildings.append({
-                        'id': int(other['id']),
-                        'name': str(other['name']),
-                        'type': str(other['type']),
-                        'distance': round(distance, 1),
-                        'icon': config['icon'],
-                        'color': config['color']
-                    })
-        
-        # Sort by distance
-        nearby_buildings = sorted(nearby_buildings, key=lambda x: x['distance'])[:5]
-        
-        config = ICON_CONFIG.get(str(building['type']), ICON_CONFIG['default'])
-        
-        return jsonify({
-            'success': True,
-            'building': {
-                'id': int(building['id']),
-                'name': str(building['name']),
-                'type': str(building['type']),
-                'type_name': config.get('name', str(building['type']).replace('_', ' ').title()),
-                'category': str(building['category']),
-                'latitude': float(building['latitude']),
-                'longitude': float(building['longitude']),
-                'description': str(building['description']),
-                'icon': config['icon'],
-                'color': config['color'],
-                'photos': formatted_photos,
-                'photo_count': len(formatted_photos)
-            },
-            'nearby': nearby_buildings,
-            'source': 'csv_fallback'
-        })
-    except Exception as e:
-        print(f"Error getting building details: {e}")
-        traceback.print_exc()
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        })
+
 # ---------------------------------------------------
 # CLEANUP THREAD FOR INACTIVE TRACKERS
 # ---------------------------------------------------
