@@ -1732,33 +1732,49 @@ def get_building_labels():
         conn = get_db_connection()
         if conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM buildings")
-            count = cursor.fetchone()[0]
-            
-            if count > 0:
-                # Database has data, use it
-                cursor.execute("SELECT id, name, latitude, longitude, type, category FROM buildings")
-                building_labels = []
-                for row in cursor.fetchall():
-                    config = ICON_CONFIG.get(str(row[4]), ICON_CONFIG['default'])
-                    building_labels.append({
-                        'id': row[0],
-                        'name': row[1],
-                        'latitude': float(row[2]),
-                        'longitude': float(row[3]),
-                        'type': row[4],
-                        'color': config['color'],
-                        'icon': config['icon'],
-                        'category': row[5]
-                    })
+            try:
+                # Check if buildings table exists
+                cursor.execute("""
+                    SELECT EXISTS (
+                        SELECT FROM information_schema.tables 
+                        WHERE table_name = 'buildings'
+                    );
+                """)
+                table_exists = cursor.fetchone()[0]
+                
+                if table_exists:
+                    cursor.execute("SELECT COUNT(*) FROM buildings")
+                    count = cursor.fetchone()[0]
+                    
+                    if count > 0:
+                        # Database has data, use it
+                        cursor.execute("SELECT id, name, latitude, longitude, type, category FROM buildings")
+                        building_labels = []
+                        for row in cursor.fetchall():
+                            config = ICON_CONFIG.get(str(row[4]), ICON_CONFIG['default'])
+                            building_labels.append({
+                                'id': row[0],
+                                'name': row[1],
+                                'latitude': float(row[2]),
+                                'longitude': float(row[3]),
+                                'type': row[4],
+                                'color': config['color'],
+                                'icon': config['icon'],
+                                'category': row[5]
+                            })
+                        cursor.close()
+                        conn.close()
+                        return jsonify({'success': True, 'buildings': building_labels, 'count': len(building_labels)})
+                else:
+                    print("⚠ Buildings table does not exist in database", file=sys.stderr)
+            except Exception as db_error:
+                print(f"⚠ Database error: {db_error}", file=sys.stderr)
+            finally:
                 cursor.close()
                 conn.close()
-                return jsonify({'success': True, 'buildings': building_labels, 'count': len(building_labels)})
-            cursor.close()
-            conn.close()
         
         # Fallback to CSV data
-        print("⚠ Database empty, using CSV fallback for building labels")
+        print("⚠ Using CSV fallback for building labels", file=sys.stderr)
         building_labels = []
         for _, row in df.iterrows():
             config = ICON_CONFIG.get(str(row['type']), ICON_CONFIG['default'])
@@ -1780,31 +1796,14 @@ def get_building_labels():
             'source': 'csv_fallback'
         })
     except Exception as e:
-        print(f"Error in building_labels: {e}")
-        return jsonify({'success': False, 'error': str(e)})
-
-@app.route('/api/route_history', methods=['GET', 'POST'])
-def handle_route_history():
-    if request.method == 'POST':
-        try:
-            data = request.json
-            route_history.append({
-                'timestamp': datetime.now().isoformat(),
-                'start': data.get('start'),
-                'end': data.get('end'),
-                'mode': data.get('mode'),
-                'distance': data.get('distance'),
-                'time': data.get('time')
-            })
-            if len(route_history) > 20:
-                route_history.pop(0)
-            return jsonify({'success': True})
-        except Exception as e:
-            return jsonify({'success': False, 'error': str(e)})
-    else:
+        print(f"❌ Error in building_labels: {e}", file=sys.stderr)
+        # Ultimate fallback - return empty list
         return jsonify({
-            'history': route_history[-10:],
-            'success': True
+            'success': True,
+            'buildings': [],
+            'count': 0,
+            'source': 'error_fallback',
+            'error': str(e)
         })
 
 @app.route('/api/upload_photo/<int:building_id>', methods=['POST'])
@@ -3046,42 +3045,56 @@ def get_building_details(building_id):
         conn = get_db_connection()
         if conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM buildings WHERE id = %s", (building_id,))
-            if cursor.fetchone()[0] > 0:
-                # Get from database
+            try:
+                # Check if buildings table exists
                 cursor.execute("""
-                    SELECT id, name, type, latitude, longitude, description, category 
-                    FROM buildings WHERE id = %s
-                """, (building_id,))
-                row = cursor.fetchone()
+                    SELECT EXISTS (
+                        SELECT FROM information_schema.tables 
+                        WHERE table_name = 'buildings'
+                    );
+                """)
+                table_exists = cursor.fetchone()[0]
+                
+                if table_exists:
+                    cursor.execute("SELECT COUNT(*) FROM buildings WHERE id = %s", (building_id,))
+                    if cursor.fetchone()[0] > 0:
+                        # Get from database
+                        cursor.execute("""
+                            SELECT id, name, type, latitude, longitude, description, category 
+                            FROM buildings WHERE id = %s
+                        """, (building_id,))
+                        row = cursor.fetchone()
+                        cursor.close()
+                        conn.close()
+                        
+                        if row:
+                            config = ICON_CONFIG.get(str(row[2]), ICON_CONFIG['default'])
+                            return jsonify({
+                                'success': True,
+                                'building': {
+                                    'id': row[0],
+                                    'name': row[1],
+                                    'type': row[2],
+                                    'type_name': config.get('name', row[2].replace('_', ' ').title()),
+                                    'category': row[6],
+                                    'latitude': float(row[3]),
+                                    'longitude': float(row[4]),
+                                    'description': row[5],
+                                    'icon': config['icon'],
+                                    'color': config['color'],
+                                    'photos': [],
+                                    'photo_count': 0
+                                },
+                                'nearby': []
+                            })
+            except Exception as db_error:
+                print(f"⚠ Database error: {db_error}", file=sys.stderr)
+            finally:
                 cursor.close()
                 conn.close()
-                
-                if row:
-                    config = ICON_CONFIG.get(str(row[2]), ICON_CONFIG['default'])
-                    return jsonify({
-                        'success': True,
-                        'building': {
-                            'id': row[0],
-                            'name': row[1],
-                            'type': row[2],
-                            'type_name': config.get('name', row[2].replace('_', ' ').title()),
-                            'category': row[6],
-                            'latitude': float(row[3]),
-                            'longitude': float(row[4]),
-                            'description': row[5],
-                            'icon': config['icon'],
-                            'color': config['color'],
-                            'photos': [],
-                            'photo_count': 0
-                        },
-                        'nearby': []
-                    })
-            cursor.close()
-            conn.close()
         
         # Fallback to CSV
-        print(f"⚠ Database empty, using CSV fallback for building {building_id}")
+        print(f"⚠ Using CSV fallback for building {building_id}", file=sys.stderr)
         building = df[df['id'] == building_id].iloc[0]
         
         # Get building photos
@@ -3142,13 +3155,12 @@ def get_building_details(building_id):
             'source': 'csv_fallback'
         })
     except Exception as e:
-        print(f"Error getting building details: {e}")
+        print(f"❌ Error getting building details: {e}", file=sys.stderr)
         traceback.print_exc()
         return jsonify({
             'success': False,
             'error': str(e)
         })
-
 # ---------------------------------------------------
 # CLEANUP THREAD FOR INACTIVE TRACKERS
 # ---------------------------------------------------
