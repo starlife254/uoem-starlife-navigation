@@ -22,7 +22,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lightgallery-bundle.min.css"/>
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile-fixes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile-fixes.css') }}">
+    
     <!-- Socket.IO -->
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     
@@ -39,55 +40,52 @@
             height: 100vh;
             overflow: hidden;
         }
+        
         /* Fix for mobile touch interactions */
-.modal-backdrop {
-    pointer-events: none !important; /* Allow clicks to pass through */
-    background-color: rgba(0, 0, 0, 0.3) !important;
-}
+        .modal-backdrop {
+            pointer-events: none !important;
+            background-color: rgba(0, 0, 0, 0.3) !important;
+        }
 
-.navbar, 
-.navigation-controls,
-.bottom-nav,
-.menu-container {
-    z-index: 1050 !important;
-    position: relative;
-    pointer-events: auto !important; /* Ensure menus are clickable */
-}
+        .navbar, 
+        .navigation-controls,
+        .bottom-nav,
+        .menu-container {
+            z-index: 1050 !important;
+            position: relative;
+            pointer-events: auto !important;
+        }
 
-/* Ensure the main content doesn't block menus */
-.main-content, 
-.map-container,
-.chat-container {
-    pointer-events: auto;
-}
+        .main-content, 
+        .map-container,
+        .chat-container {
+            pointer-events: auto;
+        }
 
-/* Fix for any full-screen overlays */
-.overlay,
-.modal,
-.dropdown-menu {
-    pointer-events: auto !important;
-    z-index: 1060 !important;
-}
+        .overlay,
+        .modal,
+        .dropdown-menu {
+            pointer-events: auto !important;
+            z-index: 1060 !important;
+        }
 
-/* Prevent body scroll when menu is open */
-body.menu-open {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-}
+        body.menu-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
 
-/* Ensure the menu itself is clickable */
-.menu-open .navbar,
-.menu-open .navigation-controls {
-    pointer-events: auto !important;
-}
+        .menu-open .navbar,
+        .menu-open .navigation-controls {
+            pointer-events: auto !important;
+        }
         
         /* ============================================
            MAIN LAYOUT WITH TWO SIDEBARS
         ============================================ */
         #sidebar {
-            width: 350px; /* Reduced from 420px */
+            width: 350px;
             background: white;
             box-shadow: 3px 0 20px rgba(0,0,0,0.1);
             display: flex;
@@ -101,7 +99,7 @@ body.menu-open {
         }
         
         #ai-sidebar {
-            width: 350px; /* AI sidebar width */
+            width: 350px;
             background: linear-gradient(135deg, #2c3e50, #1a252f);
             box-shadow: -3px 0 20px rgba(0,0,0,0.1);
             display: flex;
@@ -131,39 +129,36 @@ body.menu-open {
             margin-right: 350px;
             width: calc(100% - 700px);
         }
+        
         /* Fix for mobile blurring */
-.modal-open, .modal-open body {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-}
+        .modal-open, .modal-open body {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
 
-/* Ensure no backdrop blur affects navigation */
-.modal-backdrop {
-    background-color: rgba(0, 0, 0, 0.5) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-}
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.5) !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
 
-/* Keep navigation elements above backdrop */
-.navbar, .bottom-nav, .navigation-controls {
-    z-index: 1060 !important;
-    position: relative;
-}
+        .navbar, .bottom-nav, .navigation-controls {
+            z-index: 1060 !important;
+            position: relative;
+        }
 
-/* Prevent body scroll when modal is open */
-body.modal-open {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-}
+        body.modal-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+        }
 
-/* Fix for any blur filters */
-* {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-}
+        * {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
         
         /* ============================================
            TABLET LAYOUT
@@ -192,7 +187,6 @@ body.modal-open {
            MOBILE LAYOUT
         ============================================ */
         @media (max-width: 768px) {
-            /* Mobile Header */
             .mobile-header {
                 display: flex;
                 position: fixed;
@@ -241,7 +235,6 @@ body.modal-open {
                 background: rgba(255,255,255,0.3);
             }
             
-            /* Sidebars become overlay on mobile */
             #sidebar {
                 width: 85%;
                 max-width: 400px;
@@ -277,7 +270,6 @@ body.modal-open {
                 width: 100%;
             }
             
-            /* Mobile overlay backdrop */
             .sidebar-backdrop {
                 display: none;
                 position: fixed;
@@ -294,7 +286,6 @@ body.modal-open {
                 display: block;
             }
             
-            /* Adjust control panel for mobile */
             .control-panel.desktop {
                 top: 80px;
                 right: 15px;
@@ -330,7 +321,6 @@ body.modal-open {
                 font-size: 16px;
             }
             
-            /* Details panel adjustments */
             .details-panel {
                 left: 10px !important;
                 right: 10px !important;
@@ -344,7 +334,6 @@ body.modal-open {
                 max-height: calc(100vh - 200px) !important;
             }
             
-            /* Tile layer selector */
             .tile-layer-selector {
                 right: 10px !important;
                 top: 120px !important;
@@ -354,19 +343,16 @@ body.modal-open {
                 border-radius: 12px !important;
             }
             
-            /* Building name labels */
             .building-name-label {
                 font-size: 10px !important;
                 padding: 3px 8px !important;
                 max-width: 120px !important;
             }
             
-            /* Photo gallery for mobile */
             .photo-thumb {
                 height: 200px !important;
             }
             
-            /* Tab navigation */
             .tab-navigation {
                 padding: 3px;
             }
@@ -376,7 +362,6 @@ body.modal-open {
                 font-size: 12px;
             }
             
-            /* Mode selector */
             .mode-selector {
                 padding: 5px;
             }
@@ -386,21 +371,16 @@ body.modal-open {
                 font-size: 12px;
             }
             
-            /* Building list */
             .building-item {
                 padding: 8px;
             }
             
-            /* Buttons */
             .btn-primary, .btn-secondary {
                 padding: 12px;
                 font-size: 14px;
             }
         }
         
-        /* ============================================
-           SMALL PHONES
-        ============================================ */
         @media (max-width: 480px) {
             #sidebar, #ai-sidebar {
                 width: 95%;
@@ -749,7 +729,6 @@ body.modal-open {
             background: #e74c3c;
         }
         
-        /* Confidence indicator */
         .confidence-indicator {
             font-size: 11px;
             color: #2ecc71;
@@ -783,7 +762,6 @@ body.modal-open {
             background: #f8f9fa;
         }
         
-        /* Tab Navigation */
         .tab-navigation {
             display: flex;
             margin-bottom: 20px;
@@ -828,7 +806,6 @@ body.modal-open {
             display: block;
         }
         
-        /* Mode Selector */
         .mode-selector {
             display: flex;
             gap: 8px;
@@ -866,7 +843,6 @@ body.modal-open {
             color: #007bff;
         }
         
-        /* Input Groups */
         .input-group {
             margin-bottom: 20px;
         }
@@ -913,7 +889,6 @@ body.modal-open {
             border-color: #007bff;
         }
         
-        /* Buttons */
         .btn-primary {
             width: 100%;
             padding: 14px;
@@ -959,7 +934,6 @@ body.modal-open {
             background: #545b62;
         }
         
-        /* Building List */
         .building-item {
             padding: 12px;
             border-bottom: 1px solid #eee;
@@ -1032,7 +1006,6 @@ body.modal-open {
             color: white;
         }
         
-        /* Control Panel */
         .control-panel.desktop {
             position: absolute;
             top: 20px;
@@ -1076,7 +1049,6 @@ body.modal-open {
             border-color: #007bff;
         }
         
-        /* Enhanced Details Panel */
         .details-panel {
             position: absolute;
             top: 20px;
@@ -1139,7 +1111,6 @@ body.modal-open {
             overflow-y: auto;
         }
         
-        /* Photo Gallery */
         .photo-gallery {
             padding: 15px;
             background: #f8f9fa;
@@ -1212,7 +1183,6 @@ body.modal-open {
             opacity: 0.3;
         }
         
-        /* BUILDING NAME LABELS */
         .building-name-label {
             position: absolute;
             background: rgba(255, 255, 255, 0.95);
@@ -1253,7 +1223,6 @@ body.modal-open {
             border-top: 5px solid rgba(255, 255, 255, 0.95);
         }
         
-        /* Label Color Variations */
         .building-name-label.academic {
             border-left: 3px solid #3498db;
         }
@@ -1294,7 +1263,6 @@ body.modal-open {
             border-left: 3px solid #7d3c98;
         }
         
-        /* Loading Overlay */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -1324,7 +1292,6 @@ body.modal-open {
             100% { transform: rotate(360deg); }
         }
         
-        /* Lightbox Styles */
         .lg-backdrop {
             background-color: rgba(0, 0, 0, 0.9) !important;
         }
@@ -1333,7 +1300,6 @@ body.modal-open {
             z-index: 10000 !important;
         }
         
-        /* Map Legend */
         .map-legend {
             background: white !important;
             padding: 15px !important;
@@ -1343,7 +1309,6 @@ body.modal-open {
             max-width: 250px !important;
         }
         
-        /* Tile Layer Selector */
         .tile-layer-selector {
             position: absolute;
             top: 120px;
@@ -1384,7 +1349,6 @@ body.modal-open {
             border-color: #0056b3;
         }
         
-        /* Zoom Level Indicator */
         .zoom-level {
             position: absolute;
             bottom: 50px;
@@ -1400,7 +1364,6 @@ body.modal-open {
             backdrop-filter: blur(5px);
         }
         
-        /* Real-time Tracking Panel */
         .tracking-panel {
             position: absolute;
             bottom: 20px;
@@ -1483,7 +1446,6 @@ body.modal-open {
             color: #721c24;
         }
         
-        /* Tracker Controls */
         .tracker-controls {
             display: flex;
             gap: 10px;
@@ -1519,7 +1481,6 @@ body.modal-open {
             color: white;
         }
         
-        /* Share Modal */
         .share-modal {
             position: fixed;
             top: 0;
@@ -1556,7 +1517,6 @@ body.modal-open {
             user-select: all;
         }
         
-        /* Animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translate(-50%, -30px); }
             to { opacity: 1; transform: translate(-50%, -40px); }
@@ -1572,7 +1532,6 @@ body.modal-open {
             animation: pulse 2s infinite;
         }
         
-        /* Transition for sidebar */
         #sidebar, #ai-sidebar, #map, .mobile-header, .control-panel {
             transition: all 0.3s ease;
         }
@@ -1581,22 +1540,22 @@ body.modal-open {
 
 <body>
     <!-- Add near the top of your navigation bar -->
-<div style="position: absolute; top: 10px; right: 10px; z-index: 1000;">
-    <button onclick="logout()" style="padding: 8px 15px; background: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">
-        <i class="fas fa-sign-out-alt"></i> Logout
-    </button>
-</div>
+    <div style="position: absolute; top: 10px; right: 10px; z-index: 1000;">
+        <button onclick="logout()" style="padding: 8px 15px; background: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
 
-<script>
-async function logout() {
-    try {
-        await fetch('/api/logout', { method: 'POST' });
-        window.location.href = '/login';
-    } catch (error) {
-        console.error('Logout error:', error);
+    <script>
+    async function logout() {
+        try {
+            await fetch('/api/logout', { method: 'POST' });
+            window.location.href = '/login';
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
     }
-}
-</script>
+    </script>
     
     <!-- Mobile Header (visible only on mobile) -->
     <div class="mobile-header" id="mobileHeader" style="display: none;">
@@ -1671,6 +1630,7 @@ async function logout() {
             </button>
         </div>
     </div>
+    
     <!-- Share Tracker Modal -->
     <div class="share-modal" id="shareModal">
         <div class="share-content">
@@ -2235,212 +2195,185 @@ async function logout() {
         
         console.log(`📱 ${isMobile ? 'Mobile' : 'Desktop'} mode (${width}px), AI Sidebar: ${aiSidebarOpen ? 'Open' : 'Closed'}`);
     }
+    
     // Voice Processing Functions
-let voiceProcessor = null;
-let isVoiceListening = false;
+    let voiceProcessor = null;
+    let isVoiceListening = false;
 
-function initializeVoiceProcessing() {
-    console.log("🎤 Initializing voice processing...");
-    
-    // Check browser support
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-        console.log('⚠ Voice recognition not supported in this browser');
-        return false;
+    function initializeVoiceProcessing() {
+        console.log("🎤 Initializing voice processing...");
+        
+        // Check browser support
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            console.log('⚠ Voice recognition not supported in this browser');
+            return false;
+        }
+        
+        // Initialize speech recognition
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        voiceProcessor = new SpeechRecognition();
+        voiceProcessor.continuous = false;
+        voiceProcessor.interimResults = false;
+        voiceProcessor.lang = 'en-US';
+        
+        voiceProcessor.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            console.log('🗣 Voice recognized:', transcript);
+            
+            // Process the voice command
+            processVoiceCommand(transcript);
+            
+            // Update UI
+            $('#aiVoiceBtn').removeClass('listening');
+            isVoiceListening = false;
+        };
+        
+        voiceProcessor.onerror = function(event) {
+            console.error('Voice recognition error:', event.error);
+            showMessage('Voice recognition error: ' + event.error, 'warning');
+            $('#aiVoiceBtn').removeClass('listening');
+            isVoiceListening = false;
+        };
+        
+        voiceProcessor.onend = function() {
+            if (isVoiceListening) {
+                // Restart listening if still in listening mode
+                setTimeout(startVoiceListening, 100);
+            }
+        };
+        
+        return true;
     }
-    
-    // Initialize speech recognition
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    voiceProcessor = new SpeechRecognition();
-    voiceProcessor.continuous = false;
-    voiceProcessor.interimResults = false;
-    voiceProcessor.lang = 'en-US';
-    
-    voiceProcessor.onresult = function(event) {
-        const transcript = event.results[0][0].transcript;
-        console.log('🗣 Voice recognized:', transcript);
+
+    function toggleVoiceInput() {
+        if (!voiceProcessor && !initializeVoiceProcessing()) {
+            showMessage('Voice input not supported in your browser', 'warning');
+            return;
+        }
         
-        // Process the voice command
-        processVoiceCommand(transcript);
-        
-        // Update UI
-        $('#aiVoiceBtn').removeClass('listening');
-        isVoiceListening = false;
-    };
-    
-    voiceProcessor.onerror = function(event) {
-        console.error('Voice recognition error:', event.error);
-        showMessage('Voice recognition error: ' + event.error, 'warning');
-        $('#aiVoiceBtn').removeClass('listening');
-        isVoiceListening = false;
-    };
-    
-    voiceProcessor.onend = function() {
         if (isVoiceListening) {
-            // Restart listening if still in listening mode
-            setTimeout(startVoiceListening, 100);
-        }
-    };
-    
-    return true;
-}
-
-function toggleVoiceInput() {
-    if (!voiceProcessor && !initializeVoiceProcessing()) {
-        showMessage('Voice input not supported in your browser', 'warning');
-        return;
-    }
-    
-    if (isVoiceListening) {
-        stopVoiceListening();
-    } else {
-        startVoiceListening();
-    }
-}
-
-function startVoiceListening() {
-    try {
-        voiceProcessor.start();
-        isVoiceListening = true;
-        $('#aiVoiceBtn').addClass('listening');
-        showMessage('Listening... Speak now', 'info');
-        
-        // Update AI input field
-        $('#aiInput').attr('placeholder', 'Listening... Speak now');
-    } catch (error) {
-        console.error('Error starting voice recognition:', error);
-        showMessage('Error starting voice recognition', 'error');
-    }
-}
-
-function stopVoiceListening() {
-    isVoiceListening = false;
-    $('#aiVoiceBtn').removeClass('listening');
-    $('#aiInput').attr('placeholder', 'Ask Starlife AI about campus...');
-    
-    if (voiceProcessor) {
-        try {
-            voiceProcessor.stop();
-        } catch (error) {
-            console.error('Error stopping voice recognition:', error);
-        }
-    }
-}
-
-async function processVoiceCommand(transcript) {
-    // Update AI input
-    $('#aiInput').val(transcript);
-    
-    // Show processing indicator
-    showMessage('Processing voice command...', 'info');
-    
-    try {
-        // Send to advanced AI endpoint
-        const response = await fetch('/api/ai/advanced_query', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                query: transcript,
-                is_voice: true,
-                language: 'auto'
-            })
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            // Add to chat
-            addAIMessage('user', transcript);
-            addAIMessage('bot', data.response, data);
-            
-            // If building found, show navigation option
-            if (data.building_details) {
-                setTimeout(() => {
-                    addAINavigationOption(data.building_details);
-                }, 300);
-            }
-            
-            // Handle context-specific actions
-            if (data.context) {
-                handleVoiceContext(data.context);
-            }
+            stopVoiceListening();
         } else {
-            addAIMessage('bot', data.error || 'Sorry, I could not process your voice command.', data);
+            startVoiceListening();
         }
-    } catch (error) {
-        console.error('Error processing voice command:', error);
-        addAIMessage('bot', 'Error processing voice command. Please try again.', {});
     }
-}
 
-function handleVoiceContext(context) {
-    // Handle accessibility requests
-    if (context.accessible || context.avoid_stairs) {
-        showMessage('Using accessible route (avoiding stairs)', 'info');
-        // You could update route calculation here
+    function startVoiceListening() {
+        try {
+            voiceProcessor.start();
+            isVoiceListening = true;
+            $('#aiVoiceBtn').addClass('listening');
+            showMessage('Listening... Speak now', 'info');
+            
+            // Update AI input field
+            $('#aiInput').attr('placeholder', 'Listening... Speak now');
+        } catch (error) {
+            console.error('Error starting voice recognition:', error);
+            showMessage('Error starting voice recognition', 'error');
+        }
     }
-    
-    // Handle urgency
-    if (context.urgency) {
-        showMessage('Finding fastest route (urgent)', 'info');
-    }
-    
-    // Handle mode preference
-    if (context.mode && context.mode !== currentMode) {
-        showMessage(`Switching to ${context.mode} mode`, 'info');
-        // Update mode in UI
-        $(`.mode-btn[data-mode="${context.mode}"]`).click();
-    }
-}
 
-// Multilingual support
-function setLanguage(language) {
-    console.log(`🌐 Setting language to: ${language}`);
-    
-    // Update voice recognition language
-    if (voiceProcessor) {
-        voiceProcessor.lang = language === 'sw' ? 'sw-KE' : 'en-US';
+    function stopVoiceListening() {
+        isVoiceListening = false;
+        $('#aiVoiceBtn').removeClass('listening');
+        $('#aiInput').attr('placeholder', 'Ask Starlife AI about campus...');
+        
+        if (voiceProcessor) {
+            try {
+                voiceProcessor.stop();
+            } catch (error) {
+                console.error('Error stopping voice recognition:', error);
+            }
+        }
     }
-    
-    // Update AI placeholder
-    const placeholder = language === 'sw' 
-        ? 'Uliza Starlife AI kuhusu chuo...' 
-        : 'Ask Starlife AI about campus...';
-    $('#aiInput').attr('placeholder', placeholder);
-    
-    // Show confirmation
-    const langName = language === 'sw' ? 'Swahili' : 'English';
-    showMessage(`Language set to ${langName}`, 'success');
-}
 
-// Initialize on page load
-$(document).ready(function() {
-    // Initialize voice processing
-    initializeVoiceProcessing();
-    
-    // Add language switcher to AI sidebar
-    $('#ai-sidebar .ai-sidebar-header').append(`
-        <div style="display: flex; gap: 5px; margin-top: 10px;">
-            <button onclick="setLanguage('en')" style="padding: 5px 10px; background: #3498db; color: white; border: none; border-radius: 3px; font-size: 12px; cursor: pointer;">
-                🇬🇧 English
-            </button>
-            <button onclick="setLanguage('sw')" style="padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 3px; font-size: 12px; cursor: pointer;">
-                🇹🇿 Swahili
-            </button>
-        </div>
-    `);
-    
-    // Add voice command examples
-    $('#aiChatMessages .ai-examples').append(`
-        <button class="ai-example" onclick="processVoiceCommand('Where is the library?')">
-            <i class="fas fa-microphone"></i> "Where is the library?" (Voice)
-        </button>
-        <button class="ai-example" onclick="processVoiceCommand('Iko wapi maktaba?')">
-            <i class="fas fa-microphone"></i> "Iko wapi maktaba?" (Sauti)
-        </button>
-    `);
-});
+    async function processVoiceCommand(transcript) {
+        // Update AI input
+        $('#aiInput').val(transcript);
+        
+        // Show processing indicator
+        showMessage('Processing voice command...', 'info');
+        
+        try {
+            // Send to advanced AI endpoint
+            const response = await fetch('/api/ai/advanced_query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    query: transcript,
+                    is_voice: true,
+                    language: 'auto'
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Add to chat
+                addAIMessage('user', transcript);
+                addAIMessage('bot', data.response, data);
+                
+                // If building found, show navigation option
+                if (data.building_details) {
+                    setTimeout(() => {
+                        addAINavigationOption(data.building_details);
+                    }, 300);
+                }
+                
+                // Handle context-specific actions
+                if (data.context) {
+                    handleVoiceContext(data.context);
+                }
+            } else {
+                addAIMessage('bot', data.error || 'Sorry, I could not process your voice command.', data);
+            }
+        } catch (error) {
+            console.error('Error processing voice command:', error);
+            addAIMessage('bot', 'Error processing voice command. Please try again.', {});
+        }
+    }
+
+    function handleVoiceContext(context) {
+        // Handle accessibility requests
+        if (context.accessible || context.avoid_stairs) {
+            showMessage('Using accessible route (avoiding stairs)', 'info');
+            // You could update route calculation here
+        }
+        
+        // Handle urgency
+        if (context.urgency) {
+            showMessage('Finding fastest route (urgent)', 'info');
+        }
+        
+        // Handle mode preference
+        if (context.mode && context.mode !== currentMode) {
+            showMessage(`Switching to ${context.mode} mode`, 'info');
+            // Update mode in UI
+            $(`.mode-btn[data-mode="${context.mode}"]`).click();
+        }
+    }
+
+    // Multilingual support
+    function setLanguage(language) {
+        console.log(`🌐 Setting language to: ${language}`);
+        
+        // Update voice recognition language
+        if (voiceProcessor) {
+            voiceProcessor.lang = language === 'sw' ? 'sw-KE' : 'en-US';
+        }
+        
+        // Update AI placeholder
+        const placeholder = language === 'sw' 
+            ? 'Uliza Starlife AI kuhusu chuo...' 
+            : 'Ask Starlife AI about campus...';
+        $('#aiInput').attr('placeholder', placeholder);
+        
+        // Show confirmation
+        const langName = language === 'sw' ? 'Swahili' : 'English';
+        showMessage(`Language set to ${langName}`, 'success');
+    }
     
     function toggleSidebar() {
         if (!isMobile) return;
@@ -2815,60 +2748,61 @@ $(document).ready(function() {
     // MAP INITIALIZATION
     // ============================================
     
-   function initializeMap() {
-    console.log('🗺️ Initializing responsive map...');
-    
-    const initialZoom = isMobile ? 16 : 17;
-    
-    // Create map with responsive settings
-    map = L.map('map', {
-        center: CAMPUS_CENTER,
-        zoom: initialZoom,
-        zoomControl: true,
-        tap: isMobile,
-        touchZoom: true,           // Enable touch zoom (for mobile)
-        scrollWheelZoom: !isMobile, // Enable mouse wheel zoom on desktop only
-        doubleClickZoom: true,      // Enable double-click zoom
-        dragging: true,
-        tapTolerance: isMobile ? 15 : 10,
-        boxZoom: true,
-        keyboard: true,
-        bounceAtZoomLimits: true
-    });
-    
-    // Add default tile layer
-    const defaultTile = Object.values(MAP_TILES).find(tile => tile.default);
-    currentTileLayer = L.tileLayer(defaultTile.url, {
-        attribution: defaultTile.attribution,
-        maxZoom: 20,
-        minZoom: 15,
-        detectRetina: true
-    }).addTo(map);
-    
-    // Add zoom control
-    L.control.zoom({
-        position: isMobile ? 'bottomright' : 'topright'
-    }).addTo(map);
-    
-    // Add scale control
-    L.control.scale({
-        position: 'bottomleft',
-        imperial: false,
-        maxWidth: isMobile ? 100 : 200
-    }).addTo(map);
-    
-    // Add zoom event listener for debugging
-    map.on('zoomstart', function() {
-        console.log('Zoom started');
-    });
+    function initializeMap() {
+        console.log('🗺️ Initializing responsive map...');
+        
+        const initialZoom = isMobile ? 16 : 17;
+        
+        // Create map with responsive settings
+        map = L.map('map', {
+            center: CAMPUS_CENTER,
+            zoom: initialZoom,
+            zoomControl: true,
+            tap: isMobile,
+            touchZoom: true,
+            scrollWheelZoom: !isMobile,
+            doubleClickZoom: true,
+            dragging: true,
+            tapTolerance: isMobile ? 15 : 10,
+            boxZoom: true,
+            keyboard: true,
+            bounceAtZoomLimits: true
+        });
+        
+        // Add default tile layer
+        const defaultTile = Object.values(MAP_TILES).find(tile => tile.default);
+        currentTileLayer = L.tileLayer(defaultTile.url, {
+            attribution: defaultTile.attribution,
+            maxZoom: 20,
+            minZoom: 15,
+            detectRetina: true
+        }).addTo(map);
+        
+        // Add zoom control
+        L.control.zoom({
+            position: isMobile ? 'bottomright' : 'topright'
+        }).addTo(map);
+        
+        // Add scale control
+        L.control.scale({
+            position: 'bottomleft',
+            imperial: false,
+            maxWidth: isMobile ? 100 : 200
+        }).addTo(map);
+        
+        // Add zoom event listener for debugging
+        map.on('zoomstart', function() {
+            console.log('Zoom started');
+        });
 
-    map.on('zoomend', function() {
-        console.log('Zoom ended at level: ' + map.getZoom());
-    });
+        map.on('zoomend', function() {
+            console.log('Zoom ended at level: ' + map.getZoom());
+        });
+        
+        console.log('✅ Responsive map initialized');
+    }
     
-    console.log('✅ Responsive map initialized');
-}
-function addMapControls() {
+    function addMapControls() {
         // Add fullscreen control
         L.control.fullscreen({
             position: 'topright',
@@ -2921,15 +2855,48 @@ function addMapControls() {
         console.log('📍 Loading buildings with name labels...');
         
         // Clear existing markers
-        markers.forEach(marker => map.removeLayer(marker));
-        markers = [];
-        buildingLabels = [];
-        
-        // Create marker cluster group
-        if (clusterGroup) {
-            map.removeLayer(clusterGroup);
+        if (markers.length > 0) {
+            markers.forEach(marker => {
+                if (map && marker) {
+                    map.removeLayer(marker);
+                }
+            });
+            markers = [];
         }
         
+        // Clear building labels
+        buildingLabels = [];
+        
+        // Remove existing cluster group
+        if (clusterGroup && map) {
+            map.removeLayer(clusterGroup);
+            clusterGroup = null;
+        }
+        
+        // Check if buildings data exists and is valid
+        if (!buildings || !Array.isArray(buildings) || buildings.length === 0) {
+            console.warn('⚠ No buildings data available or invalid format');
+            console.log('Buildings data received:', buildings);
+            showMessage('No buildings found in database', 'warning');
+            
+            // Update building list to show error
+            const container = $('#buildingList');
+            container.html(`
+                <div style="text-align: center; color: #6c757d; padding: 30px;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 15px; color: #ffc107;"></i>
+                    <h4 style="margin-bottom: 10px;">No Buildings Data</h4>
+                    <p style="font-size: 14px;">The building data could not be loaded. Please check your connection or refresh the page.</p>
+                    <button onclick="location.reload()" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; margin-top: 15px; cursor: pointer;">
+                        <i class="fas fa-sync-alt"></i> Refresh Page
+                    </button>
+                </div>
+            `);
+            return;
+        }
+        
+        console.log(`✅ Loading ${buildings.length} buildings from Flask template`);
+        
+        // Create marker cluster group
         clusterGroup = L.markerClusterGroup({
             maxClusterRadius: isMobile ? 40 : 50,
             spiderfyOnMaxZoom: true,
@@ -2938,11 +2905,32 @@ function addMapControls() {
             disableClusteringAtZoom: isMobile ? 18 : 17
         });
         
+        let markerCount = 0;
+        let buildingsWithCoords = 0;
+        
         // Create building markers with labels
         buildings.forEach(building => {
             try {
-                const config = ICON_CONFIG[building.type] || ICON_CONFIG.default;
-                const labelClass = categoryToLabelClass[building.category] || 'default';
+                // Validate building has required properties
+                if (!building) {
+                    console.warn('⚠ Skipping null/undefined building');
+                    return;
+                }
+                
+                // Check if building has valid coordinates
+                if (typeof building.latitude === 'undefined' || typeof building.longitude === 'undefined' || 
+                    building.latitude === null || building.longitude === null) {
+                    console.warn('⚠ Building missing coordinates:', building.name || 'Unnamed building');
+                    return;
+                }
+                
+                buildingsWithCoords++;
+                
+                const config = ICON_CONFIG && ICON_CONFIG[building.type] ? ICON_CONFIG[building.type] : 
+                              (ICON_CONFIG ? ICON_CONFIG.default : { icon: 'building', color: '#6c757d' });
+                
+                const labelClass = building.category && categoryToLabelClass[building.category] ? 
+                                  categoryToLabelClass[building.category] : 'default';
                 
                 // Create marker with container for label
                 const markerHtml = `
@@ -2951,7 +2939,7 @@ function addMapControls() {
                         <div class="building-name-label ${labelClass}" 
                              style="border-left-color: ${config.color};"
                              id="label-${building.id}">
-                            ${building.name}
+                            ${building.name || 'Unnamed Building'}
                         </div>
                         
                         <!-- Marker Icon -->
@@ -2998,7 +2986,7 @@ function addMapControls() {
                 // Create marker
                 const marker = L.marker([building.latitude, building.longitude], { 
                     icon: icon,
-                    title: building.name,
+                    title: building.name || 'Building',
                     riseOnHover: true
                 });
                 
@@ -3020,15 +3008,15 @@ function addMapControls() {
                                 <i class="fas fa-${config.icon}"></i>
                             </div>
                             <div>
-                                <h4 style="margin: 0 0 5px 0; font-size: 16px;">${building.name}</h4>
+                                <h4 style="margin: 0 0 5px 0; font-size: 16px;">${building.name || 'Unnamed Building'}</h4>
                                 <div style="font-size: 13px; color: #666;">
-                                    <i class="fas fa-${config.icon}"></i> ${building.type_name}
+                                    <i class="fas fa-${config.icon}"></i> ${building.type_name || building.type || 'Unknown Type'}
                                 </div>
                             </div>
                         </div>
                         
                         <p style="margin: 0 0 15px 0; color: #666; font-size: 14px;">
-                            ${building.description.substring(0, 120)}...
+                            ${building.description ? building.description.substring(0, 120) + '...' : 'No description available'}
                         </p>
                         
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -3065,7 +3053,7 @@ function addMapControls() {
                         }
                         
                         // Show label on hover (if zoom level is appropriate)
-                        if (map.getZoom() >= (isMobile ? 17 : 16)) {
+                        if (map && map.getZoom() >= (isMobile ? 17 : 16)) {
                             const label = markerEl.querySelector('.building-name-label');
                             if (label) {
                                 label.classList.add('show');
@@ -3084,7 +3072,7 @@ function addMapControls() {
                         }
                         
                         // Hide label on mouseout (unless zoom level shows it)
-                        if (map.getZoom() < (isMobile ? 17 : 17)) {
+                        if (map && map.getZoom() < (isMobile ? 17 : 17)) {
                             const label = markerEl.querySelector('.building-name-label');
                             if (label) {
                                 label.classList.remove('show');
@@ -3096,35 +3084,56 @@ function addMapControls() {
                 marker.buildingId = building.id;
                 marker.buildingData = building;
                 
-                // Store the label element reference
-                marker.labelElement = null;
-                
                 // Add to cluster group
                 clusterGroup.addLayer(marker);
                 markers.push(marker);
+                markerCount++;
                 
             } catch (error) {
-                console.error('Error creating marker:', error);
+                console.error('Error creating marker for building:', building ? building.name : 'Unknown', error);
             }
         });
         
-        // Add cluster group to map
-        map.addLayer(clusterGroup);
+        console.log(`Buildings with valid coordinates: ${buildingsWithCoords} out of ${buildings.length}`);
+        
+        // Add cluster group to map if we have any markers
+        if (markerCount > 0 && clusterGroup && map) {
+            map.addLayer(clusterGroup);
+            console.log(`✅ Successfully loaded ${markerCount} buildings on map`);
+        } else {
+            console.warn('⚠ No valid building markers to display');
+            
+            // Show message on map
+            if (map) {
+                L.popup()
+                 .setLatLng(CAMPUS_CENTER || [0, 0])
+                 .setContent('No buildings with valid coordinates found')
+                 .openOn(map);
+            }
+        }
         
         // Setup zoom change listener for labels
-        map.on('zoomend', updateLabelsBasedOnZoom);
-        map.on('moveend', updateLabelPositions);
+        if (map) {
+            map.on('zoomend', updateLabelsBasedOnZoom);
+            map.on('moveend', updateLabelPositions);
+        }
         
         // Initial label update
         updateLabelsBasedOnZoom();
         
-        console.log(`✅ Loaded ${markers.length} buildings with name labels`);
-        
         // Update building list
         updateBuildingList(buildings);
+        
+        if (markerCount > 0) {
+            showMessage(`Loaded ${markerCount} buildings`, 'success');
+        } else {
+            showMessage('No buildings with valid coordinates to display', 'warning');
+        }
     }
     
     function updateLabelsBasedOnZoom() {
+        if (!map) return;
+        
         const zoom = map.getZoom();
         const showLabels = zoom >= (isMobile ? 17 : 17) && labelsVisible;
         
@@ -3136,14 +3145,16 @@ function addMapControls() {
         
         // Update all markers' labels
         markers.forEach(marker => {
-            const markerEl = marker.getElement();
-            if (markerEl) {
-                const label = markerEl.querySelector('.building-name-label');
-                if (label) {
-                    if (showLabels) {
-                        label.classList.add('show');
-                    } else {
-                        label.classList.remove('show');
+            if (marker && marker.getElement) {
+                const markerEl = marker.getElement();
+                if (markerEl) {
+                    const label = markerEl.querySelector('.building-name-label');
+                    if (label) {
+                        if (showLabels) {
+                            label.classList.add('show');
+                        } else {
+                            label.classList.remove('show');
+                        }
                     }
                 }
             }
@@ -3924,43 +3935,52 @@ function addMapControls() {
         const container = $('#buildingList');
         container.empty();
         
-        if (buildingsToShow.length === 0) {
+        if (!buildingsToShow || !Array.isArray(buildingsToShow) || buildingsToShow.length === 0) {
             container.html(`
                 <div style="text-align: center; color: #6c757d; padding: 30px;">
-                    <i class="fas fa-search" style="font-size: 24px; margin-bottom: 10px;"></i>
-                    <div>No buildings found</div>
+                    <i class="fas fa-search" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                    <h4 style="margin-bottom: 10px;">No buildings found</h4>
+                    <p style="font-size: 14px;">The building data might still be loading or there might be an error.</p>
+                    <button onclick="location.reload()" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; margin-top: 15px; cursor: pointer;">
+                        <i class="fas fa-sync-alt"></i> Refresh Page
+                    </button>
                 </div>
             `);
             return;
         }
         
         buildingsToShow.forEach(building => {
-            const config = ICON_CONFIG[building.type] || ICON_CONFIG.default;
+            if (!building) return;
+            
+            const config = ICON_CONFIG && ICON_CONFIG[building.type] ? ICON_CONFIG[building.type] : 
+                          (ICON_CONFIG ? ICON_CONFIG.default : { icon: 'building', color: '#6c757d' });
             
             const item = $(`
-                <div class="building-item">
+                <div class="building-item" data-id="${building.id}">
                     <div class="building-icon-small" style="background: ${config.color}20; color: ${config.color};">
                         <i class="fas fa-${config.icon}"></i>
                     </div>
                     <div class="building-info">
-                        <div class="building-name">${building.name}</div>
-                        <div class="building-type">${building.type_name}</div>
+                        <div class="building-name">${building.name || 'Unnamed Building'}</div>
+                        <div class="building-type">${building.type_name || building.type || 'Unknown'}</div>
                     </div>
                     <div class="building-actions">
-                        <button class="action-btn start-btn" onclick="selectAsStart(${building.id})">Start</button>
-                        <button class="action-btn end-btn" onclick="selectAsEnd(${building.id})">End</button>
+                        <button class="action-btn start-btn" onclick="event.stopPropagation(); selectAsStart(${building.id})">Start</button>
+                        <button class="action-btn end-btn" onclick="event.stopPropagation(); selectAsEnd(${building.id})">End</button>
                     </div>
                 </div>
             `);
             
-            item.click(() => {
-                map.setView([building.latitude, building.longitude], isMobile ? 18 : 19);
-                const marker = markers.find(m => m.buildingId === building.id);
-                if (marker) marker.openPopup();
-                
-                // Close sidebar on mobile
-                if (isMobile) {
-                    setTimeout(closeSidebar, 300);
+            item.on('click', function() {
+                if (building.latitude && building.longitude) {
+                    map.setView([building.latitude, building.longitude], isMobile ? 18 : 19);
+                    const marker = markers.find(m => m.buildingId === building.id);
+                    if (marker) marker.openPopup();
+                    
+                    // Close sidebar on mobile
+                    if (isMobile) {
+                        setTimeout(closeSidebar, 300);
+                    }
                 }
             });
             
@@ -3972,7 +3992,8 @@ function addMapControls() {
         const filterType = $('#filter').val();
         
         const filtered = buildings.filter(building => {
-            const nameMatch = building.name.toLowerCase().includes(searchQuery);
+            if (!building) return false;
+            const nameMatch = building.name ? building.name.toLowerCase().includes(searchQuery) : false;
             const typeMatch = !filterType || building.type === filterType;
             return nameMatch && typeMatch;
         });
@@ -4221,11 +4242,11 @@ function addMapControls() {
     function toggleBuildings() {
         const visible = $('#toggleBuildings').hasClass('active');
         if (visible) {
-            map.removeLayer(clusterGroup);
+            if (clusterGroup && map) map.removeLayer(clusterGroup);
             $('#toggleBuildings').removeClass('active');
             showMessage('Buildings hidden', 'info');
         } else {
-            map.addLayer(clusterGroup);
+            if (clusterGroup && map) map.addLayer(clusterGroup);
             $('#toggleBuildings').addClass('active');
             showMessage('Buildings shown', 'info');
         }
@@ -4586,6 +4607,14 @@ function addMapControls() {
     $(document).ready(function() {
         console.log('🚀 Starting UoEm Starlife Navigation System with Real-time Tracking...');
         console.log('🤖 Starlife AI Assistant ready');
+        console.log('📊 Buildings data from Flask:', buildings);
+        console.log('📊 Number of buildings:', buildings ? buildings.length : 0);
+        
+        if (!buildings || buildings.length === 0) {
+            console.error('❌ No buildings data received from server!');
+            showMessage('Failed to load building data', 'error');
+        }
+        
         try {
             // First check responsive state
             checkResponsive();
@@ -4649,8 +4678,33 @@ function addMapControls() {
                 }, 1000);
             }
             
+            // Initialize voice processing
+            initializeVoiceProcessing();
+            
+            // Add language switcher to AI sidebar
+            $('#ai-sidebar .ai-sidebar-header').append(`
+                <div style="display: flex; gap: 5px; margin-top: 10px;">
+                    <button onclick="setLanguage('en')" style="padding: 5px 10px; background: #3498db; color: white; border: none; border-radius: 3px; font-size: 12px; cursor: pointer;">
+                        🇬🇧 English
+                    </button>
+                    <button onclick="setLanguage('sw')" style="padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 3px; font-size: 12px; cursor: pointer;">
+                        🇹🇿 Swahili
+                    </button>
+                </div>
+            `);
+            
+            // Add voice command examples
+            $('#aiChatMessages .ai-examples').append(`
+                <button class="ai-example" onclick="processVoiceCommand('Where is the library?')">
+                    <i class="fas fa-microphone"></i> "Where is the library?" (Voice)
+                </button>
+                <button class="ai-example" onclick="processVoiceCommand('Iko wapi maktaba?')">
+                    <i class="fas fa-microphone"></i> "Iko wapi maktaba?" (Sauti)
+                </button>
+            `);
+            
             console.log('✅ Navigation system with real-time tracking fully loaded');
-            console.log(`📝 ${buildings.length} buildings ready`);
+            console.log(`📝 ${buildings ? buildings.length : 0} buildings ready`);
             showMessage('UoEm Starlife Navigation System is ready!', 'success');
             
             // Auto-open AI sidebar on desktop for better UX
@@ -4670,24 +4724,25 @@ function addMapControls() {
     $('#responsiveTest').click(function() {
         alert(`Screen: ${window.innerWidth}x${window.innerHeight}\nMobile: ${isMobile}\nZoom: ${map ? map.getZoom() : 'N/A'}\nSidebar: ${sidebarOpen ? 'Open' : 'Closed'}\nAI Sidebar: ${aiSidebarOpen ? 'Open' : 'Closed'}\nTracking: ${isTracking ? 'Active' : 'Inactive'}`);
     });
-    // Fix for mobile menu touch interactions
-document.addEventListener('DOMContentLoaded', function() {
-    // Ensure navigation elements are clickable
-    const navElements = document.querySelectorAll('.navbar, .navigation-controls, .bottom-nav, .menu-toggle');
-    navElements.forEach(el => {
-        el.addEventListener('touchstart', function(e) {
-            e.stopPropagation(); // Prevent event bubbling
-        }, { passive: true });
-    });
     
-    // Handle menu open/close
-    const menuToggle = document.querySelector('.menu-toggle');
-    if (menuToggle) {
-        menuToggle.addEventListener('click', function() {
-            document.body.classList.toggle('menu-open');
+    // Fix for mobile menu touch interactions
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ensure navigation elements are clickable
+        const navElements = document.querySelectorAll('.navbar, .navigation-controls, .bottom-nav, .menu-toggle');
+        navElements.forEach(el => {
+            el.addEventListener('touchstart', function(e) {
+                e.stopPropagation(); // Prevent event bubbling
+            }, { passive: true });
         });
-    }
-});
+        
+        // Handle menu open/close
+        const menuToggle = document.querySelector('.menu-toggle');
+        if (menuToggle) {
+            menuToggle.addEventListener('click', function() {
+                document.body.classList.toggle('menu-open');
+            });
+        }
+    });
     </script>
 </body>
 </html>
