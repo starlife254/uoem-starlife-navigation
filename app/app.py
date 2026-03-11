@@ -2071,34 +2071,6 @@ def api_delete_tracker(tracker_id):
 # ---------------------------------------------------
 # GET BUILDING DATA FOR LABELS
 # ---------------------------------------------------
-@app.route('/api/building_labels', methods=['GET'])
-def get_building_labels():
-    """API endpoint to get building data for map labels"""
-    try:
-        building_labels = []
-        for _, row in df.iterrows():
-            config = ICON_CONFIG.get(str(row['type']), ICON_CONFIG['default'])
-            building_labels.append({
-                'id': int(row['id']),
-                'name': str(row['name']),
-                'latitude': float(row['latitude']),
-                'longitude': float(row['longitude']),
-                'type': str(row['type']),
-                'color': config['color'],
-                'icon': config['icon'],
-                'category': str(row['category'])
-            })
-        
-        return jsonify({
-            'success': True,
-            'buildings': building_labels,
-            'count': len(building_labels)
-        })
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        })
 
 # ---------------------------------------------------
 # PATH ADMINISTRATION ENDPOINTS
