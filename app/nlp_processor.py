@@ -488,13 +488,17 @@ class CampusNLPProcessor:
 
 
 # Simple implementation for testing
+
+    """Simplified NLP processor for basic functionality"""
 class SimpleNLPProcessor:
     """Simplified NLP processor for basic functionality"""
-
+    
     def __init__(self, campus_buildings: List[str]):
         self.campus_buildings = [b.lower() for b in campus_buildings]
-
-    def process_query(self, query: str) -> Dict:
+    
+    def process_query(self, query: str, is_voice: bool = False) -> Dict:
+        """Process query with optional voice parameter"""
+        # Your existing code...
         query_lower = query.lower()
 
         # Check for building names
