@@ -1913,6 +1913,35 @@ def get_compatible_modes(path_type):
             compatible.append(mode)
     return compatible
 
+
+@app.route('/debug/files')
+def debug_files():
+    """Debug endpoint to check what files exist on the server"""
+    import os
+    result = {
+        'current_dir': os.getcwd(),
+        'files_in_current': os.listdir('.'),
+        'files_in_app': [],
+        'files_in_data': [],
+        'csv_exists': False,
+        'csv_path': CSV_PATH,
+        'csv_in_data': False
+    }
+    
+    # Check app directory
+    if os.path.exists('app'):
+        result['files_in_app'] = os.listdir('app')
+    
+    # Check app/data directory
+    data_path = os.path.join('app', 'data')
+    if os.path.exists(data_path):
+        result['files_in_data'] = os.listdir(data_path)
+        result['csv_in_data'] = 'buildings.csv' in result['files_in_data']
+    
+    # Check if CSV exists at the expected path
+    result['csv_exists'] = os.path.exists(CSV_PATH)
+    
+    return jsonify(result)
 # ---------------------------------------------------
 # REAL-TIME TRACKING API ENDPOINTS
 # ---------------------------------------------------
