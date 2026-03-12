@@ -1587,10 +1587,34 @@
         <div class="loading-spinner"></div>
     </div>
 
-    <!-- Zoom Level Indicator -->
-    <div class="zoom-level" id="zoomLevel">
-        Zoom: <span id="zoomValue">17</span> | Labels: <span id="labelStatus">On</span>
-    </div>
+   <!-- Zoom Level Indicator - Enhanced -->
+<div class="zoom-level" id="zoomLevel" style="
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 14px;
+    z-index: 1000;
+    display: none;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    pointer-events: none;
+    font-family: 'Segoe UI', monospace;
+">
+    <i class="fas fa-search-plus" style="margin-right: 8px;"></i>
+    Zoom: <span id="zoomValue" style="font-weight: bold; color: #3498db;">17</span>
+    <span style="margin: 0 10px;">|</span>
+    <i class="fas fa-tag" style="margin-right: 5px;"></i>
+    Labels: <span id="labelStatus" style="font-weight: bold; color: #2ecc71;">On</span>
+    <span style="margin: 0 10px;">|</span>
+    <i class="fas fa-building"></i>
+    <span id="visibleBuildings" style="margin-left: 5px; font-weight: bold;">0</span>
+</div>
     
     <!-- Real-time Tracking Panel -->
     <div class="tracking-panel" id="trackingPanel">
@@ -2006,28 +2030,30 @@
         </button>
     </div>
     
-    <!-- Control Panel - Mobile Bottom -->
-    <div class="control-panel mobile-bottom" id="mobileBottomControls">
-        <button class="map-control" id="mobileLocate" title="My Location">
-            <i class="fas fa-location-arrow"></i>
-        </button>
-        <button class="map-control" id="mobileReset" title="Reset View">
-            <i class="fas fa-globe"></i>
-        </button>
-        <button class="map-control active" id="mobilePaths" title="Toggle Paths">
-            <i class="fas fa-road"></i>
-        </button>
-        <button class="map-control" id="mobileSearch" title="Search">
-            <i class="fas fa-search"></i>
-        </button>
-        <button class="map-control active" id="mobileAI" title="Starlife AI">
-            <i class="fas fa-robot"></i>
-        </button>
-        <button class="map-control" id="mobileTracking" title="Tracking">
-            <i class="fas fa-satellite"></i>
-        </button>
-    </div>
-    
+    <!-- Control Panel - Mobile Bottom (Enhanced) -->
+<div class="control-panel mobile-bottom" id="mobileBottomControls">
+    <button class="map-control" id="mobileLocate" title="My Location">
+        <i class="fas fa-location-arrow"></i>
+    </button>
+    <button class="map-control" id="mobileZoomIn" title="Zoom In">
+        <i class="fas fa-plus-circle"></i>
+    </button>
+    <button class="map-control" id="mobileZoomOut" title="Zoom Out">
+        <i class="fas fa-minus-circle"></i>
+    </button>
+    <button class="map-control" id="mobileReset" title="Reset View">
+        <i class="fas fa-globe"></i>
+    </button>
+    <button class="map-control active" id="mobilePaths" title="Toggle Paths">
+        <i class="fas fa-road"></i>
+    </button>
+    <button class="map-control" id="mobileSearch" title="Search">
+        <i class="fas fa-search"></i>
+    </button>
+    <button class="map-control active" id="mobileAI" title="Starlife AI">
+        <i class="fas fa-robot"></i>
+    </button>
+</div>
     <!-- Tile Layer Selector -->
     <div class="tile-layer-selector" id="tileSelector">
         <div style="font-weight: 600; margin-bottom: 15px; font-size: 14px; color: #495057;">
@@ -2748,59 +2774,46 @@
     // MAP INITIALIZATION
     // ============================================
     
-    function initializeMap() {
-        console.log('🗺️ Initializing responsive map...');
-        
-        const initialZoom = isMobile ? 16 : 17;
-        
-        // Create map with responsive settings
-        map = L.map('map', {
-            center: CAMPUS_CENTER,
-            zoom: initialZoom,
-            zoomControl: true,
-            tap: isMobile,
-            touchZoom: true,
-            scrollWheelZoom: !isMobile,
-            doubleClickZoom: true,
-            dragging: true,
-            tapTolerance: isMobile ? 15 : 10,
-            boxZoom: true,
-            keyboard: true,
-            bounceAtZoomLimits: true
-        });
-        
-        // Add default tile layer
-        const defaultTile = Object.values(MAP_TILES).find(tile => tile.default);
-        currentTileLayer = L.tileLayer(defaultTile.url, {
-            attribution: defaultTile.attribution,
-            maxZoom: 20,
-            minZoom: 15,
-            detectRetina: true
-        }).addTo(map);
-        
-        // Add zoom control
-        L.control.zoom({
-            position: isMobile ? 'bottomright' : 'topright'
-        }).addTo(map);
-        
-        // Add scale control
-        L.control.scale({
-            position: 'bottomleft',
-            imperial: false,
-            maxWidth: isMobile ? 100 : 200
-        }).addTo(map);
-        
-        // Add zoom event listener for debugging
-        map.on('zoomstart', function() {
-            console.log('Zoom started');
-        });
-
-        map.on('zoomend', function() {
-            console.log('Zoom ended at level: ' + map.getZoom());
-        });
-        
-        console.log('✅ Responsive map initialized');
-    }
+ function initializeMap() {
+    console.log('🗺️ Initializing responsive map with enhanced zoom...');
+    
+    const initialZoom = isMobile ? 17 : 18; // Increased from 16/17 to 17/18
+    
+    // Create map with responsive settings - EXPANDED ZOOM RANGE
+    map = L.map('map', {
+        center: CAMPUS_CENTER,
+        zoom: initialZoom,
+        zoomControl: true,
+        tap: isMobile,
+        touchZoom: true,
+        scrollWheelZoom: true, // Always enabled for better UX
+        doubleClickZoom: true,
+        dragging: true,
+        tapTolerance: isMobile ? 15 : 10,
+        boxZoom: true,
+        keyboard: true,
+        bounceAtZoomLimits: true,
+        zoomSnap: 0.5, // Smoother zoom increments
+        zoomDelta: 0.5, // Smoother zoom steps
+        wheelPxPerZoomLevel: 120, // Standard wheel sensitivity
+        zoomAnimation: true,
+        fadeAnimation: true,
+        markerZoomAnimation: true,
+        transform3DLimit: 2 ** 23,
+        maxZoom: 21, // Increased from 20 to 21 for much closer views
+        minZoom: 15, // Keep same for campus overview
+        maxBoundsViscosity: 1.0
+    });
+    
+    // Add zoom control at better position
+    L.control.zoom({
+        position: isMobile ? 'bottomright' : 'topright',
+        zoomInText: '<i class="fas fa-plus"></i>',
+        zoomOutText: '<i class="fas fa-minus"></i>'
+    }).addTo(map);
+    
+    console.log('✅ Map initialized with zoom range: 15-21');
+}
     
     function addMapControls() {
         // Add fullscreen control
@@ -2816,17 +2829,22 @@
         initializeTileLayers();
     }
     
-    function initializeTileLayers() {
-        Object.keys(MAP_TILES).forEach(key => {
-            const tileConfig = MAP_TILES[key];
-            tileLayers[key] = L.tileLayer(tileConfig.url, {
-                attribution: tileConfig.attribution,
-                maxZoom: isMobile ? 19 : 20,
-                minZoom: 15,
-                detectRetina: true
-            });
+function initializeTileLayers() {
+    Object.keys(MAP_TILES).forEach(key => {
+        const tileConfig = MAP_TILES[key];
+        tileLayers[key] = L.tileLayer(tileConfig.url, {
+            attribution: tileConfig.attribution,
+            maxZoom: 22, // Increased from 19/20 to 22
+            minZoom: 15,
+            detectRetina: true,
+            zoomOffset: 0,
+            subdomains: 'abc',
+            errorTileUrl: '', // Empty string to hide broken tiles
+            opacity: 1,
+            zIndex: 1
         });
-    }
+    });
+}
     
     function switchTileLayer(tileKey) {
         if (!tileLayers[tileKey]) return;
@@ -2893,6 +2911,24 @@
             `);
             return;
         }
+          clusterGroup = L.markerClusterGroup({
+        maxClusterRadius: isMobile ? 50 : 60,
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false,
+        zoomToBoundsOnClick: true,
+        disableClusteringAtZoom: 19, // Increased from 17/18 to 19
+        spiderfyDistanceMultiplier: 2,
+        chunkedLoading: true,
+        chunkInterval: 100,
+        chunkDelay: 10,
+        polygonOptions: {
+            color: '#3498db',
+            weight: 2,
+            opacity: 0.6,
+            fillOpacity: 0.2
+        }
+    });
+
         
         console.log(`✅ Loading ${buildings.length} buildings from Flask template`);
         
@@ -3131,47 +3167,99 @@
         }
     }
     
-    function updateLabelsBasedOnZoom() {
-        if (!map) return;
-        
-        const zoom = map.getZoom();
-        const showLabels = zoom >= (isMobile ? 17 : 17) && labelsVisible;
-        
-        // Update zoom indicator
-        if ($('#zoomValue').length) {
-            $('#zoomValue').text(zoom);
-            $('#labelStatus').text(labelsVisible ? 'On' : 'Off');
+function updateLabelsBasedOnZoom() {
+    if (!map) return;
+    
+    const zoom = map.getZoom();
+    const zoomRounded = Math.round(zoom * 10) / 10; // For display
+    const showLabels = zoom >= 16 && labelsVisible; // Show labels from zoom 16+
+    const showDetailedLabels = zoom >= 18; // Show more detail at high zoom
+    
+    // Count visible buildings (in current view)
+    const bounds = map.getBounds();
+    let visibleCount = 0;
+    buildings.forEach(b => {
+        if (bounds.contains([b.latitude, b.longitude])) {
+            visibleCount++;
         }
-        
-        // Update all markers' labels
-        markers.forEach(marker => {
-            if (marker && marker.getElement) {
-                const markerEl = marker.getElement();
-                if (markerEl) {
-                    const label = markerEl.querySelector('.building-name-label');
-                    if (label) {
-                        if (showLabels) {
-                            label.classList.add('show');
+    });
+    
+    // Update zoom indicator
+    if ($('#zoomValue').length) {
+        $('#zoomValue').text(zoomRounded.toFixed(1));
+        $('#labelStatus').text(labelsVisible ? 'On' : 'Off');
+        $('#visibleBuildings').text(visibleCount);
+    }
+    
+    // Update all markers' labels with zoom-based styling
+    markers.forEach(marker => {
+        if (marker && marker.getElement) {
+            const markerEl = marker.getElement();
+            if (markerEl) {
+                const label = markerEl.querySelector('.building-name-label');
+                if (label) {
+                    if (showLabels) {
+                        label.classList.add('show');
+                        
+                        // Add extra class for detailed view at high zoom
+                        if (showDetailedLabels) {
+                            label.classList.add('detailed');
+                            // Optionally show more info
+                            if (marker.buildingData) {
+                                label.setAttribute('data-type', marker.buildingData.type || '');
+                            }
                         } else {
-                            label.classList.remove('show');
+                            label.classList.remove('detailed');
                         }
+                    } else {
+                        label.classList.remove('show');
+                        label.classList.remove('detailed');
                     }
                 }
             }
-        });
-        
-        // Update toggle button text
-        if ($('#toggleLabels').length) {
-            $('#toggleLabels').html(labelsVisible ? 
-                '<i class="fas fa-tag-slash"></i> <span class="button-text">Hide Labels</span>' : 
-                '<i class="fas fa-tag"></i> <span class="button-text">Show Labels</span>');
         }
-        
-        // Show/hide zoom indicator
-        if (zoomIndicatorVisible && $('#zoomLevel').length) {
-            $('#zoomLevel').show();
+    });
+    
+    // Update toggle button text
+    if ($('#toggleLabels').length) {
+        $('#toggleLabels').html(labelsVisible ? 
+            '<i class="fas fa-tag-slash"></i> <span class="button-text">Hide Labels</span>' : 
+            '<i class="fas fa-tag"></i> <span class="button-text">Show Labels</span>');
+    }
+    
+    // Show/hide zoom indicator
+    if (zoomIndicatorVisible && $('#zoomLevel').length) {
+        $('#zoomLevel').show();
+    }
+    
+    console.log(`🔍 Zoom: ${zoomRounded.toFixed(1)}, Visible buildings: ${visibleCount}, Labels: ${showLabels ? 'ON' : 'OFF'}`);
+}
+   // Add this function for testing zoom levels
+function testZoomLevels() {
+    console.log('🧪 Testing zoom levels...');
+    const zoomTests = [15, 16, 17, 18, 19, 20, 21];
+    
+    let i = 0;
+    function nextZoom() {
+        if (i < zoomTests.length) {
+            const zoom = zoomTests[i];
+            map.setZoom(zoom);
+            console.log(`📸 Testing zoom ${zoom}`);
+            showMessage(`Testing zoom level ${zoom}`, 'info');
+            i++;
+            setTimeout(nextZoom, 2000);
         }
     }
+    
+    nextZoom();
+}
+
+// Add a test button in the Info tab (find the info-tab section and add)
+$('#info-tab').append(`
+    <button class="btn-secondary" onclick="testZoomLevels()" style="margin-top: 10px;">
+        <i class="fas fa-search"></i> Test Zoom Levels
+    </button>
+`);
     
     function updateLabelPositions() {
         // Labels are attached to markers, so they move automatically
@@ -4103,6 +4191,20 @@
         // Mobile location button
         $('#mobileLocateBtn, #mobileLocate').click(useMyLocation);
         
+        // Add to setupMobileEventHandlers() function
+$('#mobileZoomIn').click(function() {
+    if (map) {
+        const currentZoom = map.getZoom();
+        map.setZoom(Math.min(currentZoom + 1, 21));
+    }
+});
+
+$('#mobileZoomOut').click(function() {
+    if (map) {
+        const currentZoom = map.getZoom();
+        map.setZoom(Math.max(currentZoom - 1, 15));
+    }
+});
         // Mobile search button
         $('#mobileSearchBtn, #mobileSearch').click(function() {
             if (isMobile) {

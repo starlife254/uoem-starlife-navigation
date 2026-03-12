@@ -2046,6 +2046,66 @@ def get_building_photos_api(building_id):
 def serve_photo(filename):
     return send_from_directory(PHOTOS_DIR, filename)
 
+
+    #...........paths debug 
+   @app.route('/api/debug/paths/status', methods=['GET'])
+def debug_paths_status():
+    """Detailed debug for path loading"""
+    results = {}
+    
+    # Check database connection
+    conn = get_db_connection()
+    results['database_connected'] = conn is not None
+    
+    if conn:
+        cursor = conn.cursor()
+        
+        # Check if table exists
+        cursor.execute("""
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_name = 'embu_paths'
+            );
+        """)
+        results['table_exists'] = cursor.fetchone()[0]
+        
+        if results['table_exists']:
+            # Count total paths
+            cursor.execute("SELECT COUNT(*) FROM embu_paths")
+            results['total_paths'] = cursor.fetchone()[0]
+            
+            # Count by type
+            cursor.execute("""
+                SELECT path_type, COUNT(*) 
+                FROM embu_paths 
+                GROUP BY path_type
+            """)
+            results['paths_by_type'] = [{'type': r[0], 'count': r[1]} for r in cursor.fetchall()]
+            
+            # Get sample
+            cursor.execute("""
+                SELECT id, name, path_type, ST_AsText(geom) 
+                FROM embu_paths 
+                LIMIT 3
+            """)
+            results['samples'] = [{'id': r[0], 'name': r[1], 'type': r[2], 'wkt': r[3]} for r in cursor.fetchall()]
+        
+        cursor.close()
+        conn.close()
+    
+    # Check what get_paths() returns
+    paths_all = get_paths()
+    results['get_paths_return_count'] = len(paths_all)
+    
+    if len(paths_all) > 0:
+        results['sample_return'] = {
+            'id': paths_all[0][0],
+            'type': paths_all[0][2],
+            'has_geojson': bool(paths_all[0][1])
+        }
+    
+    return jsonify(results)
+
 # ---------------------------------------------------
 # GET ALL PATHS FOR MAP DISPLAY
 # ---------------------------------------------------
