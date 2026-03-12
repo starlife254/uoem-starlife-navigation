@@ -2047,8 +2047,10 @@ def serve_photo(filename):
     return send_from_directory(PHOTOS_DIR, filename)
 
 
-    #...........paths debug 
-   @app.route('/api/debug/paths/status', methods=['GET'])
+# ---------------------------------------------------
+# PATH DEBUG ENDPOINTS
+# ---------------------------------------------------
+@app.route('/api/debug/paths/status', methods=['GET'])
 def debug_paths_status():
     """Detailed debug for path loading"""
     results = {}
@@ -2105,6 +2107,7 @@ def debug_paths_status():
         }
     
     return jsonify(results)
+
 
 # ---------------------------------------------------
 # GET ALL PATHS FOR MAP DISPLAY
