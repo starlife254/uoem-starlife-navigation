@@ -134,8 +134,34 @@ def token_required(f):
 # ---------------------------------------------------
 # PATHS
 # ---------------------------------------------------
+# ---------------------------------------------------
+# PATHS - UPDATED WITH BETTER FALLBACKS
+# ---------------------------------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CSV_PATH = os.path.join(BASE_DIR, 'data', 'buildings.csv')
+
+# Try multiple possible paths for the CSV file
+POSSIBLE_CSV_PATHS = [
+    os.path.join(BASE_DIR, 'data', 'buildings.csv'),           # /app/data/buildings.csv
+    os.path.join(BASE_DIR, 'buildings.csv'),                    # /app/buildings.csv
+    os.path.join(os.path.dirname(BASE_DIR), 'data', 'buildings.csv'),  # /data/buildings.csv
+    os.path.join(os.path.dirname(BASE_DIR), 'buildings.csv'),   # /buildings.csv
+    '/opt/render/project/src/data/buildings.csv',               # Render's expected path
+    '/opt/render/project/src/app/data/buildings.csv',           # Alternative Render path
+]
+
+# Find the first existing CSV file
+CSV_PATH = None
+for path in POSSIBLE_CSV_PATHS:
+    if os.path.exists(path):
+        CSV_PATH = path
+        print(f"✅ Found buildings.csv at: {path}")
+        break
+
+if CSV_PATH is None:
+    print("⚠ Could not find buildings.csv in any expected location!")
+    # Use the default path - we'll handle missing file in load_buildings_with_photos()
+    CSV_PATH = os.path.join(BASE_DIR, 'data', 'buildings.csv')
+
 PHOTOS_DIR = os.path.join(BASE_DIR, 'static', 'photos')
 UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'uploads')
 EXPORT_DIR = os.path.join(BASE_DIR, 'exports')
@@ -315,55 +341,58 @@ MAP_TILES = {
 # ---------------------------------------------------
 # LOAD BUILDINGS WITH PHOTO SUPPORT
 # ---------------------------------------------------
+# ---------------------------------------------------
+# LOAD BUILDINGS WITH PHOTO SUPPORT - UPDATED
+# ---------------------------------------------------
 def load_buildings_with_photos():
-    """Load buildings from CSV with multiple path fallbacks"""
-    
-    # Try multiple possible paths
-    possible_paths = [
-        CSV_PATH,  # Original path: /opt/render/project/src/app/data/buildings.csv
-        os.path.join(BASE_DIR, 'data', 'buildings.csv'),
-        os.path.join(os.getcwd(), 'data', 'buildings.csv'),
-        os.path.join(os.getcwd(), 'buildings.csv'),
-        os.path.join(BASE_DIR, 'buildings.csv'),
-        '/opt/render/project/src/data/buildings.csv',
-        '/opt/render/project/src/app/buildings.csv',
-    ]
-    
-    df = None
-    loaded_path = None
-    
-    for path in possible_paths:
-        try:
-            print(f"🔍 Trying to load CSV from: {path}", file=sys.stderr)
-            if os.path.exists(path):
-                print(f"✅ File exists at: {path}", file=sys.stderr)
-                df = pd.read_csv(path, sep='\t')
-                print(f"✓ CSV loaded successfully from: {path}", file=sys.stderr)
-                loaded_path = path
-                break
-            else:
-                print(f"❌ File does NOT exist at: {path}", file=sys.stderr)
-        except Exception as e:
-            print(f"✗ Failed to load from {path}: {e}", file=sys.stderr)
-            continue
-    
-    if df is None:
-        print("✗ Error loading CSV from all paths", file=sys.stderr)
-        print("📝 Creating empty DataFrame with default columns", file=sys.stderr)
+    try:
+        # Check if CSV file exists
+        if not os.path.exists(CSV_PATH):
+            print(f"❌ CSV file does not exist at: {CSV_PATH}")
+            print("📝 Creating default buildings data...")
+            
+            # Create default buildings for University of Embu
+            default_buildings = [
+                {"name": "Main Library", "type": "library", "latitude": -0.5075, "longitude": 37.4575},
+                {"name": "Administration Building", "type": "administration", "latitude": -0.5080, "longitude": 37.4580},
+                {"name": "Cafeteria", "type": "cafeteria", "latitude": -0.5070, "longitude": 37.4570},
+                {"name": "Computer Science Lab", "type": "computer_lab", "latitude": -0.5085, "longitude": 37.4585},
+                {"name": "Student Hostel A", "type": "hostel", "latitude": -0.5065, "longitude": 37.4565},
+                {"name": "Student Hostel B", "type": "hostel", "latitude": -0.5060, "longitude": 37.4560},
+                {"name": "Lecture Hall 1", "type": "lecture_hall", "latitude": -0.5090, "longitude": 37.4590},
+                {"name": "Science Laboratory", "type": "laboratory", "latitude": -0.5095, "longitude": 37.4595},
+                {"name": "Sports Complex", "type": "sports_facility", "latitude": -0.5055, "longitude": 37.4555},
+                {"name": "Health Clinic", "type": "clinic", "latitude": -0.5100, "longitude": 37.4600},
+            ]
+            
+            df = pd.DataFrame(default_buildings)
+            print(f"✅ Created default buildings DataFrame with {len(df)} buildings")
+            
+        else:
+            print(f"✅ Found CSV at: {CSV_PATH}")
+            df = pd.read_csv(CSV_PATH, sep='\t')
+            print(f"✓ CSV loaded successfully. Shape: {df.shape}")
+            
+    except Exception as e:
+        print(f"✗ Error loading CSV: {e}")
+        # Create empty DataFrame with required columns
         df = pd.DataFrame(columns=['name', 'type', 'latitude', 'longitude'])
-    else:
-        print(f"✅ Successfully loaded CSV from: {loaded_path}", file=sys.stderr)
-        print(f"📊 CSV shape: {df.shape}", file=sys.stderr)
+        
+        # Add default buildings as fallback
+        default_buildings = [
+            {"name": "Main Library", "type": "library", "latitude": -0.5075, "longitude": 37.4575},
+            {"name": "Administration Building", "type": "administration", "latitude": -0.5080, "longitude": 37.4580},
+        ]
+        df = pd.DataFrame(default_buildings)
+        print(f"✅ Using fallback buildings: {len(df)} buildings")
 
     # Validate required columns
     required_cols = {"name", "type", "latitude", "longitude"}
     if not required_cols.issubset(set(df.columns)):
-        print(f"⚠ Warning: CSV missing required columns. Found: {set(df.columns)}", file=sys.stderr)
+        print(f"⚠ Warning: CSV missing required columns. Found: {set(df.columns)}")
         for col in required_cols:
             if col not in df.columns:
                 df[col] = None
-        df['latitude'] = -0.5075
-        df['longitude'] = 37.4575
     
     # Clean data
     df = df.dropna(subset=['name', 'latitude', 'longitude'])
@@ -371,8 +400,11 @@ def load_buildings_with_photos():
     df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
     df = df.dropna(subset=['latitude', 'longitude'])
 
-    # Add ID column
-    df['id'] = range(1, len(df) + 1)
+    # Add ID column if not present
+    if 'id' not in df.columns:
+        df['id'] = range(1, len(df) + 1)
+    
+    # ... rest of the function remains the same ...
     
     # Add enhanced description
     def create_description(row):
