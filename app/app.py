@@ -27,6 +27,7 @@ from datetime import datetime, timedelta
 # At the very top of app.py
 import os
 import sys
+import requests  # Add this with your other imports
 
 print("🚀 APP: Starting app.py initialization...", file=sys.stderr)
 print(f"🚀 APP: PORT environment variable: {os.environ.get('PORT', 'Not set')}", file=sys.stderr)
@@ -352,17 +353,205 @@ def load_buildings_with_photos():
             print("📝 Creating default buildings data...")
             
             # Create default buildings for University of Embu
+            # Create default buildings for University of Embu with actual coordinates
+default_buildings = [
+    {"name": "Gate C", "type": "gate", "latitude": -0.507611474, "longitude": 37.45946791},
+    {"name": "Gate B", "type": "gate", "latitude": -0.507615162, "longitude": 37.45949171},
+    {"name": "Baby Day Care", "type": "daycare", "latitude": -0.506547684, "longitude": 37.45979849},
+    {"name": "Bus Park", "type": "parking", "latitude": -0.507339575, "longitude": 37.45923758},
+    {"name": "Auditorium Junction", "type": "junction", "latitude": -0.507372431, "longitude": 37.45841548},
+    {"name": "Recreational Center (Tawi)", "type": "recreation_center", "latitude": -0.506940948, "longitude": 37.45760243},
+    {"name": "Security Office", "type": "office", "latitude": -0.508049662, "longitude": 37.4578844},
+    {"name": "Comp Lab 4", "type": "laboratory", "latitude": -0.507875326, "longitude": 37.45804165},
+    {"name": "Comp Lab 3", "type": "laboratory", "latitude": -0.507810285, "longitude": 37.45815966},
+    {"name": "Executive Auditorium", "type": "auditorium", "latitude": -0.507567219, "longitude": 37.4583501},
+    {"name": "Auditorium 01", "type": "auditorium", "latitude": -0.507510224, "longitude": 37.45838933},
+    {"name": "Games Department Office", "type": "office", "latitude": -0.508074807, "longitude": 37.45795012},
+    {"name": "Dam 1 Gazebo", "type": "gazebo", "latitude": -0.508341676, "longitude": 37.45816838},
+    {"name": "Calvidas Cafeteria", "type": "cafeteria", "latitude": -0.508670569, "longitude": 37.45819118},
+    {"name": "Dam 1", "type": "dam", "latitude": -0.508755056, "longitude": 37.45849662},
+    {"name": "Charter Hall", "type": "lecture_hall", "latitude": -0.508533447, "longitude": 37.45771643},
+    {"name": "Chemistry Lab", "type": "laboratory", "latitude": -0.507442166, "longitude": 37.45805774},
+    {"name": "Embuvarsity Sacco Office", "type": "office", "latitude": -0.507488432, "longitude": 37.45787837},
+    {"name": "Physics Lab", "type": "laboratory", "latitude": -0.50757493, "longitude": 37.4578834},
+    {"name": "Exam Coordinators Office", "type": "office", "latitude": -0.507634607, "longitude": 37.4577979},
+    {"name": "Old Admin Block", "type": "administration", "latitude": -0.507626561, "longitude": 37.45760679},
+    {"name": "Dispensary", "type": "clinic", "latitude": -0.507284592, "longitude": 37.45763361},
+    {"name": "Old Admin Parking", "type": "parking", "latitude": -0.507381819, "longitude": 37.45775666},
+    {"name": "Kilimambogo Hostel", "type": "hostel", "latitude": -0.507521623, "longitude": 37.45746832},
+    {"name": "Taita Hostel", "type": "hostel", "latitude": -0.50750486, "longitude": 37.45741334},
+    {"name": "Menengai Hostel", "type": "hostel", "latitude": -0.507171609, "longitude": 37.45737009},
+    {"name": "Ngong Hostel", "type": "hostel", "latitude": -0.507163227, "longitude": 37.45714277},
+    {"name": "Gate D", "type": "gate", "latitude": -0.50659328, "longitude": 37.45732516},
+    {"name": "Junction Tawi-Hostel", "type": "junction", "latitude": -0.506996601, "longitude": 37.45684672},
+    {"name": "Student Mess", "type": "cafeteria", "latitude": -0.507716746, "longitude": 37.45696172},
+    {"name": "Deputy Dean Of Students", "type": "office", "latitude": -0.507940031, "longitude": 37.45709181},
+    {"name": "Zoology Lab", "type": "laboratory", "latitude": -0.507909858, "longitude": 37.45726313},
+    {"name": "Comp Lab 1", "type": "laboratory", "latitude": -0.507871638, "longitude": 37.45744485},
+    {"name": "Washrooms Old Admin", "type": "washroom", "latitude": -0.507847164, "longitude": 37.45768424},
+    {"name": "Accommodations Office", "type": "office", "latitude": -0.507929974, "longitude": 37.45657012},
+    {"name": "Mt. Kenya Hostel", "type": "hostel", "latitude": -0.507809949, "longitude": 37.4563599},
+    {"name": "Mt. Elgon Hostel", "type": "hostel", "latitude": -0.507694954, "longitude": 37.45626334},
+    {"name": "Mt. Kilimanjaro Hostel", "type": "hostel", "latitude": -0.507658411, "longitude": 37.45611515},
+    {"name": "Aberdares Hostel", "type": "hostel", "latitude": -0.507828389, "longitude": 37.45675821},
+    {"name": "Nursing Skill Lab", "type": "laboratory", "latitude": -0.508089559, "longitude": 37.45722793},
+    {"name": "Dean of Students", "type": "office", "latitude": -0.508151582, "longitude": 37.45714813},
+    {"name": "Comp Lab 2", "type": "laboratory", "latitude": -0.50807179, "longitude": 37.45734494},
+    {"name": "Physics Lab 2", "type": "laboratory", "latitude": -0.508083189, "longitude": 37.45740663},
+    {"name": "VC Square", "type": "square", "latitude": -0.508209918, "longitude": 37.45748878},
+    {"name": "Botany Lab", "type": "laboratory", "latitude": -0.508217294, "longitude": 37.45735701},
+    {"name": "Lecturer Lounge B", "type": "lounge", "latitude": -0.508209918, "longitude": 37.45734997},
+    {"name": "Lecturer Lounge A", "type": "lounge", "latitude": -0.50816164, "longitude": 37.4570965},
+    {"name": "Research Lab", "type": "laboratory", "latitude": -0.508216623, "longitude": 37.45742843},
+    {"name": "Microbiology Lab", "type": "laboratory", "latitude": -0.508206566, "longitude": 37.45751325},
+    {"name": "Chemistry Lab B", "type": "laboratory", "latitude": -0.508109339, "longitude": 37.45770302},
+    {"name": "Junction CH-Calvidas", "type": "junction", "latitude": -0.508693367, "longitude": 37.4576601},
+    {"name": "Central Store", "type": "store", "latitude": -0.508715159, "longitude": 37.45761484},
+    {"name": "Student Center", "type": "student_center", "latitude": -0.509064168, "longitude": 37.45732583},
+    {"name": "Entertainment Shed", "type": "recreation", "latitude": -0.509224424, "longitude": 37.45726012},
+    {"name": "Long Tennis Court", "type": "sports_facility", "latitude": -0.509363223, "longitude": 37.45708343},
+    {"name": "Sports Field", "type": "sports_field", "latitude": -0.509178157, "longitude": 37.45697346},
+    {"name": "Tentatorium Hall", "type": "hall", "latitude": -0.509035, "longitude": 37.45763361},
+    {"name": "STC Shops", "type": "shops", "latitude": -0.509222077, "longitude": 37.4575042},
+    {"name": "PT Dam 1 Junction", "type": "junction", "latitude": -0.509700162, "longitude": 37.45727319},
+    {"name": "Dam 2", "type": "dam", "latitude": -0.509810128, "longitude": 37.45740328},
+    {"name": "PT Junction to Athletics Field", "type": "junction", "latitude": -0.511066693, "longitude": 37.45542817},
+    {"name": "Athletics Field", "type": "sports_field", "latitude": -0.510768309, "longitude": 37.45397173},
+    {"name": "PT Athletics to Dam 5", "type": "junction", "latitude": -0.509726647, "longitude": 37.45453332},
+    {"name": "Engineering Complex", "type": "academic_block", "latitude": -0.512525086, "longitude": 37.45492995},
+    {"name": "Junction Engineering-Tvet", "type": "junction", "latitude": -0.512564982, "longitude": 37.45531987},
+    {"name": "TVET Center", "type": "academic_block", "latitude": -0.51163664, "longitude": 37.45705325},
+    {"name": "TVET Computer Lab", "type": "laboratory", "latitude": -0.511483425, "longitude": 37.45702341},
+    {"name": "UoEM TV & Radio Studio", "type": "media_center", "latitude": -0.511126705, "longitude": 37.4569701},
+    {"name": "TVET Gazebo", "type": "gazebo", "latitude": -0.511234995, "longitude": 37.45715484},
+    {"name": "Memorial Garden", "type": "garden", "latitude": -0.510908449, "longitude": 37.45730337},
+    {"name": "Dam 3", "type": "dam", "latitude": -0.510868217, "longitude": 37.45725341},
+    {"name": "Automotive Workshop", "type": "workshop", "latitude": -0.51064795, "longitude": 37.45802522},
+    {"name": "Gate B (South)", "type": "gate", "latitude": -0.512458704, "longitude": 37.4587702},
+    {"name": "Farm", "type": "farm", "latitude": -0.511146821, "longitude": 37.45774325},
+    {"name": "LC Admin Block", "type": "administration", "latitude": -0.511461633, "longitude": 37.45717831},
+    {"name": "LC Parking", "type": "parking", "latitude": -0.51193033, "longitude": 37.45679174},
+    {"name": "LC Eating Outlet", "type": "cafeteria", "latitude": -0.512009787, "longitude": 37.45708276},
+    {"name": "Eating Outlet", "type": "cafeteria", "latitude": -0.512308506, "longitude": 37.45666131},
+    {"name": "Junction TB Bridge", "type": "junction", "latitude": -0.512819447, "longitude": 37.45695334},
+    {"name": "Tuition Block", "type": "academic_block", "latitude": -0.513708228, "longitude": 37.45777275},
+    {"name": "Graduation Pavilion", "type": "pavilion", "latitude": -0.514279851, "longitude": 37.45731845},
+    {"name": "Basketball Court", "type": "sports_facility", "latitude": -0.513918438, "longitude": 37.45699827},
+    {"name": "Lecture Theatre", "type": "lecture_hall", "latitude": -0.513403139, "longitude": 37.45701838},
+    {"name": "Prof Kotut Junction", "type": "junction", "latitude": -0.514073329, "longitude": 37.45640047},
+    {"name": "Prof George Magoha Library", "type": "library", "latitude": -0.514503136, "longitude": 37.45578725},
+    {"name": "Library Gazebo", "type": "gazebo", "latitude": -0.514901763, "longitude": 37.4554446},
+    {"name": "Roundabout", "type": "roundabout", "latitude": -0.514866896, "longitude": 37.4563029},
+    {"name": "New Administration Block", "type": "administration", "latitude": -0.515463328, "longitude": 37.45626166},
+    {"name": "Engineering Lecture Hall 02", "type": "lecture_hall", "latitude": -0.515449917, "longitude": 37.45591331},
+    {"name": "Gate A", "type": "gate", "latitude": -0.515289997, "longitude": 37.45706666},
+    {"name": "Dam 5", "type": "dam", "latitude": -0.515059965, "longitude": 37.45367491}
+        ]
+            
+            
+# ---------------------------------------------------
+# LOAD BUILDINGS WITH PHOTO SUPPORT - UPDATED
+# ---------------------------------------------------
+def load_buildings_with_photos():
+    try:
+        # Check if CSV file exists
+        if not os.path.exists(CSV_PATH):
+            print(f"❌ CSV file does not exist at: {CSV_PATH}")
+            print("📝 Creating default buildings data...")
+            
+            # Create default buildings for University of Embu with actual coordinates
             default_buildings = [
-                {"name": "Main Library", "type": "library", "latitude": -0.5075, "longitude": 37.4575},
-                {"name": "Administration Building", "type": "administration", "latitude": -0.5080, "longitude": 37.4580},
-                {"name": "Cafeteria", "type": "cafeteria", "latitude": -0.5070, "longitude": 37.4570},
-                {"name": "Computer Science Lab", "type": "computer_lab", "latitude": -0.5085, "longitude": 37.4585},
-                {"name": "Student Hostel A", "type": "hostel", "latitude": -0.5065, "longitude": 37.4565},
-                {"name": "Student Hostel B", "type": "hostel", "latitude": -0.5060, "longitude": 37.4560},
-                {"name": "Lecture Hall 1", "type": "lecture_hall", "latitude": -0.5090, "longitude": 37.4590},
-                {"name": "Science Laboratory", "type": "laboratory", "latitude": -0.5095, "longitude": 37.4595},
-                {"name": "Sports Complex", "type": "sports_facility", "latitude": -0.5055, "longitude": 37.4555},
-                {"name": "Health Clinic", "type": "clinic", "latitude": -0.5100, "longitude": 37.4600},
+                {"name": "Gate C", "type": "gate", "latitude": -0.507611474, "longitude": 37.45946791},
+                {"name": "Gate B", "type": "gate", "latitude": -0.507615162, "longitude": 37.45949171},
+                {"name": "Baby Day Care", "type": "daycare", "latitude": -0.506547684, "longitude": 37.45979849},
+                {"name": "Bus Park", "type": "parking", "latitude": -0.507339575, "longitude": 37.45923758},
+                {"name": "Auditorium Junction", "type": "junction", "latitude": -0.507372431, "longitude": 37.45841548},
+                {"name": "Recreational Center (Tawi)", "type": "recreation_center", "latitude": -0.506940948, "longitude": 37.45760243},
+                {"name": "Security Office", "type": "office", "latitude": -0.508049662, "longitude": 37.4578844},
+                {"name": "Comp Lab 4", "type": "laboratory", "latitude": -0.507875326, "longitude": 37.45804165},
+                {"name": "Comp Lab 3", "type": "laboratory", "latitude": -0.507810285, "longitude": 37.45815966},
+                {"name": "Executive Auditorium", "type": "auditorium", "latitude": -0.507567219, "longitude": 37.4583501},
+                {"name": "Auditorium 01", "type": "auditorium", "latitude": -0.507510224, "longitude": 37.45838933},
+                {"name": "Games Department Office", "type": "office", "latitude": -0.508074807, "longitude": 37.45795012},
+                {"name": "Dam 1 Gazebo", "type": "gazebo", "latitude": -0.508341676, "longitude": 37.45816838},
+                {"name": "Calvidas Cafeteria", "type": "cafeteria", "latitude": -0.508670569, "longitude": 37.45819118},
+                {"name": "Dam 1", "type": "dam", "latitude": -0.508755056, "longitude": 37.45849662},
+                {"name": "Charter Hall", "type": "lecture_hall", "latitude": -0.508533447, "longitude": 37.45771643},
+                {"name": "Chemistry Lab", "type": "laboratory", "latitude": -0.507442166, "longitude": 37.45805774},
+                {"name": "Embuvarsity Sacco Office", "type": "office", "latitude": -0.507488432, "longitude": 37.45787837},
+                {"name": "Physics Lab", "type": "laboratory", "latitude": -0.50757493, "longitude": 37.4578834},
+                {"name": "Exam Coordinators Office", "type": "office", "latitude": -0.507634607, "longitude": 37.4577979},
+                {"name": "Old Admin Block", "type": "administration", "latitude": -0.507626561, "longitude": 37.45760679},
+                {"name": "Dispensary", "type": "clinic", "latitude": -0.507284592, "longitude": 37.45763361},
+                {"name": "Old Admin Parking", "type": "parking", "latitude": -0.507381819, "longitude": 37.45775666},
+                {"name": "Kilimambogo Hostel", "type": "hostel", "latitude": -0.507521623, "longitude": 37.45746832},
+                {"name": "Taita Hostel", "type": "hostel", "latitude": -0.50750486, "longitude": 37.45741334},
+                {"name": "Menengai Hostel", "type": "hostel", "latitude": -0.507171609, "longitude": 37.45737009},
+                {"name": "Ngong Hostel", "type": "hostel", "latitude": -0.507163227, "longitude": 37.45714277},
+                {"name": "Gate D", "type": "gate", "latitude": -0.50659328, "longitude": 37.45732516},
+                {"name": "Junction Tawi-Hostel", "type": "junction", "latitude": -0.506996601, "longitude": 37.45684672},
+                {"name": "Student Mess", "type": "cafeteria", "latitude": -0.507716746, "longitude": 37.45696172},
+                {"name": "Deputy Dean Of Students", "type": "office", "latitude": -0.507940031, "longitude": 37.45709181},
+                {"name": "Zoology Lab", "type": "laboratory", "latitude": -0.507909858, "longitude": 37.45726313},
+                {"name": "Comp Lab 1", "type": "laboratory", "latitude": -0.507871638, "longitude": 37.45744485},
+                {"name": "Washrooms Old Admin", "type": "washroom", "latitude": -0.507847164, "longitude": 37.45768424},
+                {"name": "Accommodations Office", "type": "office", "latitude": -0.507929974, "longitude": 37.45657012},
+                {"name": "Mt. Kenya Hostel", "type": "hostel", "latitude": -0.507809949, "longitude": 37.4563599},
+                {"name": "Mt. Elgon Hostel", "type": "hostel", "latitude": -0.507694954, "longitude": 37.45626334},
+                {"name": "Mt. Kilimanjaro Hostel", "type": "hostel", "latitude": -0.507658411, "longitude": 37.45611515},
+                {"name": "Aberdares Hostel", "type": "hostel", "latitude": -0.507828389, "longitude": 37.45675821},
+                {"name": "Nursing Skill Lab", "type": "laboratory", "latitude": -0.508089559, "longitude": 37.45722793},
+                {"name": "Dean of Students", "type": "office", "latitude": -0.508151582, "longitude": 37.45714813},
+                {"name": "Comp Lab 2", "type": "laboratory", "latitude": -0.50807179, "longitude": 37.45734494},
+                {"name": "Physics Lab 2", "type": "laboratory", "latitude": -0.508083189, "longitude": 37.45740663},
+                {"name": "VC Square", "type": "square", "latitude": -0.508209918, "longitude": 37.45748878},
+                {"name": "Botany Lab", "type": "laboratory", "latitude": -0.508217294, "longitude": 37.45735701},
+                {"name": "Lecturer Lounge B", "type": "lounge", "latitude": -0.508209918, "longitude": 37.45734997},
+                {"name": "Lecturer Lounge A", "type": "lounge", "latitude": -0.50816164, "longitude": 37.4570965},
+                {"name": "Research Lab", "type": "laboratory", "latitude": -0.508216623, "longitude": 37.45742843},
+                {"name": "Microbiology Lab", "type": "laboratory", "latitude": -0.508206566, "longitude": 37.45751325},
+                {"name": "Chemistry Lab B", "type": "laboratory", "latitude": -0.508109339, "longitude": 37.45770302},
+                {"name": "Junction CH-Calvidas", "type": "junction", "latitude": -0.508693367, "longitude": 37.4576601},
+                {"name": "Central Store", "type": "store", "latitude": -0.508715159, "longitude": 37.45761484},
+                {"name": "Student Center", "type": "student_center", "latitude": -0.509064168, "longitude": 37.45732583},
+                {"name": "Entertainment Shed", "type": "recreation", "latitude": -0.509224424, "longitude": 37.45726012},
+                {"name": "Long Tennis Court", "type": "sports_facility", "latitude": -0.509363223, "longitude": 37.45708343},
+                {"name": "Sports Field", "type": "sports_field", "latitude": -0.509178157, "longitude": 37.45697346},
+                {"name": "Tentatorium Hall", "type": "hall", "latitude": -0.509035, "longitude": 37.45763361},
+                {"name": "STC Shops", "type": "shops", "latitude": -0.509222077, "longitude": 37.4575042},
+                {"name": "PT Dam 1 Junction", "type": "junction", "latitude": -0.509700162, "longitude": 37.45727319},
+                {"name": "Dam 2", "type": "dam", "latitude": -0.509810128, "longitude": 37.45740328},
+                {"name": "PT Junction to Athletics Field", "type": "junction", "latitude": -0.511066693, "longitude": 37.45542817},
+                {"name": "Athletics Field", "type": "sports_field", "latitude": -0.510768309, "longitude": 37.45397173},
+                {"name": "PT Athletics to Dam 5", "type": "junction", "latitude": -0.509726647, "longitude": 37.45453332},
+                {"name": "Engineering Complex", "type": "academic_block", "latitude": -0.512525086, "longitude": 37.45492995},
+                {"name": "Junction Engineering-Tvet", "type": "junction", "latitude": -0.512564982, "longitude": 37.45531987},
+                {"name": "TVET Center", "type": "academic_block", "latitude": -0.51163664, "longitude": 37.45705325},
+                {"name": "TVET Computer Lab", "type": "laboratory", "latitude": -0.511483425, "longitude": 37.45702341},
+                {"name": "UoEM TV & Radio Studio", "type": "media_center", "latitude": -0.511126705, "longitude": 37.4569701},
+                {"name": "TVET Gazebo", "type": "gazebo", "latitude": -0.511234995, "longitude": 37.45715484},
+                {"name": "Memorial Garden", "type": "garden", "latitude": -0.510908449, "longitude": 37.45730337},
+                {"name": "Dam 3", "type": "dam", "latitude": -0.510868217, "longitude": 37.45725341},
+                {"name": "Automotive Workshop", "type": "workshop", "latitude": -0.51064795, "longitude": 37.45802522},
+                {"name": "Gate B (South)", "type": "gate", "latitude": -0.512458704, "longitude": 37.4587702},
+                {"name": "Farm", "type": "farm", "latitude": -0.511146821, "longitude": 37.45774325},
+                {"name": "LC Admin Block", "type": "administration", "latitude": -0.511461633, "longitude": 37.45717831},
+                {"name": "LC Parking", "type": "parking", "latitude": -0.51193033, "longitude": 37.45679174},
+                {"name": "LC Eating Outlet", "type": "cafeteria", "latitude": -0.512009787, "longitude": 37.45708276},
+                {"name": "Eating Outlet", "type": "cafeteria", "latitude": -0.512308506, "longitude": 37.45666131},
+                {"name": "Junction TB Bridge", "type": "junction", "latitude": -0.512819447, "longitude": 37.45695334},
+                {"name": "Tuition Block", "type": "academic_block", "latitude": -0.513708228, "longitude": 37.45777275},
+                {"name": "Graduation Pavilion", "type": "pavilion", "latitude": -0.514279851, "longitude": 37.45731845},
+                {"name": "Basketball Court", "type": "sports_facility", "latitude": -0.513918438, "longitude": 37.45699827},
+                {"name": "Lecture Theatre", "type": "lecture_hall", "latitude": -0.513403139, "longitude": 37.45701838},
+                {"name": "Prof Kotut Junction", "type": "junction", "latitude": -0.514073329, "longitude": 37.45640047},
+                {"name": "Prof George Magoha Library", "type": "library", "latitude": -0.514503136, "longitude": 37.45578725},
+                {"name": "Library Gazebo", "type": "gazebo", "latitude": -0.514901763, "longitude": 37.4554446},
+                {"name": "Roundabout", "type": "roundabout", "latitude": -0.514866896, "longitude": 37.4563029},
+                {"name": "New Administration Block", "type": "administration", "latitude": -0.515463328, "longitude": 37.45626166},
+                {"name": "Engineering Lecture Hall 02", "type": "lecture_hall", "latitude": -0.515449917, "longitude": 37.45591331},
+                {"name": "Gate A", "type": "gate", "latitude": -0.515289997, "longitude": 37.45706666},
+                {"name": "Dam 5", "type": "dam", "latitude": -0.515059965, "longitude": 37.45367491}
             ]
             
             df = pd.DataFrame(default_buildings)
@@ -403,8 +592,6 @@ def load_buildings_with_photos():
     # Add ID column if not present
     if 'id' not in df.columns:
         df['id'] = range(1, len(df) + 1)
-    
-    # ... rest of the function remains the same ...
     
     # Add enhanced description
     def create_description(row):
@@ -538,16 +725,16 @@ def load_buildings_with_photos():
         return photos
 
     # Create a list of building photos
-    building_photos = {}
+    building_photos_dict = {}
     for _, row in df.iterrows():
         photos = get_building_photos(int(row['id']), str(row['name']))
-        building_photos[int(row['id'])] = photos
+        building_photos_dict[int(row['id'])] = photos
     
     print(f"✓ Total buildings loaded: {len(df)}", file=sys.stderr)
     print(f"  Categories: {df['category'].unique().tolist()}", file=sys.stderr)
-    print(f"  Photos found: {sum(len(photos) for photos in building_photos.values())} total photos", file=sys.stderr)
+    print(f"  Photos found: {sum(len(photos) for photos in building_photos_dict.values())} total photos", file=sys.stderr)
     
-    return df, building_photos
+    return df, building_photos_dict
 
 # ---------------------------------------------------
 # SAMPLE PHOTOS CREATION
@@ -1172,6 +1359,65 @@ def calculate_travel_time(distance_meters, mode='walking'):
 # ---------------------------------------------------
 # ROUTE API WITH MODE-SPECIFIC PATHFINDING
 # ---------------------------------------------------
+@app.route('/api/debug/paths/check', methods=['GET'])
+def debug_check_paths():
+    """Check what paths are in the database"""
+    try:
+        conn = get_db_connection()
+        if conn is None:
+            return jsonify({'success': False, 'error': 'Database connection failed'})
+        
+        cursor = conn.cursor()
+        
+        # Check if table exists
+        cursor.execute("""
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_name = 'embu_paths'
+            );
+        """)
+        table_exists = cursor.fetchone()[0]
+        
+        if not table_exists:
+            return jsonify({
+                'success': False,
+                'error': 'embu_paths table does not exist',
+                'table_exists': False
+            })
+        
+        # Count paths
+        cursor.execute("SELECT COUNT(*) FROM embu_paths;")
+        count = cursor.fetchone()[0]
+        
+        # Get path types
+        cursor.execute("""
+            SELECT path_type, COUNT(*) 
+            FROM embu_paths 
+            GROUP BY path_type;
+        """)
+        path_types = cursor.fetchall()
+        
+        # Get sample paths
+        cursor.execute("""
+            SELECT id, name, path_type, ST_AsText(geom) as wkt
+            FROM embu_paths 
+            LIMIT 5;
+        """)
+        samples = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'table_exists': table_exists,
+            'total_paths': count,
+            'path_types': [{'type': pt[0], 'count': pt[1]} for pt in path_types],
+            'samples': [{'id': s[0], 'name': s[1], 'type': s[2], 'wkt': s[3]} for s in samples]
+        })
+        
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
 @app.route('/health')
 def health_check():
     """Simple health check endpoint for keep-alive services"""
@@ -2289,6 +2535,7 @@ def get_all_paths_for_editing():
         })
 
 @app.route('/api/update_path', methods=['POST'])
+@token_required
 def update_path():
     """Update a path's type and name"""
     try:
@@ -2360,6 +2607,7 @@ def admin_paths(current_user):
         return jsonify({'success': False, 'error': str(e)})
 
 @app.route('/api/update_path_type', methods=['POST'])
+@token_required
 def update_path_type():
     """Update path type from admin interface"""
     try:
@@ -2481,6 +2729,7 @@ def bulk_photos_page(current_user):
     return render_template('bulk_photos.html', buildings=building_data, user=current_user)
 
 @app.route('/api/bulk_upload_photos', methods=['POST'])
+@token_required
 def bulk_upload_photos():
     """Bulk upload photos for multiple buildings - FIXED VERSION"""
     try:
