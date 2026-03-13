@@ -745,50 +745,20 @@ print(f"🤖 NLP Processor Type: {type(nlp_processor).__name__}")
 # DATABASE CONNECTION - MODIFIED FOR RENDER
 # ---------------------------------------------------
 def get_db_connection():
-    """Get database connection - works on both local and Render"""
+    """Connect to Render PostgreSQL database"""
     try:
-        # Check if we're on Render and DATABASE_URL is provided
-        database_url = os.environ.get('DATABASE_URL')
-        
-        if database_url:
-            # Render provides DATABASE_URL automatically
-            # Convert postgres:// to postgresql:// if needed (psycopg2 requirement)
-            if database_url.startswith('postgres://'):
-                database_url = database_url.replace('postgres://', 'postgresql://', 1)
-            
-            # Use psycopg2 for Render (better compatibility)
-            import psycopg2
-            conn = psycopg2.connect(database_url)
-            print("✓ Connected to Render PostgreSQL database")
-            return conn
-        else:
-            # Local development with pg8000
-            conn = pg8000.connect(
-                user=os.environ.get('DB_USER', 'postgres'),
-                password=os.environ.get('DB_PASSWORD', '37193083591'),
-                host=os.environ.get('DB_HOST', 'localhost'),
-                port=int(os.environ.get('DB_PORT', '5432')),
-                database=os.environ.get('DB_NAME', 'embu_navigation')
-            )
-            print("✓ Connected to local PostgreSQL database")
-            return conn
-            
-    except ImportError:
-        # Fallback if psycopg2 not available
-        try:
-            conn = pg8000.connect(
-                user=os.environ.get('DB_USER', 'postgres'),
-                password=os.environ.get('DB_PASSWORD', '37193083591'),
-                host=os.environ.get('DB_HOST', 'localhost'),
-                port=int(os.environ.get('DB_PORT', '5432')),
-                database=os.environ.get('DB_NAME', 'embu_navigation')
-            )
-            return conn
-        except Exception as e:
-            print(f"✗ Database connection error: {e}")
-            return None
+        import psycopg2
+        conn = psycopg2.connect(
+            host='dpg-d6ks92vgi27c73fjhqvg-a',  # Internal hostname
+            port=5432,
+            database='embu_navigation',
+            user='embu_navigation_user',
+            password='ly5Dr6U9F6r0375ShNe63GwWjG0Ld9o7'
+        )
+        print("✅ Connected to Render PostgreSQL database")
+        return conn
     except Exception as e:
-        print(f"✗ Database connection error: {e}")
+        print(f"❌ Database connection error: {e}")
         return None
 
 # After database connection function definition (optional)
