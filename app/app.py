@@ -72,6 +72,8 @@ if not __name__ == '__main__':
 # GLOBAL NLP PROCESSOR
 # ---------------------------------------------------
 nlp_processor = None
+df = None  # Add this
+building_photos = {}  # Add this
 
 print("🔧 DEBUG: Creating Flask app...")
 app = Flask(__name__)
@@ -97,10 +99,6 @@ app.register_blueprint(feedback_bp, url_prefix='/api/feedback')
 def healthz():
     """Simple health check for Render's port scan."""
     return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
-# ================================================
-
-print("🔑 DEBUG: Setting secret key...")
-app.config['SECRET_KEY'] = secrets.token_hex(16)
 # ---------------------------------------------------
 # AUTHENTICATION SETUP
 # ---------------------------------------------------
@@ -724,16 +722,21 @@ def create_sample_photos(df, building_photos):
         print("  Sample photos not created. Continuing without them...")
 
 # ---------------------------------------------------
-# VERIFY NLP PROCESSOR
+# VERIFY NLP PROCESSOR - SAFE VERSION
 # ---------------------------------------------------
-if nlp_processor is None:
-    print("⚠ Warning: NLP processor not initialized, re-initializing...")
-    building_names = df['name'].tolist()
-    nlp_processor = create_nlp_processor(building_names, use_advanced=False)
-    print("✅ NLP processor re-initialized")
-
-print(f"🤖 NLP Processor Type: {type(nlp_processor).__name__}")
-
+# Check if buildings are loaded before accessing them
+if 'df' not in globals() or df is None or len(df) == 0:
+    print("⚠ Buildings not loaded yet, skipping NLP verification", file=sys.stderr)
+    print("ℹ NLP processor will be initialized in background when buildings load", file=sys.stderr)
+else:
+    if nlp_processor is None:
+        print("⚠ Warning: NLP processor not initialized, re-initializing...", file=sys.stderr)
+        try:
+            building_names = df['name'].tolist()
+            nlp_processor = create_nlp_processor(building_names, use_advanced=False)
+            print(f"✅ NLP processor re-initialized. Type: {type(nlp_processor).__name__}", file=sys.stderr)
+        except Exception as e:
+            print(f"❌ Failed to initialize NLP processor: {e}", file=sys.stderr)
 # ---------------------------------------------------
 # DATABASE CONNECTION - MODIFIED FOR RENDER
 # ---------------------------------------------------
@@ -786,7 +789,7 @@ def get_db_connection():
 # ---------------------------------------------------
 def initialize_app_in_background():
     """Load heavy data in background after server starts"""
-    global df, building_photos, nlp_processor
+    global df, building_photos, nlp_processor  # Add this line!
     print("🔄 Starting background initialization...", file=sys.stderr)
     
     # Load buildings
@@ -794,6 +797,7 @@ def initialize_app_in_background():
     df, building_photos = load_buildings_with_photos()
     print(f"✅ Background: Loaded {len(df)} buildings", file=sys.stderr)
     
+   
     # Create sample photos
     print("🖼️ Creating sample photos in background...", file=sys.stderr)
     create_sample_photos(df, building_photos)
