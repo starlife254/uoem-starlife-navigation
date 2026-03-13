@@ -75,6 +75,7 @@ nlp_processor = None
 df = None  
 building_photos = {}
 data_lock = threading.Lock()  
+background_thread = None 
 
 print("🔧 DEBUG: Creating Flask app...")
 app = Flask(__name__)
