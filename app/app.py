@@ -72,8 +72,9 @@ if not __name__ == '__main__':
 # GLOBAL NLP PROCESSOR
 # ---------------------------------------------------
 nlp_processor = None
-df = None  # Add this
-building_photos = {}  # Add this
+df = None  
+building_photos = {}
+data_lock = threading.Lock()  
 
 print("🔧 DEBUG: Creating Flask app...")
 app = Flask(__name__)
@@ -785,38 +786,64 @@ def get_db_connection():
         return None
 
 # ---------------------------------------------------
-# BACKGROUND INITIALIZATION
+# BACKGROUND INITIALIZATION - THREAD SAFE VERSION
 # ---------------------------------------------------
 def initialize_app_in_background():
     """Load heavy data in background after server starts"""
-    global df, building_photos, nlp_processor  # Add this line!
-    print("🔄 Starting background initialization...", file=sys.stderr)
-    
-    # Load buildings
-    print("📊 Loading buildings in background...", file=sys.stderr)
-    df, building_photos = load_buildings_with_photos()
-    print(f"✅ Background: Loaded {len(df)} buildings", file=sys.stderr)
-    
-   
-    # Create sample photos
-    print("🖼️ Creating sample photos in background...", file=sys.stderr)
-    create_sample_photos(df, building_photos)
-    print("✅ Background: Sample photos created", file=sys.stderr)
-    
-    # Initialize NLP
-    print("🧠 Initializing NLP in background...", file=sys.stderr)
-    building_names = df['name'].tolist()
-    nlp_processor = create_nlp_processor(building_names, use_advanced=False)
-    print(f"✅ Background: NLP processor ready", file=sys.stderr)
-    
-    print("✅✅✅ Background initialization complete!", file=sys.stderr)
+    global df, building_photos, nlp_processor
+    try:
+        print("🔄 Starting background initialization...", file=sys.stderr)
+        
+        # Load buildings
+        print("📊 Loading buildings in background...", file=sys.stderr)
+        local_df, local_photos = load_buildings_with_photos()
+        
+        # Update global variables with lock
+        with data_lock:
+            df = local_df
+            building_photos = local_photos
+        print(f"✅ Background: Loaded {len(local_df)} buildings", file=sys.stderr)
+        
+        # Create sample photos
+        print("🖼️ Creating sample photos in background...", file=sys.stderr)
+        create_sample_photos(local_df, local_photos)
+        print("✅ Background: Sample photos created", file=sys.stderr)
+        
+        # Initialize NLP
+        print("🧠 Initializing NLP in background...", file=sys.stderr)
+        building_names = local_df['name'].tolist()
+        local_nlp = create_nlp_processor(building_names, use_advanced=False)
+        
+        with data_lock:
+            nlp_processor = local_nlp
+        print(f"✅ Background: NLP processor ready", file=sys.stderr)
+        
+        print("✅✅✅ Background initialization complete!", file=sys.stderr)
+        
+    except Exception as e:
+        print(f"❌❌❌ Background initialization failed: {e}", file=sys.stderr)
+        traceback.print_exc(file=sys.stderr)
+        # Don't let the thread die - schedule a retry
+        threading.Timer(30.0, initialize_app_in_background).start()
+        print("🔄 Will retry background initialization in 30 seconds", file=sys.stderr)
 
-# Start background initialization thread
-background_thread = threading.Thread(target=initialize_app_in_background, daemon=True)
-background_thread.start()
-print("🚀 Background initialization thread started", file=sys.stderr)
-# After database connection function definition (optional)
-print("💾 DEBUG: Database connection function defined", file=sys.stderr)
+# ---------------------------------------------------
+# SAFE DATA ACCESSORS
+# ---------------------------------------------------
+def get_buildings_safe():
+    """Thread-safe access to buildings data"""
+    with data_lock:
+        return df.copy() if df is not None else None
+
+def get_building_photos_safe(building_id):
+    """Thread-safe access to building photos"""
+    with data_lock:
+        return building_photos.get(building_id, []).copy() if building_photos else []
+
+def get_nlp_processor_safe():
+    """Thread-safe access to NLP processor"""
+    with data_lock:
+        return nlp_processor
 
 # ---------------------------------------------------
 # LOAD PATHS FROM POSTGIS WITH MODE FILTERING
@@ -1277,6 +1304,19 @@ def calculate_travel_time(distance_meters, mode='walking'):
     time_seconds = distance_meters / speed_ms
     time_minutes = time_seconds / 60
     return round(time_minutes, 1)
+
+@app.route('/api/debug/status', methods=['GET'])
+def debug_status():
+    """Check application status"""
+    with data_lock:
+        status = {
+            'buildings_loaded': df is not None,
+            'building_count': len(df) if df is not None else 0,
+            'nlp_ready': nlp_processor is not None,
+            'photos_loaded': len(building_photos) if building_photos else 0,
+            'background_thread_alive': background_thread.is_alive() if 'background_thread' in globals() else False
+        }
+    return jsonify(status)
 
 # ---------------------------------------------------
 # ROUTE API WITH MODE-SPECIFIC PATHFINDING
@@ -1872,7 +1912,7 @@ def handle_update_location(data):
             'latitude': data.get('latitude'),
             'longitude': data.get('longitude'),
             'timestamp': time.time(),
-            'speed': data.getl('speed', 0),
+           'speed': data.get('speed', 0),
             'accuracy': data.get('accuracy', 0),
             'heading': data.get('heading'),
             'altitude': data.get('altitude'),
@@ -2826,29 +2866,28 @@ def ai_query():
         query = data.get('query', '').strip()
         
         if not query:
-            return jsonify({
-                'success': False,
-                'error': 'No query provided'
-            })
+            return jsonify({'success': False, 'error': 'No query provided'})
         
         print(f"🤖 Processing AI query: {query}")
         
-        # Check if NLP processor is available
-        if nlp_processor is None:
-            # Fallback response
+        # Use thread-safe access
+        local_nlp = get_nlp_processor_safe()
+        local_df = get_buildings_safe()
+        
+        if local_nlp is None:
             return jsonify({
                 'success': False,
-                'error': 'AI processor not available',
-                'response': "I'm currently learning about the campus. Please try again in a moment."
+                'error': 'AI processor still loading',
+                'response': "I'm still learning about the campus. Please try again in a moment."
             })
         
         # Process query with NLP
-        result = nlp_processor.process_query(query)
+        result = local_nlp.process_query(query)
         
         # If building found, get its details
         building_details = None
-        if result.get('building'):
-            building = df[df['name'].str.lower() == result['building'].lower()]
+        if result.get('building') and local_df is not None:
+            building = local_df[local_df['name'].str.lower() == result['building'].lower()]
             if not building.empty:
                 building = building.iloc[0]
                 config = ICON_CONFIG.get(str(building['type']), ICON_CONFIG['default'])
@@ -2861,6 +2900,7 @@ def ai_query():
                     'type_name': config.get('name', str(building['type']).replace('_', ' ').title())
                 }
         
+        # ... rest of the function
         response_data = {
             'success': result.get('success', False),
             'original_query': result.get('original_query', query),
