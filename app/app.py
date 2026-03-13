@@ -723,23 +723,6 @@ def create_sample_photos(df, building_photos):
         print(f"⚠ Error in create_sample_photos: {e}")
         print("  Sample photos not created. Continuing without them...")
 
-# After loading buildings
-print("📊 DEBUG: Loading buildings with photos...", file=sys.stderr)
-df, building_photos = load_buildings_with_photos()
-print(f"✅ DEBUG: Loaded {len(df)} buildings", file=sys.stderr)
-
-# After creating sample photos
-print("🖼️ DEBUG: Creating sample photos...", file=sys.stderr)
-create_sample_photos(df, building_photos)
-print("✅ DEBUG: Sample photos created", file=sys.stderr)
-
-# Before NLP processor initialization
-print("🧠 DEBUG: Initializing NLP processor...", file=sys.stderr)
-if nlp_processor is None:
-    building_names = df['name'].tolist()
-    nlp_processor = create_nlp_processor(building_names, use_advanced=False)
-print(f"✅ DEBUG: NLP processor ready. Type: {type(nlp_processor).__name__}", file=sys.stderr)
-
 # ---------------------------------------------------
 # VERIFY NLP PROCESSOR
 # ---------------------------------------------------
@@ -798,6 +781,36 @@ def get_db_connection():
         traceback.print_exc(file=sys.stderr)
         return None
 
+# ---------------------------------------------------
+# BACKGROUND INITIALIZATION
+# ---------------------------------------------------
+def initialize_app_in_background():
+    """Load heavy data in background after server starts"""
+    global df, building_photos, nlp_processor
+    print("🔄 Starting background initialization...", file=sys.stderr)
+    
+    # Load buildings
+    print("📊 Loading buildings in background...", file=sys.stderr)
+    df, building_photos = load_buildings_with_photos()
+    print(f"✅ Background: Loaded {len(df)} buildings", file=sys.stderr)
+    
+    # Create sample photos
+    print("🖼️ Creating sample photos in background...", file=sys.stderr)
+    create_sample_photos(df, building_photos)
+    print("✅ Background: Sample photos created", file=sys.stderr)
+    
+    # Initialize NLP
+    print("🧠 Initializing NLP in background...", file=sys.stderr)
+    building_names = df['name'].tolist()
+    nlp_processor = create_nlp_processor(building_names, use_advanced=False)
+    print(f"✅ Background: NLP processor ready", file=sys.stderr)
+    
+    print("✅✅✅ Background initialization complete!", file=sys.stderr)
+
+# Start background initialization thread
+background_thread = threading.Thread(target=initialize_app_in_background, daemon=True)
+background_thread.start()
+print("🚀 Background initialization thread started", file=sys.stderr)
 # After database connection function definition (optional)
 print("💾 DEBUG: Database connection function defined", file=sys.stderr)
 
