@@ -79,6 +79,10 @@ background_thread = None
 
 print("🔧 DEBUG: Creating Flask app...")
 app = Flask(__name__)
+@app.route('/healthz')
+def healthz():
+    """Simple health check for Render's port scan."""
+    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
 print("🔑 DEBUG: Setting secret key...")
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 
@@ -96,11 +100,6 @@ print("📋 DEBUG: Registering blueprints...")
 app.register_blueprint(feedback_bp, url_prefix='/api/feedback')
 
 
-# ============= HEALTH CHECK ENDPOINT =============
-@app.route('/healthz')
-def healthz():
-    """Simple health check for Render's port scan."""
-    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
 # ---------------------------------------------------
 # AUTHENTICATION SETUP
 # ---------------------------------------------------
