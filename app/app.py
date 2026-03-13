@@ -754,21 +754,48 @@ print(f"🤖 NLP Processor Type: {type(nlp_processor).__name__}")
 # ---------------------------------------------------
 # DATABASE CONNECTION - MODIFIED FOR RENDER
 # ---------------------------------------------------
+# ---------------------------------------------------
+# DATABASE CONNECTION - FIXED FOR RENDER
+# ---------------------------------------------------
 def get_db_connection():
-    """Connect to Render PostgreSQL database"""
+    """Connect to Render PostgreSQL database with SSL"""
     try:
         import psycopg2
+        import ssl
+        
+        # First, try using the DATABASE_URL environment variable if available (Render sets this automatically)
+        database_url = os.environ.get('DATABASE_URL')
+        
+        if database_url:
+            print("📌 Attempting connection using DATABASE_URL", file=sys.stderr)
+            # Ensure the URL uses postgresql:// scheme and has sslmode
+            if database_url.startswith('postgres://'):
+                database_url = database_url.replace('postgres://', 'postgresql://', 1)
+            if 'sslmode' not in database_url:
+                database_url += '?sslmode=require'
+            
+            conn = psycopg2.connect(database_url)
+            print("✅ Connected using DATABASE_URL", file=sys.stderr)
+            return conn
+        
+        # Fallback to manual connection parameters (your internal details)
+        print("📌 Attempting manual connection with SSL", file=sys.stderr)
         conn = psycopg2.connect(
             host='dpg-d6ks92vgi27c73fjhqvg-a',  # Internal hostname
             port=5432,
             database='embu_navigation',
             user='embu_navigation_user',
-            password='ly5Dr6U9F6r0375ShNe63GwWjG0Ld9o7'
+            password='ly5Dr6U9F6r0375ShNe63GwWjG0Ld9o7',
+            sslmode='require'  # This is critical!
         )
-        print("✅ Connected to Render PostgreSQL database")
+        print("✅ Connected to Render PostgreSQL database using manual params", file=sys.stderr)
         return conn
+        
     except Exception as e:
-        print(f"❌ Database connection error: {e}")
+        print(f"❌ Database connection error: {e}", file=sys.stderr)
+        # Print detailed error for debugging
+        import traceback
+        traceback.print_exc(file=sys.stderr)
         return None
 
 # After database connection function definition (optional)
