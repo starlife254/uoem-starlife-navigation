@@ -68,6 +68,26 @@ print("🔧 DEBUG: Creating Flask app...", file=sys.stderr)
 app = Flask(__name__)
 print("✅ Flask app created", file=sys.stderr)
 
+@app.route('/debug/data-status')
+def debug_data_status():
+    """Check if buildings data is loaded"""
+    status = {
+        'df_exists': df is not None,
+        'building_count': len(df) if df is not None else 0,
+        'csv_path': CSV_PATH,
+        'csv_exists': os.path.exists(CSV_PATH),
+        'files_in_data': [],
+        'background_thread_started': background_thread is not None,
+        'nlp_processor_ready': nlp_processor is not None
+    }
+    
+    # Check what's in the data directory
+    data_dir = os.path.join(BASE_DIR, 'data')
+    if os.path.exists(data_dir):
+        status['files_in_data'] = os.listdir(data_dir)
+    
+    return jsonify(status)
+
 # Health check endpoints - MUST be before any authentication
 @app.route('/healthz')
 def healthz():
