@@ -1,3 +1,4 @@
+# Move these imports to the top (keep them)
 from flask import Flask, render_template, request, jsonify, send_file, Response, send_from_directory, redirect
 import pandas as pd
 import os
@@ -22,32 +23,16 @@ from voice_processor import get_voice_processor, voice_to_text
 import tensorflow as tf
 from feedback_module import feedback_bp
 from functools import wraps
-import jwt  # PyJWT library
+import jwt
 from datetime import datetime, timedelta
-# At the very top of app.py
-import os
 import sys
-import requests  # Add this with your other imports
+import requests
+from dotenv import load_dotenv
 
 print("🚀 APP: Starting app.py initialization...", file=sys.stderr)
 print(f"🚀 APP: PORT environment variable: {os.environ.get('PORT', 'Not set')}", file=sys.stderr)
 
-# Ensure the app binds to the correct port
-port = int(os.environ.get('PORT', 10000))
-print(f"🚀 APP: Will attempt to bind to port: {port}", file=sys.stderr)
-
-print("🚀 DEBUG: Starting app.py initialization...")
-
-# Test database connection on startup
-
-# ============= RENDER.COM COMPATIBILITY ADDITIONS =============
-# Import for Render database connection
-import sys
-print("🚀 DEBUG: App script started", file=sys.stderr)
-from dotenv import load_dotenv
-
 # ============= DEBUG STARTUP =============
-import sys
 print("🚀 DEBUG: App script started", file=sys.stderr)
 # =========================================
 
@@ -62,9 +47,9 @@ if not __name__ == '__main__':
     try:
         import eventlet
         eventlet.monkey_patch()
-        print("✓ Eventlet monkey patch applied for Render")
+        print("✓ Eventlet monkey patch applied for Render", file=sys.stderr)
     except ImportError:
-        print("⚠ Eventlet not available, WebSockets may not work properly")
+        print("⚠ Eventlet not available, WebSockets may not work properly", file=sys.stderr)
 
 # ============= END RENDER.COM ADDITIONS =============
 
@@ -77,22 +62,44 @@ building_photos = {}
 data_lock = threading.Lock()  
 background_thread = None 
 
-print("🔧 DEBUG: Creating Flask app...")
+print("🔧 DEBUG: Creating Flask app...", file=sys.stderr)
 
+# ============= CREATE FLASK APP FIRST =============
+app = Flask(__name__)
+print("✅ Flask app created", file=sys.stderr)
 
-# IMPORTANT: Use eventlet for async_mode with gunicorn
-# This configuration is critical for Render deployment
-print("🔌 DEBUG: Initializing SocketIO with eventlet...")
+# Health check endpoints - MUST be before any authentication
+@app.route('/healthz')
+def healthz():
+    """Simple health check for Render's port scan."""
+    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
+
+@app.route('/health')
+def health_check():
+    """Simple health check endpoint for keep-alive services"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'service': 'UoEM STARLIFE Navigation'
+    })
+
+# Set secret key
+app.config['SECRET_KEY'] = secrets.token_hex(16)
+print("🔑 DEBUG: Secret key set", file=sys.stderr)
+
+# ============= NOW CREATE SOCKETIO =============
+print("🔌 DEBUG: Initializing SocketIO with eventlet...", file=sys.stderr)
 socketio = SocketIO(app, 
                    cors_allowed_origins="*", 
                    async_mode='eventlet',  # Must be 'eventlet' for gunicorn worker
                    logger=True,  # Enable logging for debugging
                    engineio_logger=True)  # Enable engine.io logging
+print("✅ SocketIO initialized", file=sys.stderr)
 
 # Register the feedback blueprint
-print("📋 DEBUG: Registering blueprints...")
+print("📋 DEBUG: Registering blueprints...", file=sys.stderr)
 app.register_blueprint(feedback_bp, url_prefix='/api/feedback')
-
+print("✅ Blueprint registered", file=sys.stderr)
 
 # ---------------------------------------------------
 # AUTHENTICATION SETUP
@@ -138,9 +145,6 @@ def token_required(f):
 # ---------------------------------------------------
 # PATHS
 # ---------------------------------------------------
-# ---------------------------------------------------
-# PATHS - UPDATED WITH BETTER FALLBACKS
-# ---------------------------------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Try multiple possible paths for the CSV file
@@ -173,6 +177,7 @@ EXPORT_DIR = os.path.join(BASE_DIR, 'exports')
 # Create directories if they don't exist
 for directory in [PHOTOS_DIR, UPLOAD_DIR, EXPORT_DIR]:
     os.makedirs(directory, exist_ok=True)
+
 # ---------------------------------------------------
 # REAL-TIME TRACKING DATA STRUCTURES
 # ---------------------------------------------------
@@ -342,14 +347,6 @@ MAP_TILES = {
     }
 }
 
-# ---------------------------------------------------
-# LOAD BUILDINGS WITH PHOTO SUPPORT
-# ---------------------------------------------------
-# ---------------------------------------------------
-# LOAD BUILDINGS WITH PHOTO SUPPORT - UPDATED
-# ---------------------------------------------------
-
-            
 # ---------------------------------------------------
 # LOAD BUILDINGS WITH PHOTO SUPPORT - UPDATED
 # ---------------------------------------------------
@@ -732,9 +729,7 @@ else:
             print(f"✅ NLP processor re-initialized. Type: {type(nlp_processor).__name__}", file=sys.stderr)
         except Exception as e:
             print(f"❌ Failed to initialize NLP processor: {e}", file=sys.stderr)
-# ---------------------------------------------------
-# DATABASE CONNECTION - MODIFIED FOR RENDER
-# ---------------------------------------------------
+
 # ---------------------------------------------------
 # DATABASE CONNECTION - FIXED FOR RENDER
 # ---------------------------------------------------
@@ -1374,14 +1369,6 @@ def debug_check_paths():
         
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
-@app.route('/health')
-def health_check():
-    """Simple health check endpoint for keep-alive services"""
-    return jsonify({
-        'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
-        'service': 'UoEM STARLIFE Navigation'
-    })
 
 @app.route('/route', methods=['GET'])
 def route():
@@ -2271,6 +2258,7 @@ def debug_files():
     result['csv_exists'] = os.path.exists(CSV_PATH)
     
     return jsonify(result)
+
 # ---------------------------------------------------
 # REAL-TIME TRACKING API ENDPOINTS
 # ---------------------------------------------------
@@ -2465,24 +2453,6 @@ def debug_routes():
         return jsonify({'error': str(e)})
 
 @app.route('/admin/edit_paths', methods=['GET'])
-
-# Health check endpoint - MUST be before any authentication
-@app.route('/healthz')
-def healthz():
-    """Simple health check for Render's port scan."""
-    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
-
-@app.route('/health')
-def health_check():
-    """Simple health check endpoint for keep-alive services"""
-    return jsonify({
-        'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
-        'service': 'UoEM STARLIFE Navigation'
-    })
-
-# Now set the secret key and continue with other initialization
-app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
 def edit_paths_page(current_user):
     """Page for editing paths"""
@@ -2572,24 +2542,8 @@ def get_all_paths_for_editing():
         })
 
 @app.route('/api/update_path', methods=['POST'])
-@app.route('/healthz')
-def healthz():
-    """Simple health check for Render's port scan."""
-    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
-
-@app.route('/health')
-def health_check():
-    """Simple health check endpoint for keep-alive services"""
-    return jsonify({
-        'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
-        'service': 'UoEM STARLIFE Navigation'
-    })
-
-# secret key and continue with other initialization
-app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
-def update_path():
+def update_path(current_user):
     """Update a path's type and name"""
     try:
         data = request.json
@@ -2620,22 +2574,6 @@ def update_path():
         return jsonify({'success': False, 'error': str(e)})
 
 @app.route('/admin/paths', methods=['GET'])
-@app.route('/healthz')
-def healthz():
-    """Simple health check for Render's port scan."""
-    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
-
-@app.route('/health')
-def health_check():
-    """Simple health check endpoint for keep-alive services"""
-    return jsonify({
-        'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
-        'service': 'UoEM STARLIFE Navigation'
-    })
-
-# secret key and continue with other initialization
-app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
 def admin_paths(current_user):
     """Admin interface to view and update paths"""
@@ -2676,24 +2614,8 @@ def admin_paths(current_user):
         return jsonify({'success': False, 'error': str(e)})
 
 @app.route('/api/update_path_type', methods=['POST'])
-@app.route('/healthz')
-def healthz():
-    """Simple health check for Render's port scan."""
-    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
-
-@app.route('/health')
-def health_check():
-    """Simple health check endpoint for keep-alive services"""
-    return jsonify({
-        'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
-        'service': 'UoEM STARLIFE Navigation'
-    })
-
-# secret key and continue with other initialization
-app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
-def update_path_type():
+def update_path_type(current_user):
     """Update path type from admin interface"""
     try:
         data = request.json
@@ -2795,22 +2717,6 @@ def debug_paths():
 # ---------------------------------------------------
 
 @app.route('/admin/bulk_photos', methods=['GET'])
-@app.route('/healthz')
-def healthz():
-    """Simple health check for Render's port scan."""
-    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
-
-@app.route('/health')
-def health_check():
-    """Simple health check endpoint for keep-alive services"""
-    return jsonify({
-        'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
-        'service': 'UoEM STARLIFE Navigation'
-    })
-
-# secret key and continue with other initialization
-app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
 def bulk_photos_page(current_user):
     """Page for bulk photo upload"""
@@ -2830,24 +2736,8 @@ def bulk_photos_page(current_user):
     return render_template('bulk_photos.html', buildings=building_data, user=current_user)
 
 @app.route('/api/bulk_upload_photos', methods=['POST'])
-@app.route('/healthz')
-def healthz():
-    """Simple health check for Render's port scan."""
-    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
-
-@app.route('/health')
-def health_check():
-    """Simple health check endpoint for keep-alive services"""
-    return jsonify({
-        'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
-        'service': 'UoEM STARLIFE Navigation'
-    })
-
-# secret key and continue with other initialization
-app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
-def bulk_upload_photos():
+def bulk_upload_photos(current_user):
     """Bulk upload photos for multiple buildings - FIXED VERSION"""
     try:
         building_id = request.form.get('building_id')
@@ -3074,22 +2964,6 @@ def test_nlp():
     })
 
 @app.route('/ai-chat')
-@app.route('/healthz')
-def healthz():
-    """Simple health check for Render's port scan."""
-    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
-
-@app.route('/health')
-def health_check():
-    """Simple health check endpoint for keep-alive services"""
-    return jsonify({
-        'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
-        'service': 'UoEM STARLIFE Navigation'
-    })
-
-# secret key and continue with other initialization
-app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
 def ai_chat(current_user):
     """Serve the AI chat interface"""
@@ -3391,26 +3265,11 @@ def get_current_user():
 @app.route('/ping')
 def ping():
     return jsonify({'status': 'alive', 'message': 'pong'})
+
 # ---------------------------------------------------
 # MAIN ROUTE - PROTECTED
 # ---------------------------------------------------
 @app.route('/')
-@app.route('/healthz')
-def healthz():
-    """Simple health check for Render's port scan."""
-    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
-
-@app.route('/health')
-def health_check():
-    """Simple health check endpoint for keep-alive services"""
-    return jsonify({
-        'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
-        'service': 'UoEM STARLIFE Navigation'
-    })
-
-# secret key and continue with other initialization
-app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
 def index(current_user):
     """Main map page with buildings and navigation"""
@@ -3652,6 +3511,7 @@ def get_building_details(building_id):
             'success': False,
             'error': str(e)
         })
+
 # ---------------------------------------------------
 # CLEANUP THREAD FOR INACTIVE TRACKERS
 # ---------------------------------------------------
@@ -3669,7 +3529,6 @@ def cleanup_worker():
 cleanup_thread = threading.Thread(target=cleanup_worker, daemon=True)
 cleanup_thread.start()
 
-
 # ==================== PRODUCTION ENTRY POINT ====================
 # This is what gunicorn will use
 if __name__ != '__main__':
@@ -3684,7 +3543,8 @@ if __name__ != '__main__':
     # For SocketIO with gunicorn, we need to use the socketio object
     # But gunicorn will call app, not socketio
     print("✅ Application ready for gunicorn", file=sys.stderr)
-## ---------------------------------------------------
+
+# ---------------------------------------------------
 # RUN SERVER WITH SOCKET.IO - CORRECTED FOR RENDER
 # ---------------------------------------------------
 if __name__ == '__main__':
@@ -3747,9 +3607,6 @@ if __name__ == '__main__':
                 host='0.0.0.0', 
                 port=port,
                 allow_unsafe_werkzeug=True)  # Allow debug in development
-
-# No else block needed - Gunicorn handles production on Render
-# The SocketIO object is already configured with async_mode='eventlet'
 
 # At the very end of app.py, after everything but before the if __name__ block
 print("✅✅✅ DEBUG: App.py fully loaded and parsed", file=sys.stderr)
