@@ -78,13 +78,7 @@ data_lock = threading.Lock()
 background_thread = None 
 
 print("🔧 DEBUG: Creating Flask app...")
-app = Flask(__name__)
-@app.route('/healthz')
-def healthz():
-    """Simple health check for Render's port scan."""
-    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
-print("🔑 DEBUG: Setting secret key...")
-app.config['SECRET_KEY'] = secrets.token_hex(16)
+
 
 # IMPORTANT: Use eventlet for async_mode with gunicorn
 # This configuration is critical for Render deployment
@@ -2471,6 +2465,24 @@ def debug_routes():
         return jsonify({'error': str(e)})
 
 @app.route('/admin/edit_paths', methods=['GET'])
+
+# Health check endpoint - MUST be before any authentication
+@app.route('/healthz')
+def healthz():
+    """Simple health check for Render's port scan."""
+    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
+
+@app.route('/health')
+def health_check():
+    """Simple health check endpoint for keep-alive services"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'service': 'UoEM STARLIFE Navigation'
+    })
+
+# Now set the secret key and continue with other initialization
+app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
 def edit_paths_page(current_user):
     """Page for editing paths"""
@@ -2560,6 +2572,22 @@ def get_all_paths_for_editing():
         })
 
 @app.route('/api/update_path', methods=['POST'])
+@app.route('/healthz')
+def healthz():
+    """Simple health check for Render's port scan."""
+    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
+
+@app.route('/health')
+def health_check():
+    """Simple health check endpoint for keep-alive services"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'service': 'UoEM STARLIFE Navigation'
+    })
+
+# secret key and continue with other initialization
+app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
 def update_path():
     """Update a path's type and name"""
@@ -2592,6 +2620,22 @@ def update_path():
         return jsonify({'success': False, 'error': str(e)})
 
 @app.route('/admin/paths', methods=['GET'])
+@app.route('/healthz')
+def healthz():
+    """Simple health check for Render's port scan."""
+    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
+
+@app.route('/health')
+def health_check():
+    """Simple health check endpoint for keep-alive services"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'service': 'UoEM STARLIFE Navigation'
+    })
+
+# secret key and continue with other initialization
+app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
 def admin_paths(current_user):
     """Admin interface to view and update paths"""
@@ -2632,6 +2676,22 @@ def admin_paths(current_user):
         return jsonify({'success': False, 'error': str(e)})
 
 @app.route('/api/update_path_type', methods=['POST'])
+@app.route('/healthz')
+def healthz():
+    """Simple health check for Render's port scan."""
+    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
+
+@app.route('/health')
+def health_check():
+    """Simple health check endpoint for keep-alive services"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'service': 'UoEM STARLIFE Navigation'
+    })
+
+# secret key and continue with other initialization
+app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
 def update_path_type():
     """Update path type from admin interface"""
@@ -2735,6 +2795,22 @@ def debug_paths():
 # ---------------------------------------------------
 
 @app.route('/admin/bulk_photos', methods=['GET'])
+@app.route('/healthz')
+def healthz():
+    """Simple health check for Render's port scan."""
+    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
+
+@app.route('/health')
+def health_check():
+    """Simple health check endpoint for keep-alive services"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'service': 'UoEM STARLIFE Navigation'
+    })
+
+# secret key and continue with other initialization
+app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
 def bulk_photos_page(current_user):
     """Page for bulk photo upload"""
@@ -2754,6 +2830,22 @@ def bulk_photos_page(current_user):
     return render_template('bulk_photos.html', buildings=building_data, user=current_user)
 
 @app.route('/api/bulk_upload_photos', methods=['POST'])
+@app.route('/healthz')
+def healthz():
+    """Simple health check for Render's port scan."""
+    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
+
+@app.route('/health')
+def health_check():
+    """Simple health check endpoint for keep-alive services"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'service': 'UoEM STARLIFE Navigation'
+    })
+
+# secret key and continue with other initialization
+app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
 def bulk_upload_photos():
     """Bulk upload photos for multiple buildings - FIXED VERSION"""
@@ -2982,6 +3074,22 @@ def test_nlp():
     })
 
 @app.route('/ai-chat')
+@app.route('/healthz')
+def healthz():
+    """Simple health check for Render's port scan."""
+    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
+
+@app.route('/health')
+def health_check():
+    """Simple health check endpoint for keep-alive services"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'service': 'UoEM STARLIFE Navigation'
+    })
+
+# secret key and continue with other initialization
+app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
 def ai_chat(current_user):
     """Serve the AI chat interface"""
@@ -3287,6 +3395,22 @@ def ping():
 # MAIN ROUTE - PROTECTED
 # ---------------------------------------------------
 @app.route('/')
+@app.route('/healthz')
+def healthz():
+    """Simple health check for Render's port scan."""
+    return jsonify({'status': 'ok', 'time': datetime.now().isoformat()})
+
+@app.route('/health')
+def health_check():
+    """Simple health check endpoint for keep-alive services"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'service': 'UoEM STARLIFE Navigation'
+    })
+
+# secret key and continue with other initialization
+app.config['SECRET_KEY'] = secrets.token_hex(16)
 @token_required
 def index(current_user):
     """Main map page with buildings and navigation"""
@@ -3545,6 +3669,21 @@ def cleanup_worker():
 cleanup_thread = threading.Thread(target=cleanup_worker, daemon=True)
 cleanup_thread.start()
 
+
+# ==================== PRODUCTION ENTRY POINT ====================
+# This is what gunicorn will use
+if __name__ != '__main__':
+    # When running under gunicorn, we need to expose the application
+    # SocketIO needs to be configured for the worker
+    print("🚀 Starting in production mode with gunicorn", file=sys.stderr)
+    print(f"🔌 SocketIO async_mode: {socketio.async_mode}", file=sys.stderr)
+    
+    # Create the application object that gunicorn will use
+    application = app
+    
+    # For SocketIO with gunicorn, we need to use the socketio object
+    # But gunicorn will call app, not socketio
+    print("✅ Application ready for gunicorn", file=sys.stderr)
 ## ---------------------------------------------------
 # RUN SERVER WITH SOCKET.IO - CORRECTED FOR RENDER
 # ---------------------------------------------------
